@@ -4,7 +4,9 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
+import PublicIcon from '@mui/icons-material/Public';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -13,6 +15,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
+
   const handleContactClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -104,7 +108,12 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          cursor: 'pointer',
+          '&:hover': {
+            opacity: 0.8,
+          },
         }}
+        onClick={() => navigate('/')}
       >
         <img
           src="/DPL-LOGO.png"
@@ -139,6 +148,9 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         </a>
         <a href="https://www.linkedin.com/company/decker-pex-co/" target="_blank" rel="noopener noreferrer" style={{ color: '#0d2346', display: 'flex', alignItems: 'center' }}>
           <LinkedInIcon sx={{ color: '#0d2346', fontSize: 28, transition: 'color 0.2s', '&:hover': { color: '#06142a' } }} />
+        </a>
+        <a href="https://lawoffice.org.il/en/" target="_blank" rel="noopener noreferrer" style={{ color: '#0d2346', display: 'flex', alignItems: 'center' }}>
+          <PublicIcon sx={{ color: '#0d2346', fontSize: 28, transition: 'color 0.2s', '&:hover': { color: '#06142a' } }} />
         </a>
       </Box>
     </Box>

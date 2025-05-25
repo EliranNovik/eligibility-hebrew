@@ -128,16 +128,22 @@ const Intro = () => {
               px: { xs: 2, md: 6 },
               py: { xs: 3, md: 4 },
               mb: 6,
-              maxWidth: 700,
+              maxWidth: 1000,
               mx: 'auto',
               boxShadow: 3,
               textAlign: 'center',
             }}>
               <Typography variant="h6" sx={{ color: '#2196f3', fontWeight: 700, mb: 1, letterSpacing: 1 }}>
-                How does it work?
+                About Decker Pex Levi
               </Typography>
               <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontWeight: 500, mb: 2, fontSize: 18 }}>
-                Our eligibility checker will guide you <span style={{ color: '#21cbf3', fontWeight: 700 }}>step-by-step</span> through a series of questions to determine if you may qualify for German or Austrian citizenship under the relevant legal sections. Simply answer each question as accurately as possible, and you'll receive a <span style={{ color: '#21cbf3', fontWeight: 700 }}>personalized eligibility result</span> in minutes.
+                At Decker Pex Levi Law Offices, we specialize in German and Austrian citizenship law. Our expertise covers cases based on family heritage and historical circumstances, including those where ancestors were not citizens of these countries. We assist clients whose relatives were persecuted, displaced, or affected by past regimes, as well as those with ancestral connections qualifying under current nationality laws.
+              </Typography>
+              <Typography variant="h6" sx={{ color: '#2196f3', fontWeight: 700, mb: 1, letterSpacing: 1 }}>
+                How it works
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontWeight: 500, mb: 2, fontSize: 18 }}>
+                Our eligibility checker will guide you through a series of simple questions to determine if you may qualify for German or Austrian citizenship. Answer each question as accurately as possible, and you'll receive a personalized eligibility result in minutes.
               </Typography>
               <Typography variant="body1" sx={{ color: '#21cbf3', fontWeight: 600, mb: 2, fontSize: 17 }}>
                 All questions are simple <span style={{ color: '#43e97b', fontWeight: 700 }}>Yes</span> or <span style={{ color: '#43e97b', fontWeight: 700 }}>No</span> choices—no complicated forms!

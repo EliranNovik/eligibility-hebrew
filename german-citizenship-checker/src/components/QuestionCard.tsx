@@ -79,11 +79,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           {question.id === 'austrian_58c_6' && (
             <Box
               sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: 1.5,
-                justifyContent: 'center',
-                mb: 2,
+                mb: 3,
+                width: '100%',
               }}
             >
               {[
@@ -105,21 +105,28 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 <Box
                   key={country}
                   sx={{
-                    borderRadius: 999,
-                    borderColor: '#3a3f5a',
-                    color: '#232946',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    px: 2.5,
+                    borderRadius: 4,
+                    borderColor: '#43e97b',
+                    color: '#43e97b',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    px: 1.5,
                     py: 1,
-                    background: 'rgba(0, 184, 255, 0.10)',
+                    background: '#232946',
                     borderWidth: 2,
                     borderStyle: 'solid',
                     textAlign: 'center',
                     userSelect: 'none',
                     pointerEvents: 'none',
                     boxShadow: 1,
-                    mb: 0.5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: 40,
+                    '&:hover': {
+                      background: '#1a1d2e',
+                      borderColor: '#43e97b',
+                    }
                   }}
                 >
                   {country}
@@ -249,9 +256,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         <Button
           variant="contained"
           size="large"
-          fullWidth
           sx={{
-            maxWidth: 420,
+            maxWidth: { xs: 420, md: 540 },
+            width: '100%',
+            mx: 'auto',
             borderRadius: 999,
             fontWeight: 700,
             fontSize: { xs: 22, md: 28 },

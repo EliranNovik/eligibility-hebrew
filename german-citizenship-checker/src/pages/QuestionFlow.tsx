@@ -26,19 +26,25 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
       const jewishAnswer = formState.answers.find(a => a.questionId === 'german_116_1');
       if (jewishAnswer && jewishAnswer.value === 'no') {
         // Show simplified Section 5 questions
-        return questions.filter(q => q.id.startsWith('german_5_simple_'));
+        return questions.filter(q => q.id.startsWith('german_5_q'));
       }
-      // If §116_1 is not answered yet, or is 'yes', continue with §116
-      const german116_1 = formState.answers.find(a => a.questionId === 'german_116_1');
-      const german116_2 = formState.answers.find(a => a.questionId === 'german_116_2');
-      if (!german116_1 || !german116_2) {
+
+      // Check German citizenship status
+      const germanCitizenAnswer = formState.answers.find(a => a.questionId === 'german_116_2');
+
+      if (!germanCitizenAnswer) {
         return questions.filter(q => q.section === 'german_116');
       }
-      if (german116_2.value === 'yes') {
+
+      if (germanCitizenAnswer.value === 'yes') {
         return questions.filter(q => q.section === 'german_116');
       }
-      // If not a citizen, show §15 questions
-      return questions.filter(q => q.section === 'german_15');
+
+      if (germanCitizenAnswer.value === 'no') {
+        return questions.filter(q => q.section === 'german_15');
+      }
+
+      return questions.filter(q => q.section === 'german_116');
     }
     if (selectedCountry === 'Austria') {
       return questions.filter(q => q.section === 'austrian_58c');
@@ -50,36 +56,24 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
     const currentQuestion = filteredQuestions[formState.currentStep];
     const newAnswers = [...formState.answers];
     const existingAnswerIndex = newAnswers.findIndex((a) => a.questionId === currentQuestion.id);
-    
+
     if (existingAnswerIndex >= 0) {
       newAnswers[existingAnswerIndex].value = value;
     } else {
       newAnswers.push({ questionId: currentQuestion.id, value });
     }
-    
+
     setFormState((prev) => ({ ...prev, answers: newAnswers }));
 
-    // Show notification if answering "no" to Jewish descent question
     if (currentQuestion.id === 'german_116_1' && value === 'no') {
       setShowNotification(true);
       setTimeout(() => {
         setShowNotification(false);
-      }, 5000); // Hide after 5 seconds
+      }, 5000);
     }
 
-    // For yes/no questions, auto-advance
     if (currentQuestion.type === 'yesNo') {
-      // Special handling for parents marriage questions
-      if (currentQuestion.id === 'german_5_simple_9' && value === 'no') {
-        // If parents were not married at birth, we need to ask if they married after birth
-        const nextQuestion = filteredQuestions[formState.currentStep + 1];
-        if (nextQuestion && nextQuestion.id === 'german_5_simple_10') {
-          setFormState((prev) => ({
-            ...prev,
-            currentStep: prev.currentStep + 1,
-          }));
-        }
-      } else if (formState.currentStep < filteredQuestions.length - 1) {
+      if (formState.currentStep < filteredQuestions.length - 1) {
         setFormState((prev) => ({
           ...prev,
           currentStep: prev.currentStep + 1,
@@ -88,17 +82,26 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
         navigate('/results');
       }
     }
+
+    if (currentQuestion.id === 'german_5_q7' && value === 'no') {
+      // Skip q8 (loss of citizenship) if grandmother was not German
+      const nextQuestion = filteredQuestions[formState.currentStep + 1];
+      if (nextQuestion?.id === 'german_5_q8') {
+        setFormState((prev) => ({
+          ...prev,
+          currentStep: prev.currentStep + 2,
+        }));
+        return;
+      }
+    }
+    
   };
 
   const handleNext = () => {
     const currentQuestion = filteredQuestions[formState.currentStep];
-    
-    // For date questions, validate the date
     if (currentQuestion.type === 'date') {
       const currentAnswer = getCurrentAnswer();
-      if (!currentAnswer) {
-        return; // Don't proceed if no date is selected
-      }
+      if (!currentAnswer) return;
     }
 
     if (formState.currentStep < filteredQuestions.length - 1) {
@@ -113,23 +116,10 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
 
   const handleBack = () => {
     if (formState.currentStep > 0) {
-      // Check if we're going back from the "married after birth" question
-      const currentQuestion = filteredQuestions[formState.currentStep];
-      const previousQuestion = filteredQuestions[formState.currentStep - 1];
-      
-      if (currentQuestion.id === 'german_5_simple_10' && previousQuestion.id === 'german_5_simple_9') {
-        // If going back from "married after birth" question, we should go back to the marriage status question
-        setFormState((prev) => ({
-          ...prev,
-          currentStep: prev.currentStep - 1,
-        }));
-      } else {
-        // Normal back navigation
-        setFormState((prev) => ({
-          ...prev,
-          currentStep: prev.currentStep - 1,
-        }));
-      }
+      setFormState((prev) => ({
+        ...prev,
+        currentStep: prev.currentStep - 1,
+      }));
     } else {
       navigate('/');
     }
@@ -190,4 +180,4 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
   );
 };
 
-export default QuestionFlow; 
+export default QuestionFlow;

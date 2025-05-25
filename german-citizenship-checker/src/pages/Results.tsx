@@ -149,7 +149,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
 
     if (selectedCountry === 'Germany') {
       // New Section 5 Analysis Logic
-      const section5Answers = answers.filter(a => a.questionId.startsWith('german_5_simple_'));
+      const section5Answers = answers.filter(a => a.questionId.startsWith('german_5_q'));
       if (section5Answers.length > 0) {
         const categoryScores: Record<'1' | '2' | '3' | '4' | '5', number> = { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 };
         
@@ -200,27 +200,37 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
       if (!isEligible) {
         const jewishAnswer = answers.find(a => a.questionId === 'german_116_1');
         const citizenAnswer = answers.find(a => a.questionId === 'german_116_2');
-        const emigrationAnswer = answers.find(a => a.questionId === 'german_116_6');
-        const relationAnswer = answers.find(a => a.questionId === 'german_116_7');
+        const livedInGermany = answers.find(a => a.questionId === 'german_116_3');
+        const centerOfLife = answers.find(a => a.questionId === 'german_116_4');
+        const emigrated = answers.find(a => a.questionId === 'german_116_5');
+        const relationAnswer = answers.find(a => a.questionId === 'german_116_6');
 
-        if (jewishAnswer?.value === 'yes' && citizenAnswer?.value === 'yes') {
-          if (emigrationAnswer?.value === 'yes' && relationAnswer && relationAnswer.value) {
+        // If they were a German citizen, check §116 eligibility
+        if (citizenAnswer?.value === 'yes') {
+          if (jewishAnswer?.value === 'yes' && 
+              livedInGermany?.value === 'yes' && 
+              centerOfLife?.value === 'yes' && 
+              emigrated?.value === 'yes' && 
+              relationAnswer?.value) {
             isEligible = true;
             eligibleSections.push('§116');
             explanation += 'You appear to be eligible for German citizenship under §116 (Restoration of citizenship to victims of Nazi persecution).\n\n';
-          } else {
-            const german15Answers = answers.filter(a => a.questionId.startsWith('german_15'));
-            const isGerman15Eligible = german15Answers.every(a => {
-              if (a.questionId === 'german_15_5') {
-                return a.value !== undefined && a.value !== '';
-              }
-              return a.value === 'yes';
-            });
-            if (isGerman15Eligible) {
-              isEligible = true;
-              eligibleSections.push('§15');
-              explanation += 'You appear to be eligible for German citizenship under §15 (Naturalization of descendants of persecuted residents).\n\n';
+          }
+        }
+        // If they were NOT a German citizen, check §15 eligibility
+        else if (citizenAnswer?.value === 'no') {
+          const german15Answers = answers.filter(a => a.questionId.startsWith('german_15'));
+          const isGerman15Eligible = german15Answers.every(a => {
+            if (a.questionId === 'german_15_5') {
+              return a.value !== undefined && a.value !== '';
             }
+            return a.value === 'yes';
+          });
+          
+          if (isGerman15Eligible) {
+            isEligible = true;
+            eligibleSections.push('§15');
+            explanation += 'You appear to be eligible for German citizenship under §15 (Naturalization of descendants of persecuted residents).\n\n';
           }
         }
       }
@@ -434,6 +444,70 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                     Start New Check
                   </StyledButton>
                 </Box>
+                {/* Share section */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center', 
+                  gap: 2, 
+                  width: '100%',
+                  mb: 4
+                }}>
+                  <Typography variant="subtitle1" sx={{ 
+                    color: 'white', 
+                    fontWeight: 500 
+                  }}>
+                    Share this eligibility checker with friends:
+                  </Typography>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    gap: 2, 
+                    justifyContent: 'center' 
+                  }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => captureAndShare('whatsapp')}
+                      sx={{
+                        background: '#25D366',
+                        minWidth: 56,
+                        minHeight: 56,
+                        width: 56,
+                        height: 56,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        p: 0,
+                        '&:hover': {
+                          background: '#128C7E',
+                        },
+                      }}
+                    >
+                      <WhatsAppIcon sx={{ fontSize: 32, color: '#fff' }} />
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => captureAndShare('facebook')}
+                      sx={{
+                        background: '#1877F2',
+                        minWidth: 56,
+                        minHeight: 56,
+                        width: 56,
+                        height: 56,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        p: 0,
+                        '&:hover': {
+                          background: '#0C5DC7',
+                        },
+                      }}
+                    >
+                      <FacebookIcon sx={{ fontSize: 32, color: '#fff' }} />
+                    </Button>
+                  </Box>
+                </Box>
               </>
             )}
             {!result.notSure && result.isEligible && showContactForm && (
@@ -477,64 +551,6 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                 </Box>
               </Box>
             )}
-            {/* Share section: now always visible */}
-            <Box sx={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              gap: 2, 
-              width: '100%',
-              mb: 4
-            }}>
-              <Typography variant="subtitle1" sx={{ 
-                color: 'white', 
-                fontWeight: 500 
-              }}>
-                Share this eligibility checker with friends:
-              </Typography>
-              <Box sx={{ 
-                display: 'flex', 
-                gap: 2, 
-                justifyContent: 'center' 
-              }}>
-                <Button
-                  variant="contained"
-                  startIcon={<WhatsAppIcon />}
-                  onClick={() => captureAndShare('whatsapp')}
-                  sx={{
-                    background: '#25D366',
-                    '&:hover': {
-                      background: '#128C7E',
-                    },
-                    borderRadius: 2,
-                    px: 3,
-                    py: 1.5,
-                    fontSize: 16,
-                    fontWeight: 600
-                  }}
-                >
-                  WhatsApp
-                </Button>
-                <Button
-                  variant="contained"
-                  startIcon={<FacebookIcon />}
-                  onClick={() => captureAndShare('facebook')}
-                  sx={{
-                    background: '#1877F2',
-                    '&:hover': {
-                      background: '#0C5DC7',
-                    },
-                    borderRadius: 2,
-                    px: 3,
-                    py: 1.5,
-                    fontSize: 16,
-                    fontWeight: 600
-                  }}
-                >
-                  Facebook
-                </Button>
-              </Box>
-            </Box>
           </StyledPaper>
         </Container>
       </Box>

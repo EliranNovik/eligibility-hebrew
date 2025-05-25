@@ -20,6 +20,7 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
   const [typedText, setTypedText] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [nameError, setNameError] = useState('');
   const navigate = useNavigate();
   const timeoutRef = useRef<number | null>(null);
 
@@ -47,8 +48,21 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
     };
   }, []);
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Only allow letters and spaces
+    if (value === '' || /^[a-zA-Z\s]*$/.test(value)) {
+      setName(value);
+      setNameError('');
+    } else {
+      setNameError('Please enter only letters');
+    }
+  };
+
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+    if (nameError) return;
+    
     setFormState(prev => ({
       ...prev,
       userData: {
@@ -78,10 +92,12 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
               <TextField
                 placeholder="Full Name"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={handleNameChange}
                 required
                 fullWidth
                 autoFocus
+                error={!!nameError}
+                helperText={nameError}
                 InputProps={{
                   style: {
                     background: '#fff',

@@ -35,30 +35,23 @@ export const questions: Question[] = [
   },
   {
     id: 'german_116_4',
-    text: 'Was your ancestor persecuted by the Nazi regime?',
+    text: 'Did your ancestor have their center of life in Germany (e.g., work, school, permanent residence)?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
     id: 'german_116_5',
-    text: 'Did your ancestor lose German citizenship between 1933–1945?',
-    type: 'yesNo',
-    section: 'german_116',
-    required: true
-  },
-  {
-    id: 'german_116_6',
     text: 'Did your ancestor or close relatives emigrate due to persecution after 1933?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
-    id: 'german_116_7',
+    id: 'german_116_6',
     text: 'What is your relation to that ancestor?',
     type: 'dropdown',
-    options: ['Child', 'Grandchild', 'Great-grandchild'],
+    options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'],
     section: 'german_116',
     required: true
   },
@@ -66,14 +59,14 @@ export const questions: Question[] = [
   // German Citizenship - §15 StAG
   {
     id: 'german_15_1',
-    text: 'Did your ancestor live in Germany before 1933?',
+    text: 'Was your ancestor NOT a German citizen before 1933?',
     type: 'yesNo',
     section: 'german_15',
     required: true
   },
   {
     id: 'german_15_2',
-    text: 'Was your ancestor not a German citizen?',
+    text: 'Did your ancestor live in Germany before 1933?',
     type: 'yesNo',
     section: 'german_15',
     required: true
@@ -101,95 +94,90 @@ export const questions: Question[] = [
     required: true
   },
 
-  // German Citizenship - §5 StAG
+  // Section 5 - German Citizenship Eligibility Questions (Simplified)
   {
-    id: 'german_5_simple_1',
-    text: 'Was your mother or grandmother ever a German citizen?',
-    type: 'yesNo',
-    section: 'german_5',
-    required: true,
-    categoryMatch: ['1', '3']
-  },
-  {
-    id: 'german_5_simple_2',
-    text: 'Did your mother or grandmother lose her German citizenship because she married a foreign man?',
-    type: 'yesNo',
-    section: 'german_5',
-    required: true,
-    categoryMatch: ['3', '4']
-  },
-  {
-    id: 'german_5_simple_3',
-    text: 'Was your father a German citizen, but your parents were not married at the time of your birth?',
-    type: 'yesNo',
-    section: 'german_5',
-    required: true,
-    categoryMatch: ['2', '4']
-  },
-  {
-    id: 'german_5_simple_4',
-    text: 'Were you or your parent unable to receive German citizenship because of the way the law treated women differently?',
-    type: 'yesNo',
-    section: 'german_5',
-    required: true,
-    categoryMatch: ['1', '2', '3', '4']
-  },
-  {
-    id: 'german_5_simple_5',
-    text: 'Did your mother or grandmother lose her citizenship when she married — even though your father was not German?',
-    type: 'yesNo',
-    section: 'german_5',
-    required: true,
-    categoryMatch: ['3']
-  },
-  {
-    id: 'german_5_simple_6',
-    text: 'Are you the child of someone affected by one of these situations?',
-    type: 'yesNo',
-    section: 'german_5',
-    required: true,
-    categoryMatch: ['5']
-  },
-  {
-    id: 'german_5_simple_7',
-    text: 'Were you born between 1949 and 1974?',
+    id: 'german_5_q1',
+    text: 'Was your mother ever a German citizen?',
     type: 'yesNo',
     section: 'german_5',
     required: true,
     categoryMatch: ['1']
   },
   {
-    id: 'german_5_simple_8',
-    text: 'Were you born after 1974?',
+    id: 'german_5_q2',
+    text: 'Were you born before January 1, 1975?',
+    type: 'yesNo',
+    section: 'german_5',
+    required: true,
+    categoryMatch: ['1']
+  },
+  {
+    id: 'german_5_q3',
+    text: 'Did you not receive German citizenship at birth?',
+    type: 'yesNo',
+    section: 'german_5',
+    required: true,
+    categoryMatch: ['1']
+  },
+  {
+    id: 'german_5_q4',
+    text: 'Was your father a German citizen?',
     type: 'yesNo',
     section: 'german_5',
     required: true,
     categoryMatch: ['2']
   },
   {
-    id: 'german_5_simple_9',
-    text: 'Were your parents married at the time of your birth?',
+    id: 'german_5_q5',
+    text: 'Did your parents marry after your birth?',
     type: 'yesNo',
     section: 'german_5',
     required: true,
-    categoryMatch: ['1', '2', '3', '4', '5']
+    categoryMatch: ['2']
   },
   {
-    id: 'german_5_simple_10',
-    text: 'If your parents were not married at your birth, did they marry after your birth?',
-    type: 'yesNo',
-    section: 'german_5',
-    required: false,
-    categoryMatch: ['1', '2', '3', '4', '5']
-  },
-  {
-    id: 'german_5_simple_11',
-    text: 'Was your mother or grandmother married before April 1953?',
+    id: 'german_5_q7',
+    text: 'Was your grandmother ever a German citizen?',
     type: 'yesNo',
     section: 'german_5',
     required: true,
     categoryMatch: ['3']
   },
+  {
+    id: 'german_5_q8',
+    text: 'Did your grandmother lose her German citizenship because she married a foreign man?',
+    type: 'yesNo',
+    section: 'german_5',
+    required: true,
+    categoryMatch: ['3']
+  },
+  {
+    id: 'german_5_q9',
+    text: 'Did your mother marry before April 1, 1953?',
+    type: 'yesNo',
+    section: 'german_5',
+    required: true,
+    categoryMatch: ['3']
+  },
+  {
+    id: 'german_5_q10',
+    text: 'Are you the child of someone affected by any of these situations?',
+    type: 'yesNo',
+    section: 'german_5',
+    required: true,
+    categoryMatch: ['5']
+  },
+  {
+    id: 'german_5_q11',
+    text: 'Was your parent or grandparent ever denied German citizenship?',
+    type: 'yesNo',
+    section: 'german_5',
+    required: false,
+    categoryMatch: ['5']
+  },
+
+
+
 
   // Austrian Citizenship - §58c
   {
@@ -222,7 +210,7 @@ export const questions: Question[] = [
   },
   {
     id: 'austrian_58c_6',
-    text: 'Was your ancestor subject to citizenship of one of the countries on the following list?',
+    text: 'Was your ancestor a citizen of one of the countries listed below?',
     type: 'yesNo',
     section: 'austrian_58c',
     required: true
