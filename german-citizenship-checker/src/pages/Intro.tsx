@@ -5,9 +5,13 @@ import Header from '../components/Header';
 import { motion } from 'framer-motion';
 import Footer from '../components/Footer';
 import LawRequirements from '../components/LawRequirements';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import GroupsIcon from '@mui/icons-material/Groups';
+import SearchIcon from '@mui/icons-material/Search';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -81,6 +85,7 @@ const lawRequirements = {
 const Intro = () => {
   const navigate = useNavigate();
   const [openSection, setOpenSection] = useState<string | null>(null);
+  const [showPhonePopover, setShowPhonePopover] = useState(false);
 
   const handleSectionClick = (section: string) => {
     setOpenSection(openSection === section ? null : section);
@@ -89,8 +94,212 @@ const Intro = () => {
   return (
     <>
       <Header />
-      <Box sx={{ minHeight: '100vh', width: '100vw', bgcolor: '#232946', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', pt: 8 }}>
-        <Box sx={{ mt: 0, width: '100%', maxWidth: 1200, px: { xs: 2, md: 4 } }}>
+      <Box sx={{ 
+        minHeight: '100vh', 
+        width: '100vw', 
+        bgcolor: 'rgba(35, 41, 70, 0.85)',
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'flex-start', 
+        pt: 8,
+        position: 'relative',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url(/german_documents.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.4,
+          zIndex: 0,
+        }
+      }}>
+        {/* Floating WhatsApp Button */}
+        <Box
+          sx={{
+            position: 'fixed',
+            top: { xs: 'unset', sm: '50%' },
+            bottom: { xs: 24, sm: 'unset' },
+            right: 24,
+            zIndex: 2000,
+            transform: { xs: 'none', sm: 'translateY(-50%)' },
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          {/* WhatsApp Button */}
+          <Box
+            component="a"
+            href="https://wa.me/1234567890" // Replace with your WhatsApp number
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 56,
+              height: 56,
+              borderRadius: '50%',
+              bgcolor: '#25D366',
+              boxShadow: '0 4px 16px 0 rgba(0,0,0,0.18)',
+              transition: 'all 0.2s',
+              position: 'relative',
+              cursor: 'pointer',
+              '&:hover': {
+                bgcolor: '#128C7E',
+              },
+              '&:hover .wa-tooltip': {
+                opacity: 1,
+                transform: 'translateY(-50%) scale(1)',
+              },
+            }}
+          >
+            <WhatsAppIcon sx={{ color: '#fff', fontSize: 32 }} />
+            <Box
+              className="wa-tooltip"
+              sx={{
+                position: 'absolute',
+                right: 70,
+                top: '50%',
+                transform: 'translateY(-50%) scale(0.95)',
+                bgcolor: '#232946',
+                color: '#fff',
+                px: 2,
+                py: 1,
+                borderRadius: 2,
+                fontSize: 15,
+                fontWeight: 500,
+                whiteSpace: 'nowrap',
+                boxShadow: 3,
+                opacity: 0,
+                pointerEvents: 'none',
+                transition: 'all 0.18s',
+              }}
+            >
+              Contact us on WhatsApp
+            </Box>
+          </Box>
+          {/* Contact Us Phone Button */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 56,
+              height: 56,
+              borderRadius: '50%',
+              bgcolor: '#646cff',
+              boxShadow: '0 4px 16px 0 rgba(0,0,0,0.18)',
+              transition: 'all 0.2s',
+              position: 'relative',
+              cursor: 'pointer',
+              mt: 2,
+              '&:hover': {
+                bgcolor: '#535bf2',
+              },
+            }}
+            tabIndex={0}
+            onClick={e => {
+              e.stopPropagation();
+              setShowPhonePopover((prev) => !prev);
+            }}
+            onBlur={e => {
+              setShowPhonePopover(false);
+            }}
+          >
+            <PhoneIcon sx={{ color: '#fff', fontSize: 32 }} />
+            {showPhonePopover && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  right: 70,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  bgcolor: 'rgba(255,255,255,0.18)',
+                  color: '#232946',
+                  px: 2.5,
+                  py: 2,
+                  borderRadius: 3,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  boxShadow: 3,
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  minWidth: 220,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                  zIndex: 3000,
+                }}
+                onClick={e => e.stopPropagation()}
+              >
+                <Box sx={{ fontWeight: 700, mb: 1, color: '#fff', fontSize: 17, textAlign: 'center' }}>Contact Us</Box>
+                <a
+                  href="tel:+97226500000"
+                  onClick={() => setTimeout(() => setShowPhonePopover(false), 400)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
+                    color: '#232946',
+                    fontWeight: 700,
+                    fontSize: 17,
+                    borderRadius: 8,
+                    marginBottom: 8,
+                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
+                    padding: '12px 24px',
+                    width: '100%',
+                    textDecoration: 'none',
+                    justifyContent: 'flex-start',
+                    textTransform: 'none',
+                    transition: 'none',
+                    gap: 12,
+                  }}
+                >
+                  <PhoneIcon style={{ fontSize: 24, marginRight: 8 }} /> Jerusalem: 02-650-0000
+                </a>
+                <a
+                  href="tel:+97237770000"
+                  onClick={() => setTimeout(() => setShowPhonePopover(false), 400)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: 17,
+                    borderRadius: 8,
+                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
+                    padding: '12px 24px',
+                    width: '100%',
+                    textDecoration: 'none',
+                    justifyContent: 'flex-start',
+                    textTransform: 'none',
+                    transition: 'none',
+                    gap: 12,
+                  }}
+                >
+                  <PhoneIcon style={{ fontSize: 24, marginRight: 8 }} /> Tel Aviv: 03-777-0000
+                </a>
+              </Box>
+            )}
+          </Box>
+        </Box>
+        <Box sx={{ 
+          mt: 0, 
+          width: '100%', 
+          maxWidth: 1200, 
+          px: { xs: 2, md: 4 },
+          position: 'relative',
+          zIndex: 1
+        }}>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -120,46 +329,10 @@ const Intro = () => {
             <Typography variant="h3" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mb: 8, fontSize: 40 }}>
               Are you eligible for German or Austrian citizenship?
             </Typography>
-            <Paper elevation={0} sx={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '2px solid',
-              borderImage: 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%) 1',
-              borderRadius: 4,
-              px: { xs: 2, md: 6 },
-              py: { xs: 3, md: 4 },
-              mb: 6,
-              maxWidth: 1000,
-              mx: 'auto',
-              boxShadow: 3,
-              textAlign: 'center',
+            <Box sx={{
+              position: 'relative',
+              width: '100%',
             }}>
-              <Typography variant="h6" sx={{ color: '#2196f3', fontWeight: 700, mb: 1, letterSpacing: 1 }}>
-                About Decker Pex Levi
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontWeight: 500, mb: 2, fontSize: 18 }}>
-                At Decker Pex Levi Law Offices, we specialize in German and Austrian citizenship law. Our expertise covers cases based on family heritage and historical circumstances, including those where ancestors were not citizens of these countries. We assist clients whose relatives were persecuted, displaced, or affected by past regimes, as well as those with ancestral connections qualifying under current nationality laws.
-              </Typography>
-              <Typography variant="h6" sx={{ color: '#2196f3', fontWeight: 700, mb: 1, letterSpacing: 1 }}>
-                How it works
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontWeight: 500, mb: 2, fontSize: 18 }}>
-                Our eligibility checker will guide you through a series of simple questions to determine if you may qualify for German or Austrian citizenship. Answer each question as accurately as possible, and you'll receive a personalized eligibility result in minutes.
-              </Typography>
-              <Typography variant="body1" sx={{ color: '#21cbf3', fontWeight: 600, mb: 2, fontSize: 17 }}>
-                All questions are simple <span style={{ color: '#43e97b', fontWeight: 700 }}>Yes</span> or <span style={{ color: '#43e97b', fontWeight: 700 }}>No</span> choices—no complicated forms!
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.87)', fontWeight: 400, fontSize: 17 }}>
-                <span style={{ color: '#43e97b', fontWeight: 700 }}>Decker Pex Levi</span> offers you a <span style={{ color: '#43e97b', fontWeight: 700 }}>free consultation</span> and <span style={{ color: '#43e97b', fontWeight: 700 }}>express archival research</span> to maximize your eligibility in the <span style={{ color: '#21cbf3', fontWeight: 700 }}>fastest</span> and <span style={{ color: '#21cbf3', fontWeight: 700 }}>simplest</span> way possible.
-              </Typography>
-            </Paper>
-            <Box
-              sx={{
-                position: 'relative',
-                width: '100%',
-                mb: 8,
-                px: { xs: 0, md: 0 },
-              }}
-            >
               {/* Scroll indicators for mobile */}
               <Box
                 sx={{
@@ -173,7 +346,7 @@ const Intro = () => {
                   animation: 'bounceLeft 1.2s infinite',
                 }}
               >
-                <ChevronLeftIcon sx={{ color: '#2196f3', fontSize: 32, opacity: 0.7 }} />
+                <ChevronLeftIcon sx={{ color: '#fff', fontSize: 32, opacity: 0.7 }} />
               </Box>
               <Box
                 sx={{
@@ -187,8 +360,140 @@ const Intro = () => {
                   animation: 'bounceRight 1.2s infinite',
                 }}
               >
-                <ChevronRightIcon sx={{ color: '#2196f3', fontSize: 32, opacity: 0.7 }} />
+                <ChevronRightIcon sx={{ color: '#fff', fontSize: 32, opacity: 0.7 }} />
               </Box>
+              <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: 'repeat(2, 80vw)', md: '1fr 1fr' },
+                gap: 4,
+                mb: 15,
+                mt: 10,
+                maxWidth: 1200,
+                mx: 'auto',
+                px: { xs: 2, md: 4 },
+                overflowX: { xs: 'auto', md: 'visible' },
+                overflowY: 'visible',
+                scrollSnapType: { xs: 'x mandatory', md: 'none' },
+                WebkitOverflowScrolling: 'touch',
+                scrollbarWidth: 'thin',
+                '&::-webkit-scrollbar': { height: 8 },
+                '&::-webkit-scrollbar-thumb': { background: '#2196f3', borderRadius: 4 },
+              }}>
+                {/* About Section */}
+                <Box sx={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  borderRadius: 4,
+                  p: 4,
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                  },
+                  scrollSnapAlign: { xs: 'center', md: 'none' },
+                  minWidth: { xs: '70vw', md: 'auto' },
+                  maxWidth: { xs: 340, md: 'none' },
+                  mx: { xs: 1, md: 0 },
+                }}>
+                  <Typography variant="h6" sx={{ 
+                    color: 'white', 
+                    fontWeight: 700, 
+                    mb: 3, 
+                    letterSpacing: 1,
+                    fontSize: 20,
+                    textAlign: 'center'
+                  }}>
+                    About Decker Pex Levi
+                  </Typography>
+                  <Typography variant="body1" sx={{ 
+                    color: 'rgba(255,255,255,0.92)', 
+                    fontWeight: 500, 
+                    fontSize: 16,
+                    lineHeight: 1.8
+                  }}>
+                    At Decker Pex Levi Law Offices, we specialize in German and Austrian citizenship law. Our expertise covers cases based on family heritage and historical circumstances, including those where ancestors were not citizens of these countries. We assist clients whose relatives were persecuted, displaced, or affected by past regimes, as well as those with ancestral connections qualifying under current nationality laws.
+                  </Typography>
+                </Box>
+
+                {/* How it works Section */}
+                <Box sx={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  borderRadius: 4,
+                  p: 4,
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                  },
+                  scrollSnapAlign: { xs: 'center', md: 'none' },
+                  minWidth: { xs: '70vw', md: 'auto' },
+                  maxWidth: { xs: 340, md: 'none' },
+                  mx: { xs: 1, md: 0 },
+                }}>
+                  <Typography variant="h6" sx={{ 
+                    color: 'white', 
+                    fontWeight: 700, 
+                    mb: 3, 
+                    letterSpacing: 1,
+                    fontSize: 20,
+                    textAlign: 'center'
+                  }}>
+                    How it works
+                  </Typography>
+                  <Typography variant="body1" sx={{ 
+                    color: 'rgba(255,255,255,0.92)', 
+                    fontWeight: 500, 
+                    fontSize: 16,
+                    lineHeight: 1.8,
+                    mb: 2
+                  }}>
+                    Our eligibility checker will guide you through a series of simple questions to determine if you may qualify for German or Austrian citizenship. Answer each question as accurately as possible, and you'll receive a personalized eligibility result in minutes.
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 3, mb: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <GroupsIcon sx={{ color: '#2196f3', fontSize: 28 }} />
+                      <Typography variant="body1" sx={{ 
+                        color: 'rgba(255,255,255,0.92)', 
+                        fontWeight: 500, 
+                        fontSize: 16,
+                        lineHeight: 1.8
+                      }}>
+                        Free Consultation
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <SearchIcon sx={{ color: '#2196f3', fontSize: 28 }} />
+                      <Typography variant="body1" sx={{ 
+                        color: 'rgba(255,255,255,0.92)', 
+                        fontWeight: 500, 
+                        fontSize: 16,
+                        lineHeight: 1.8
+                      }}>
+                        Express Archival Research
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Typography variant="body1" sx={{ 
+                    color: 'rgba(255,255,255,0.92)', 
+                    fontWeight: 500, 
+                    fontSize: 16,
+                    lineHeight: 1.8
+                  }}>
+                    We offer you a free consultation and express archival research to maximize your eligibility in the fastest and simplest way possible.
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                position: 'relative',
+                width: '100%',
+                mb: 20,
+                mt: 20,
+                px: { xs: 0, md: 0 },
+              }}
+            >
               <Box
                 sx={{
                   display: 'grid',
@@ -237,29 +542,6 @@ const Intro = () => {
                         },
                       }}
                     >
-                      {/* Special badge for section 5, now inside the box */}
-                      {section === '5' && (
-                        <Box
-                          sx={{
-                            display: 'inline-block',
-                            px: 1,
-                            py: 0.2,
-                            mb: 1,
-                            bgcolor: 'rgba(33,203,243,0.92)',
-                            color: '#232946',
-                            fontWeight: 700,
-                            fontSize: 10,
-                            borderRadius: 1.5,
-                            boxShadow: 1,
-                            letterSpacing: 0.5,
-                            textTransform: 'uppercase',
-                            border: '1px solid #43e97b',
-                            pointerEvents: 'none',
-                          }}
-                        >
-                          Valid until Aug 2031
-                        </Box>
-                      )}
                       <Typography variant="h5" fontWeight={700} sx={{ mb: 1 }}>§{section}</Typography>
                       <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 1 }}>{data.title}</Typography>
                       <Typography variant="body2" sx={{ mb: 2 }}>Click to see detailed requirements</Typography>
@@ -276,6 +558,29 @@ const Intro = () => {
                       >
                         See More
                       </Button>
+                      {/* Special badge for section 5, now after the button */}
+                      {section === '5' && (
+                        <Box
+                          sx={{
+                            display: 'inline-block',
+                            px: 1,
+                            py: 0.2,
+                            mt: 1,
+                            bgcolor: 'rgba(33,203,243,0.92)',
+                            color: '#232946',
+                            fontWeight: 700,
+                            fontSize: 10,
+                            borderRadius: 1.5,
+                            boxShadow: 1,
+                            letterSpacing: 0.5,
+                            textTransform: 'uppercase',
+                            border: '1px solid #43e97b',
+                            pointerEvents: 'none',
+                          }}
+                        >
+                          Valid until Aug 2031
+                        </Box>
+                      )}
                     </Box>
                     <LawRequirements
                       section={`§${section}`}
@@ -304,10 +609,10 @@ const Intro = () => {
             `}</style>
           </motion.div>
         </Box>
+        <Footer />
       </Box>
-      <Footer />
     </>
   );
 };
 
-export default Intro; 
+export default Intro;

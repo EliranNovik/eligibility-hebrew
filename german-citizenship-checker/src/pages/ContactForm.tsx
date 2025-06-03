@@ -5,6 +5,8 @@ import { Container, Card, CardContent, Typography, Button, TextField, Alert, Box
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
+import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
 
 // Country codes for phone numbers
 const COUNTRY_CODES = [
@@ -18,14 +20,16 @@ const COUNTRY_CODES = [
 interface ContactFormProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
+  hideHeader?: boolean;
 }
 
-const ContactForm = ({ formState, setFormState }: ContactFormProps) => {
+const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
   const [countryCode, setCountryCode] = useState(COUNTRY_CODES[0].code);
   const [showThankYou, setShowThankYou] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -220,59 +224,85 @@ const ContactForm = ({ formState, setFormState }: ContactFormProps) => {
     );
   }
 
-  return (
-    <Box sx={{ width: '100%', maxWidth: 400, mx: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', p: 0 }}>
-      <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: '#232946', mt: 2 }}>
-        Contact Information
-      </Typography>
-      <Typography align="center" color="#232946" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6 }}>
-        Please provide your phone number and any comments. We will get in touch with you about your eligibility assessment.
-      </Typography>
-      {message && (
-        <Alert severity={messageType === 'success' ? 'success' : 'error'} sx={{ mb: 2 }}>
-          {message}
-        </Alert>
-      )}
-      <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', width: '100%' }}>
-          <Select
-            value={countryCode}
-            onChange={handleCountryCodeChange}
-            variant="outlined"
-            sx={{
-              minWidth: 120,
-              bgcolor: '#fff',
-              borderRadius: 2,
-              fontWeight: 600,
-              fontSize: 16,
-              '& .MuiOutlinedInput-input': {
-                padding: '16.5px 14px',
-              },
-              '& .MuiSelect-select': { 
-                display: 'flex', 
-                alignItems: 'center',
-              },
-              marginTop: '16px',
-            }}
-          >
-            {COUNTRY_CODES.map(option => (
-              <MenuItem key={option.code} value={option.code}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
+  if (hideHeader) {
+    return (
+      <Card sx={{ width: '100%', maxWidth: 420, mx: 'auto', boxShadow: 4, borderRadius: 4, p: 3, bgcolor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: '#232946', mt: 1 }}>
+          Contact Information
+        </Typography>
+        <Typography align="center" color="#232946" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6 }}>
+          Please provide your phone number and any comments. We will get in touch with you about your eligibility assessment.
+        </Typography>
+        {message && (
+          <Alert severity={messageType === 'success' ? 'success' : 'error'} sx={{ mb: 2 }}>
+            {message}
+          </Alert>
+        )}
+        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+          <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', width: '100%' }}>
+            <Select
+              value={countryCode}
+              onChange={handleCountryCodeChange}
+              variant="outlined"
+              sx={{
+                minWidth: 120,
+                bgcolor: '#fff',
+                borderRadius: 2,
+                fontWeight: 600,
+                fontSize: 16,
+                '& .MuiOutlinedInput-input': {
+                  padding: '16.5px 14px',
+                },
+                '& .MuiSelect-select': { 
+                  display: 'flex', 
+                  alignItems: 'center',
+                },
+                marginTop: '16px',
+              }}
+            >
+              {COUNTRY_CODES.map(option => (
+                <MenuItem key={option.code} value={option.code}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+            <TextField
+              placeholder="Phone Number"
+              type="tel"
+              value={userData.phone}
+              onChange={handlePhoneChange}
+              required
+              fullWidth
+              margin="normal"
+              sx={{ 
+                bgcolor: '#fff', 
+                borderRadius: 2,
+                flex: 1,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'rgba(100, 108, 255, 0.3)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'rgba(100, 108, 255, 0.5)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#646cff',
+                  },
+                },
+              }}
+            />
+          </Box>
           <TextField
-            placeholder="Phone Number"
-            type="tel"
-            value={userData.phone}
-            onChange={handlePhoneChange}
-            required
+            placeholder="Comments"
+            value={userData.comments || ''}
+            onChange={e => handleInputChange('comments', e.target.value)}
+            multiline
+            minRows={3}
             fullWidth
             margin="normal"
             sx={{ 
               bgcolor: '#fff', 
               borderRadius: 2,
-              flex: 1,
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
                   borderColor: 'rgba(100, 108, 255, 0.3)',
@@ -286,55 +316,181 @@ const ContactForm = ({ formState, setFormState }: ContactFormProps) => {
               },
             }}
           />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+            fullWidth
+            sx={{ 
+              fontWeight: 700, 
+              fontSize: 18, 
+              py: 1.5, 
+              mt: 2, 
+              borderRadius: 3, 
+              background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+              color: '#fff',
+              boxShadow: '0 4px 20px rgba(100, 108, 255, 0.2)',
+              '&:hover': {
+                background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+              }
+            }}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit Information'}
+          </Button>
         </Box>
-        <TextField
-          placeholder="Comments"
-          value={userData.comments || ''}
-          onChange={e => handleInputChange('comments', e.target.value)}
-          multiline
-          minRows={3}
-          fullWidth
-          margin="normal"
-          sx={{ 
-            bgcolor: '#fff', 
-            borderRadius: 2,
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'rgba(100, 108, 255, 0.3)',
-              },
-              '&:hover fieldset': {
-                borderColor: 'rgba(100, 108, 255, 0.5)',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#646cff',
-              },
-            },
-          }}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          size="large"
-          fullWidth
-          sx={{ 
-            fontWeight: 700, 
-            fontSize: 18, 
-            py: 1.5, 
-            mt: 2, 
-            borderRadius: 3, 
-            background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
-            color: '#fff',
-            boxShadow: '0 4px 20px rgba(100, 108, 255, 0.2)',
-            '&:hover': {
-              background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
-            }
-          }}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Submitting...' : 'Submit Information'}
-        </Button>
-      </Box>
+      </Card>
+    );
+  }
+
+  return (
+    <Box
+      sx={{
+        minHeight: '100vh',
+        width: '100vw',
+        bgcolor: 'rgba(35, 41, 70, 0.85)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        p: 0,
+        m: 0,
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url(/german_documents.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.4,
+          zIndex: 0,
+        },
+      }}
+    >
+      <Header showBackButton onBack={() => navigate('/results')} />
+      <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: { xs: '80vh', sm: 500 } }}>
+        <Card sx={{ width: '100%', maxWidth: 420, mx: 'auto', boxShadow: 4, borderRadius: 4, p: 3, bgcolor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: '#232946', mt: 1 }}>
+            Contact Information
+          </Typography>
+          <Typography align="center" color="#232946" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6 }}>
+            Please provide your phone number and any comments. We will get in touch with you about your eligibility assessment.
+          </Typography>
+          {message && (
+            <Alert severity={messageType === 'success' ? 'success' : 'error'} sx={{ mb: 2 }}>
+              {message}
+            </Alert>
+          )}
+          <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', width: '100%' }}>
+              <Select
+                value={countryCode}
+                onChange={handleCountryCodeChange}
+                variant="outlined"
+                sx={{
+                  minWidth: 120,
+                  bgcolor: '#fff',
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  fontSize: 16,
+                  '& .MuiOutlinedInput-input': {
+                    padding: '16.5px 14px',
+                  },
+                  '& .MuiSelect-select': { 
+                    display: 'flex', 
+                    alignItems: 'center',
+                  },
+                  marginTop: '16px',
+                }}
+              >
+                {COUNTRY_CODES.map(option => (
+                  <MenuItem key={option.code} value={option.code}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+              <TextField
+                placeholder="Phone Number"
+                type="tel"
+                value={userData.phone}
+                onChange={handlePhoneChange}
+                required
+                fullWidth
+                margin="normal"
+                sx={{ 
+                  bgcolor: '#fff', 
+                  borderRadius: 2,
+                  flex: 1,
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(100, 108, 255, 0.3)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(100, 108, 255, 0.5)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#646cff',
+                    },
+                  },
+                }}
+              />
+            </Box>
+            <TextField
+              placeholder="Comments"
+              value={userData.comments || ''}
+              onChange={e => handleInputChange('comments', e.target.value)}
+              multiline
+              minRows={3}
+              fullWidth
+              margin="normal"
+              sx={{ 
+                bgcolor: '#fff', 
+                borderRadius: 2,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'rgba(100, 108, 255, 0.3)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'rgba(100, 108, 255, 0.5)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#646cff',
+                  },
+                },
+              }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              fullWidth
+              sx={{ 
+                fontWeight: 700, 
+                fontSize: 18, 
+                py: 1.5, 
+                mt: 2, 
+                borderRadius: 3, 
+                background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                color: '#fff',
+                boxShadow: '0 4px 20px rgba(100, 108, 255, 0.2)',
+                '&:hover': {
+                  background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                }
+              }}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Information'}
+            </Button>
+          </Box>
+        </Card>
+      </Container>
     </Box>
   );
 };

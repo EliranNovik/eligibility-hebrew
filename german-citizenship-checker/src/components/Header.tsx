@@ -1,8 +1,5 @@
 import { Box, Button, Menu, MenuItem } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PublicIcon from '@mui/icons-material/Public';
 import React, { useState } from 'react';
@@ -140,18 +137,44 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           gap: 2,
         }}
       >
-        <a href="https://www.facebook.com/DeckerPexCo" target="_blank" rel="noopener noreferrer" style={{ color: '#0d2346', display: 'flex', alignItems: 'center' }}>
-          <FacebookIcon sx={{ color: '#0d2346', fontSize: 28, transition: 'color 0.2s', '&:hover': { color: '#06142a' } }} />
-        </a>
-        <a href="https://www.youtube.com/@DeckerPexLawoffice" target="_blank" rel="noopener noreferrer" style={{ color: '#0d2346', display: 'flex', alignItems: 'center' }}>
-          <YouTubeIcon sx={{ color: '#0d2346', fontSize: 28, transition: 'color 0.2s', '&:hover': { color: '#06142a' } }} />
-        </a>
-        <a href="https://www.linkedin.com/company/decker-pex-co/" target="_blank" rel="noopener noreferrer" style={{ color: '#0d2346', display: 'flex', alignItems: 'center' }}>
-          <LinkedInIcon sx={{ color: '#0d2346', fontSize: 28, transition: 'color 0.2s', '&:hover': { color: '#06142a' } }} />
-        </a>
-        <a href="https://lawoffice.org.il/en/" target="_blank" rel="noopener noreferrer" style={{ color: '#0d2346', display: 'flex', alignItems: 'center' }}>
-          <PublicIcon sx={{ color: '#0d2346', fontSize: 28, transition: 'color 0.2s', '&:hover': { color: '#06142a' } }} />
-        </a>
+        <Button
+          onClick={() => navigate('/about')}
+          sx={{
+            color: '#232946',
+            fontWeight: 600,
+            fontSize: 16,
+            textTransform: 'none',
+            borderRadius: 2,
+            px: 2.5,
+            py: 1,
+            background: 'rgba(35,41,70,0.07)',
+            '&:hover': {
+              background: 'rgba(35,41,70,0.15)',
+              color: '#535bf2',
+            },
+          }}
+        >
+          About Us
+        </Button>
+        <Button
+          onClick={() => navigate('/archival-research')}
+          sx={{
+            color: '#232946',
+            fontWeight: 600,
+            fontSize: 16,
+            textTransform: 'none',
+            borderRadius: 2,
+            px: 2.5,
+            py: 1,
+            background: 'rgba(35,41,70,0.07)',
+            '&:hover': {
+              background: 'rgba(35,41,70,0.15)',
+              color: '#535bf2',
+            },
+          }}
+        >
+          Archival Research
+        </Button>
       </Box>
     </Box>
   );

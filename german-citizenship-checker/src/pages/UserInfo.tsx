@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Paper, Typography, Avatar, TextField, Button, Fade } from '@mui/material';
+import { Box, Paper, Typography, Avatar, TextField, Button, Fade, Container } from '@mui/material';
 import Header from '../components/Header';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import type { FormState } from '../types';
@@ -77,81 +77,105 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
   return (
     <>
       <Header showBackButton onBack={() => navigate('/')} />
-      <Box sx={{ minHeight: '100vh', width: '100vw', bgcolor: '#232946', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 4 }}>
-        {/* Avatar and chat bubble group */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 5 }}>
-          <Avatar src={avatar} sx={{ width: 72, height: 72, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
-          <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 340, minHeight: 56, textAlign: 'center' }}>
-            {typedText}
-          </Box>
-        </Box>
-        {/* Input fields in a separate card */}
-        <Fade in={showInputs} timeout={700}>
-          <Paper sx={{ p: 4, borderRadius: 4, maxWidth: 400, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 6, bgcolor: '#1a1a1a' }}>
-            <Box component="form" onSubmit={handleContinue} sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <TextField
-                placeholder="Full Name"
-                value={name}
-                onChange={handleNameChange}
-                required
-                fullWidth
-                autoFocus
-                error={!!nameError}
-                helperText={nameError}
-                InputProps={{
-                  style: {
-                    background: '#fff',
-                    borderRadius: 8,
-                    fontSize: 18,
-                    fontWeight: 500,
-                    color: '#232946',
-                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
-                  }
-                }}
-                InputLabelProps={{ shrink: false }}
-              />
-              <TextField
-                placeholder="Email"
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-                fullWidth
-                InputProps={{
-                  style: {
-                    background: '#fff',
-                    borderRadius: 8,
-                    fontSize: 18,
-                    fontWeight: 500,
-                    color: '#232946',
-                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
-                  }
-                }}
-                InputLabelProps={{ shrink: false }}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                size="large"
-                fullWidth
-                sx={{
-                  mt: 2,
-                  fontWeight: 700,
-                  fontSize: 18,
-                  borderRadius: 3,
-                  background: 'linear-gradient(90deg, #646cff, #535bf2)',
-                  color: 'white',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.10)',
-                  '&:hover': {
-                    background: 'linear-gradient(90deg, #535bf2, #646cff)',
-                  },
-                }}
-              >
-                Continue
-              </Button>
+      <Box sx={{ 
+        minHeight: '100vh', 
+        width: '100vw', 
+        bgcolor: 'rgba(35, 41, 70, 0.85)',
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        py: 4,
+        position: 'relative',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url(/german_documents.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.4,
+          zIndex: 0,
+        }
+      }}>
+        <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+            <Avatar src={avatar} sx={{ width: 72, height: 72, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
+            <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 340, minHeight: 56, textAlign: 'center', mb: 0 }}>
+              {typedText}
             </Box>
-          </Paper>
-        </Fade>
+            <Fade in={showInputs} timeout={700}>
+              <Paper sx={{ mt: 3, p: 4, borderRadius: 4, maxWidth: 400, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 6, bgcolor: '#1a1a1a' }}>
+                <Box component="form" onSubmit={handleContinue} sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <TextField
+                    placeholder="Full Name"
+                    value={name}
+                    onChange={handleNameChange}
+                    required
+                    fullWidth
+                    autoFocus
+                    error={!!nameError}
+                    helperText={nameError}
+                    InputProps={{
+                      style: {
+                        background: '#fff',
+                        borderRadius: 8,
+                        fontSize: 18,
+                        fontWeight: 500,
+                        color: '#232946',
+                        boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                      }
+                    }}
+                    InputLabelProps={{ shrink: false }}
+                  />
+                  <TextField
+                    placeholder="Email"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                    fullWidth
+                    InputProps={{
+                      style: {
+                        background: '#fff',
+                        borderRadius: 8,
+                        fontSize: 18,
+                        fontWeight: 500,
+                        color: '#232946',
+                        boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                      }
+                    }}
+                    InputLabelProps={{ shrink: false }}
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    fullWidth
+                    sx={{
+                      mt: 2,
+                      fontWeight: 700,
+                      fontSize: 18,
+                      borderRadius: 3,
+                      background: 'linear-gradient(90deg, #646cff, #535bf2)',
+                      color: 'white',
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.10)',
+                      '&:hover': {
+                        background: 'linear-gradient(90deg, #535bf2, #646cff)',
+                      },
+                    }}
+                  >
+                    Continue
+                  </Button>
+                </Box>
+              </Paper>
+            </Fade>
+          </Box>
+        </Container>
       </Box>
     </>
   );

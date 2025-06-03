@@ -140,7 +140,31 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
   return (
     <>
       <Header showBackButton onBack={handleBack} />
-      <Box sx={{ minHeight: '100vh', width: '100vw', bgcolor: '#232946', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+      <Box sx={{ 
+        minHeight: '100vh', 
+        width: '100vw', 
+        bgcolor: 'rgba(35, 41, 70, 0.85)',
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        py: 4,
+        position: 'relative',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url(/german_documents.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.4,
+          zIndex: 0,
+        }
+      }}>
         {showNotification && (
           <Alert 
             severity="info"
@@ -164,7 +188,7 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
             Unfortunately, you are not eligible for sections §116 and §15. We will continue to check your eligibility for section §5 and its categories.
           </Alert>
         )}
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
           <QuestionCard
             question={filteredQuestions[formState.currentStep]}
             onAnswer={handleAnswer}

@@ -8,6 +8,8 @@ import QuestionFlow from './pages/QuestionFlow';
 import Results from './pages/Results';
 import ContactForm from './pages/ContactForm';
 import UserInfo from './pages/UserInfo';
+import AboutUs from './pages/AboutUs';
+import ArchivalResearch from './pages/ArchivalResearch';
 
 function App() {
   const [formState, setFormState] = useState<FormState>({
@@ -25,6 +27,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Intro />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/archival-research" element={<ArchivalResearch />} />
         <Route path="/userinfo" element={<UserInfo formState={formState} setFormState={setFormState} />} />
         <Route 
           path="/questions" 
