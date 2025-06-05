@@ -61,6 +61,7 @@ interface ResultsProps {
 const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
   const navigate = useNavigate();
   const [showContactForm, setShowContactForm] = useState(false);
+  const [contactFormType, setContactFormType] = useState<'positive' | 'negative' | null>(null);
   const [typedText, setTypedText] = useState('');
   const timeoutRef = useRef<number | null>(null);
   const avatar = AVATARS[Math.floor(Math.random() * AVATARS.length)];
@@ -372,8 +373,8 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center', 
-        justifyContent: 'center', 
-        py: 4, 
+        justifyContent: 'flex-start', 
+        py: 0, 
         position: 'relative',
         '&::before': {
           content: '""',
@@ -390,7 +391,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
           zIndex: 0,
         }
       }}>
-        <Container maxWidth="md" sx={{ py: 4, position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Container maxWidth="md" sx={{ py: 1, mt: 0, position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
           {/* Group assessment and contact form in a single card */}
           <Paper elevation={6} sx={{
             width: '100%',
@@ -407,14 +408,24 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
             WebkitBackdropFilter: 'blur(16px)',
           }}>
             {showContactForm ? (
-              <Box width="100%" mt={3}>
-                <ContactFormPositive
-                  eligibleSections={result.eligibleSections || []}
-                  onSuccess={handleContactSuccess}
-                  userData={formState.userData}
-                  formState={formState}
-                />
-              </Box>
+              contactFormType === 'positive' ? (
+                <Box width="100%" mt={3}>
+                  <ContactFormPositive
+                    eligibleSections={result.eligibleSections || []}
+                    onSuccess={handleContactSuccess}
+                    userData={formState.userData}
+                    formState={formState}
+                  />
+                </Box>
+              ) : contactFormType === 'negative' ? (
+                <Box width="100%" mt={3}>
+                  <ContactFormPage
+                    formState={formState}
+                    setFormState={setFormState}
+                    hideHeader={true}
+                  />
+                </Box>
+              ) : null
             ) : (
               <>
                 {/* Special case: not_sure */}
@@ -560,6 +571,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                     </Box>
                   </>
                 )}
+                {/* Negative result: show choice before contact form */}
                 {!result.notSure && !result.isEligible && (
                   <>
                     <Box sx={{
@@ -586,13 +598,59 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                         {result.explanation}
                       </Typography>
                     </Box>
-                    <Box width="100%" mt={3}>
-                      <ContactFormPage
-                        formState={formState}
-                        setFormState={setFormState}
-                        hideHeader={true}
-                      />
-                    </Box>
+                    {/* Choice buttons before contact form */}
+                    {contactFormType === null && (
+                      <Box sx={{ width: '100%', mt: 4, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, alignItems: 'center', justifyContent: 'center' }}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          sx={{
+                            fontWeight: 700,
+                            fontSize: 18,
+                            borderRadius: 3,
+                            background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
+                            color: '#232946',
+                            boxShadow: '0 4px 20px rgba(67,233,123,0.10)',
+                            px: 4,
+                            py: 2,
+                            '&:hover': {
+                              background: 'linear-gradient(90deg, #38f9d7 0%, #43e97b 100%)',
+                            },
+                          }}
+                          onClick={() => {
+                            setContactFormType('positive');
+                            setShowContactForm(true);
+                          }}
+                        >
+                          Proceed with Archival Research
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          size="large"
+                          sx={{
+                            fontWeight: 700,
+                            fontSize: 18,
+                            borderRadius: 3,
+                            background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                            color: '#fff',
+                            boxShadow: '0 4px 20px rgba(100,108,255,0.10)',
+                            px: 4,
+                            py: 2,
+                            '&:hover': {
+                              background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                            },
+                          }}
+                          onClick={() => {
+                            setContactFormType('negative');
+                            setShowContactForm(true);
+                          }}
+                        >
+                          I wish to be contacted by a representative
+                        </Button>
+                      </Box>
+                    )}
                   </>
                 )}
               </>

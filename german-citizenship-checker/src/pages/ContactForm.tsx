@@ -17,6 +17,12 @@ const COUNTRY_CODES = [
   { code: '+61', label: '+61 (AU)' },
 ];
 
+const CONTACT_METHODS = [
+  { value: 'whatsapp', label: 'WhatsApp' },
+  { value: 'phone', label: 'Phone' },
+  { value: 'email', label: 'Email' },
+];
+
 interface ContactFormProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
@@ -29,6 +35,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
   const [countryCode, setCountryCode] = useState(COUNTRY_CODES[0].code);
   const [showThankYou, setShowThankYou] = useState(false);
+  const [contactMethod, setContactMethod] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -52,14 +59,15 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
         sid,
         name: formState.userData.fullName || '',
         topic: `${selectedCountry} Citizenship - Not Eligible`,
-        desc: `Comments: ${formState.userData.comments || 'No comments provided'}`,
+        desc: `Preferred Contact Method: ${contactMethod}\nComments: ${formState.userData.comments || 'No comments provided'}`,
         email: formState.userData.email || '',
         phone: `${countryCode}${formState.userData.phone.replace(/^\+\d+\s*/, '')}`,
         ref_url: window.location.href,
         user_data: JSON.stringify({
           comments: formState.userData.comments,
           phone: `${countryCode}${formState.userData.phone.replace(/^\+\d+\s*/, '')}`,
-          answers: formState.answers
+          answers: formState.answers,
+          contactMethod,
         }),
       });
 
@@ -95,6 +103,10 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
 
   const handleCountryCodeChange = (e: any) => {
     setCountryCode(e.target.value);
+  };
+
+  const handleContactMethodChange = (e: any) => {
+    setContactMethod(e.target.value);
   };
 
   const handleStartNewCheck = () => {
@@ -252,6 +264,40 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
           </Alert>
         )}
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+          <Select
+            value={contactMethod}
+            onChange={handleContactMethodChange}
+            variant="outlined"
+            displayEmpty
+            renderValue={selected =>
+              selected ? CONTACT_METHODS.find(opt => opt.value === selected)?.label : 'How do you wish to be contacted?'
+            }
+            sx={{
+              minWidth: 180,
+              bgcolor: 'rgba(255,255,255,0.9)',
+              borderRadius: 2,
+              fontWeight: 600,
+              fontSize: 16,
+              mb: 1,
+              '& .MuiOutlinedInput-input': {
+                padding: '16.5px 14px',
+              },
+              '& .MuiSelect-select': { 
+                display: 'flex', 
+                alignItems: 'center',
+              },
+              marginTop: '8px',
+            }}
+          >
+            <MenuItem value="" disabled>
+              How do you wish to be contacted?
+            </MenuItem>
+            {CONTACT_METHODS.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', width: '100%' }}>
             <Select
               value={countryCode}
@@ -401,6 +447,40 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
             </Alert>
           )}
           <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+            <Select
+              value={contactMethod}
+              onChange={handleContactMethodChange}
+              variant="outlined"
+              displayEmpty
+              renderValue={selected =>
+                selected ? CONTACT_METHODS.find(opt => opt.value === selected)?.label : 'How do you wish to be contacted?'
+              }
+              sx={{
+                minWidth: 180,
+                bgcolor: '#fff',
+                borderRadius: 2,
+                fontWeight: 600,
+                fontSize: 16,
+                mb: 1,
+                '& .MuiOutlinedInput-input': {
+                  padding: '16.5px 14px',
+                },
+                '& .MuiSelect-select': { 
+                  display: 'flex', 
+                  alignItems: 'center',
+                },
+                marginTop: '8px',
+              }}
+            >
+              <MenuItem value="" disabled>
+                How do you wish to be contacted?
+              </MenuItem>
+              {CONTACT_METHODS.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', width: '100%' }}>
               <Select
                 value={countryCode}

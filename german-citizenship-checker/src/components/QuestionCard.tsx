@@ -75,6 +75,23 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             {question.text}
           </Typography>
 
+          {/* Note for austrian_58c_3 */}
+          {question.id === 'austrian_58c_3' && (
+            <Box sx={{
+              background: 'rgba(67, 233, 123, 0.18)',
+              color: '#232946',
+              borderRadius: 2,
+              p: 2,
+              mb: 2,
+              fontSize: 15,
+              fontWeight: 500,
+              boxShadow: 1,
+              borderLeft: '4px solid #43e97b',
+            }}>
+              For example: Did they flee Austria (between 1933-1955), avoid returning, get deported, or die due to being Jewish, Roma, politically active, religious, disabled, etc.?
+            </Box>
+          )}
+
           {/* Special styled country list for austrian_58c_2 */}
           {question.id === 'austrian_58c_2' && (
             <Box
