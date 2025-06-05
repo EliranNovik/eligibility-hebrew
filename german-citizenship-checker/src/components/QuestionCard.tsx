@@ -101,6 +101,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 'Serbia',
                 'Montenegro',
                 'North Macedonia',
+                'Stateless',
               ].map((country) => (
                 <Box
                   key={country}

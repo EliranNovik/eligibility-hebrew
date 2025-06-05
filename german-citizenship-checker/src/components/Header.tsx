@@ -3,7 +3,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PublicIcon from '@mui/icons-material/Public';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -13,6 +13,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
 
   const handleContactClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -38,48 +40,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         border: 0,
       }}
     >
-      {/* Contact Us button on the left */}
-      <Box sx={{ position: 'absolute', left: showBackButton ? 120 : 24, top: 0, height: '100%', display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}>
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<PhoneIcon />}
-          onClick={handleContactClick}
-          sx={{
-            borderRadius: 2,
-            fontWeight: 600,
-            fontSize: 16,
-            px: 2.5,
-            py: 1,
-            borderColor: '#0d2346',
-            color: '#0d2346',
-            background: 'rgba(13,35,70,0.07)',
-            boxShadow: 'none',
-            textTransform: 'none',
-            '&:hover': {
-              background: 'rgba(6,20,42,0.15)',
-              borderColor: '#06142a',
-              color: '#06142a',
-            },
-          }}
-        >
-          Contact Us
-        </Button>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        >
-          <MenuItem onClick={handleClose} component="a" href="tel:023810013">
-            Jerusalem Office: 02-3810013
-          </MenuItem>
-          <MenuItem onClick={handleClose} component="a" href="tel:033724722">
-            Tel Aviv Office: 03-3724722
-          </MenuItem>
-        </Menu>
-      </Box>
+      
       {showBackButton && (
         <Button
           startIcon={<ArrowBackIcon />}
@@ -99,12 +60,23 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           Back
         </Button>
       )}
+      {/* Logo: left on mobile homepage, centered otherwise */}
       <Box
         sx={{
           height: 60,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: {
+            xs: isHome ? 'flex-start' : 'center',
+            sm: 'center',
+          },
+          position: 'absolute',
+          left: { xs: isHome ? 16 : '50%', sm: '50%' },
+          transform: {
+            xs: isHome ? 'none' : 'translateX(-50%)',
+            sm: 'translateX(-50%)',
+          },
+          width: { xs: isHome ? 'auto' : '100%', sm: '100%' },
           cursor: 'pointer',
           '&:hover': {
             opacity: 0.8,
@@ -132,9 +104,13 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           right: 24,
           top: 0,
           height: '100%',
-          display: { xs: 'none', sm: 'flex' },
+          display: 'flex',
           alignItems: 'center',
-          gap: 2,
+          gap: { xs: 1, sm: 2 },
+          // Hide nav items on mobile except on homepage
+          ...(isHome
+            ? {}
+            : { display: { xs: 'none', sm: 'flex' } }),
         }}
       >
         <Button
@@ -142,10 +118,10 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           sx={{
             color: '#232946',
             fontWeight: 600,
-            fontSize: 16,
+            fontSize: { xs: 14, sm: 16 },
             textTransform: 'none',
             borderRadius: 2,
-            px: 2.5,
+            px: { xs: 1.5, sm: 2.5 },
             py: 1,
             background: 'rgba(35,41,70,0.07)',
             '&:hover': {
@@ -161,10 +137,10 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           sx={{
             color: '#232946',
             fontWeight: 600,
-            fontSize: 16,
+            fontSize: { xs: 14, sm: 16 },
             textTransform: 'none',
             borderRadius: 2,
-            px: 2.5,
+            px: { xs: 1.5, sm: 2.5 },
             py: 1,
             background: 'rgba(35,41,70,0.07)',
             '&:hover': {

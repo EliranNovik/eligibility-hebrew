@@ -16,71 +16,6 @@ const AboutUs = () => {
   return (
     <>
       <Header />
-      {/* Floating Contact Us Button */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: { xs: 'unset', sm: '50%' },
-          bottom: { xs: 96, sm: 'unset' },
-          right: 24,
-          zIndex: 2000,
-          transform: { xs: 'none', sm: 'translateY(-50%)' },
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <Box
-          component="button"
-          onClick={() => navigate('/contact')}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 56,
-            height: 56,
-            borderRadius: '50%',
-            bgcolor: '#646cff',
-            boxShadow: '0 4px 16px 0 rgba(0,0,0,0.18)',
-            transition: 'all 0.2s',
-            position: 'relative',
-            cursor: 'pointer',
-            border: 'none',
-            outline: 'none',
-            '&:hover': {
-              bgcolor: '#535bf2',
-            },
-            '&:hover .contact-tooltip': {
-              opacity: 1,
-              transform: 'translateY(-50%) scale(1)',
-            },
-          }}
-        >
-          <MailOutlineIcon sx={{ color: '#fff', fontSize: 32 }} />
-          <Box
-            className="contact-tooltip"
-            sx={{
-              position: 'absolute',
-              right: 70,
-              top: '50%',
-              transform: 'translateY(-50%) scale(0.95)',
-              bgcolor: '#232946',
-              color: '#fff',
-              px: 2,
-              py: 1,
-              borderRadius: 2,
-              fontSize: 15,
-              fontWeight: 500,
-              whiteSpace: 'nowrap',
-              boxShadow: 3,
-              opacity: 0,
-              pointerEvents: 'none',
-              transition: 'all 0.18s',
-            }}
-          >
-            Contact Us
-          </Box>
-        </Box>
-      </Box>
       <Box
         sx={{
           minHeight: '100vh',
@@ -152,42 +87,47 @@ const AboutUs = () => {
             </Typography>
             <Box
               sx={{
+                overflowX: { xs: 'auto', sm: 'visible' },
+                whiteSpace: { xs: 'nowrap', sm: 'normal' },
                 display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
+                flexDirection: { xs: 'row', sm: 'row' },
                 justifyContent: 'center',
                 alignItems: 'stretch',
                 gap: 4,
                 mb: 6,
                 mt: 3,
+                pb: { xs: 2, sm: 0 },
+                pr: { xs: 2, sm: 0 },
+                pl: { xs: 59, sm: 0 },
               }}
             >
-              <Box sx={{ flex: 1, minWidth: 180, maxWidth: 260, background: '#e8f5e9', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 3, px: 2, textAlign: 'center', gap: 1.5 }}>
+              <Box sx={{ flex: 1, minWidth: { xs: 280, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: '#e8f5e9', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
                 <GavelIcon sx={{ color: '#43e97b', fontSize: 32, mb: 1 }} />
-                <Typography fontWeight={600} fontSize={17} color="#232946">
+                <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="#232946" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                   Decades of combined legal experience
                 </Typography>
               </Box>
-              <Box sx={{ flex: 1, minWidth: 180, maxWidth: 260, background: '#e3f2fd', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 3, px: 2, textAlign: 'center', gap: 1.5 }}>
+              <Box sx={{ flex: 1, minWidth: { xs: 280, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: '#e3f2fd', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
                 <PublicIcon sx={{ color: '#2196f3', fontSize: 32, mb: 1 }} />
-                <Typography fontWeight={600} fontSize={17} color="#232946">
+                <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="#232946" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                   Multilingual team fluent in English, Hebrew, German, Russian, and French
                 </Typography>
               </Box>
-              <Box sx={{ flex: 1, minWidth: 180, maxWidth: 260, background: '#fffde7', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 3, px: 2, textAlign: 'center', gap: 1.5 }}>
+              <Box sx={{ flex: 1, minWidth: { xs: 280, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: '#fffde7', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
                 <PeopleIcon sx={{ color: '#ffb300', fontSize: 32, mb: 1 }} />
-                <Typography fontWeight={600} fontSize={17} color="#232946">
+                <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="#232946" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                   Personalized service and direct attorney access
                 </Typography>
               </Box>
-              <Box sx={{ flex: 1, minWidth: 180, maxWidth: 260, background: '#f3e5f5', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 3, px: 2, textAlign: 'center', gap: 1.5 }}>
+              <Box sx={{ flex: 1, minWidth: { xs: 280, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: '#f3e5f5', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
                 <SearchIcon sx={{ color: '#ab47bc', fontSize: 32, mb: 1 }} />
-                <Typography fontWeight={600} fontSize={17} color="#232946">
+                <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="#232946" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                   In-house archival research team for citizenship cases
                 </Typography>
               </Box>
-              <Box sx={{ flex: 1, minWidth: 180, maxWidth: 260, background: '#e1f5fe', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 3, px: 2, textAlign: 'center', gap: 1.5 }}>
+              <Box sx={{ flex: 1, minWidth: { xs: 280, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: '#e1f5fe', borderRadius: 5, boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
                 <LocationOnIcon sx={{ color: '#0288d1', fontSize: 32, mb: 1 }} />
-                <Typography fontWeight={600} fontSize={17} color="#232946">
+                <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="#232946" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                   Convenient offices in both Tel Aviv and Jerusalem
                 </Typography>
               </Box>

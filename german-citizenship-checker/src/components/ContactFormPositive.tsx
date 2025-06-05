@@ -159,17 +159,17 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
 
   if (showThankYou) {
     return (
-      <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Container maxWidth="md" sx={{ py: 4 }}>
         <Fade in={showThankYou} timeout={1000}>
-          <Card sx={{ 
-            width: '100%', 
-            boxShadow: 6, 
-            bgcolor: '#1a1a1a', 
+          <Box sx={{ 
+            width: '100%',
+            maxWidth: 800,
             borderRadius: 4, 
             display: 'flex', 
             flexDirection: 'column', 
             alignItems: 'center',
-            p: 4
+            p: 4,
+            mx: 'auto',
           }}>
             <Box sx={{ 
               display: 'flex', 
@@ -277,33 +277,32 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
                 Start New Check
               </Button>
             </Box>
-          </Card>
+          </Box>
         </Fade>
       </Container>
     );
   }
 
   return (
-    <Container maxWidth="sm" sx={{ py: 4 }}>
-      <Card sx={{ width: '100%', boxShadow: 6, bgcolor: '#1a1a1a', borderRadius: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <CardContent sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Box sx={{ width: '100%', maxWidth: 800, display: 'flex', flexDirection: 'column', alignItems: 'center', mx: 'auto', p: 2, pb: { xs: 10, sm: 4 } }}>
+        <CardContent sx={{ width: '100%', maxWidth: 800, display: 'flex', flexDirection: 'column', alignItems: 'center', p: 0, mx: 'auto' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
             <Avatar src={avatar} sx={{ width: 72, height: 72, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
-            <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 340, minHeight: 56, textAlign: 'center' }}>
+            <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 500, minHeight: 56, textAlign: 'center' }}>
               {typedText}
             </Box>
           </Box>
 
-          <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: 'white' }}>
-            Contact Information
+          <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mb: 1 }}>
           </Typography>
           {message && (
             <Alert severity={messageType === 'success' ? 'success' : 'error'} sx={{ mb: 2 }}>
               {message}
             </Alert>
           )}
-          <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start', width: '100%' }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 600, display: 'flex', flexDirection: 'column', gap: 2, mt: 1, mx: 'auto' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, width: '100%' }}>
               <Select
                 value={countryCode}
                 onChange={handleCountryCodeChange}
@@ -322,7 +321,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
                     display: 'flex', 
                     alignItems: 'center',
                   },
-                  marginTop: '16px',
+                  marginTop: '8px',
                 }}
                 MenuProps={{
                   PaperProps: {
@@ -340,7 +339,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
                 placeholder="Phone Number"
                 name="phone"
                 type="tel"
-                value={formData.phone.replace(/^\+\d+\s*/, '')}
+                value={formData.phone.replace(/^\u000b+d+\s*/, '')}
                 onChange={handlePhoneChange}
                 required
                 fullWidth
@@ -357,7 +356,6 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
                   },
                 }}
                 InputLabelProps={{ shrink: false }}
-                sx={{ flex: 1 }}
               />
             </Box>
             <TextField
@@ -443,19 +441,20 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
               size="large"
               fullWidth
               onClick={handleSubmitWithoutContact}
               sx={{
+                mt: 2,
                 fontWeight: 700,
                 fontSize: 18,
                 borderRadius: 3,
-                color: '#646cff',
-                borderColor: '#646cff',
+                background: 'linear-gradient(90deg, #646cff, #535bf2)',
+                color: 'white',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.10)',
                 '&:hover': {
-                  borderColor: '#535bf2',
-                  color: '#535bf2',
+                  background: 'linear-gradient(90deg, #535bf2, #646cff)',
                 },
               }}
             >
@@ -463,7 +462,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
             </Button>
           </Box>
         </CardContent>
-      </Card>
+      </Box>
 
       <Dialog
         open={openDialog}

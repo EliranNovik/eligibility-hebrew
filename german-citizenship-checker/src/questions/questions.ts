@@ -64,13 +64,7 @@ export const questions: Question[] = [
     section: 'german_15',
     required: true
   },
-  {
-    id: 'german_15_2',
-    text: 'Did your ancestor live in Germany before 1933?',
-    type: 'yesNo',
-    section: 'german_15',
-    required: true
-  },
+  
   {
     id: 'german_15_3',
     text: 'Did your ancestor have their center of life in Germany (e.g., work, school, permanent residence)?',
@@ -176,9 +170,6 @@ export const questions: Question[] = [
     categoryMatch: ['5']
   },
 
-
-
-
   // Austrian Citizenship - §58c
   {
     id: 'austrian_58c_1',
@@ -197,13 +188,6 @@ export const questions: Question[] = [
   {
     id: 'austrian_58c_3',
     text: 'Did your ancestor flee Austria between 1933 and 1955?',
-    type: 'yesNo',
-    section: 'austrian_58c',
-    required: true
-  },
-  {
-    id: 'austrian_58c_4',
-    text: 'Did your ancestor lose or miss the opportunity to gain Austrian citizenship due to persecution?',
     type: 'yesNo',
     section: 'austrian_58c',
     required: true

@@ -12,6 +12,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import SearchIcon from '@mui/icons-material/Search';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import PhoneIcon from '@mui/icons-material/Phone';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -119,179 +120,6 @@ const Intro = () => {
           zIndex: 0,
         }
       }}>
-        {/* Floating WhatsApp Button */}
-        <Box
-          sx={{
-            position: 'fixed',
-            top: { xs: 'unset', sm: '50%' },
-            bottom: { xs: 24, sm: 'unset' },
-            right: 24,
-            zIndex: 2000,
-            transform: { xs: 'none', sm: 'translateY(-50%)' },
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          {/* WhatsApp Button */}
-          <Box
-            component="a"
-            href="https://wa.me/1234567890" // Replace with your WhatsApp number
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 56,
-              height: 56,
-              borderRadius: '50%',
-              bgcolor: '#25D366',
-              boxShadow: '0 4px 16px 0 rgba(0,0,0,0.18)',
-              transition: 'all 0.2s',
-              position: 'relative',
-              cursor: 'pointer',
-              '&:hover': {
-                bgcolor: '#128C7E',
-              },
-              '&:hover .wa-tooltip': {
-                opacity: 1,
-                transform: 'translateY(-50%) scale(1)',
-              },
-            }}
-          >
-            <WhatsAppIcon sx={{ color: '#fff', fontSize: 32 }} />
-            <Box
-              className="wa-tooltip"
-              sx={{
-                position: 'absolute',
-                right: 70,
-                top: '50%',
-                transform: 'translateY(-50%) scale(0.95)',
-                bgcolor: '#232946',
-                color: '#fff',
-                px: 2,
-                py: 1,
-                borderRadius: 2,
-                fontSize: 15,
-                fontWeight: 500,
-                whiteSpace: 'nowrap',
-                boxShadow: 3,
-                opacity: 0,
-                pointerEvents: 'none',
-                transition: 'all 0.18s',
-              }}
-            >
-              Contact us on WhatsApp
-            </Box>
-          </Box>
-          {/* Contact Us Phone Button */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 56,
-              height: 56,
-              borderRadius: '50%',
-              bgcolor: '#646cff',
-              boxShadow: '0 4px 16px 0 rgba(0,0,0,0.18)',
-              transition: 'all 0.2s',
-              position: 'relative',
-              cursor: 'pointer',
-              mt: 2,
-              '&:hover': {
-                bgcolor: '#535bf2',
-              },
-            }}
-            tabIndex={0}
-            onClick={e => {
-              e.stopPropagation();
-              setShowPhonePopover((prev) => !prev);
-            }}
-            onBlur={e => {
-              setShowPhonePopover(false);
-            }}
-          >
-            <PhoneIcon sx={{ color: '#fff', fontSize: 32 }} />
-            {showPhonePopover && (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  right: 70,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  bgcolor: 'rgba(255,255,255,0.18)',
-                  color: '#232946',
-                  px: 2.5,
-                  py: 2,
-                  borderRadius: 3,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  boxShadow: 3,
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  minWidth: 220,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 2,
-                  zIndex: 3000,
-                }}
-                onClick={e => e.stopPropagation()}
-              >
-                <Box sx={{ fontWeight: 700, mb: 1, color: '#fff', fontSize: 17, textAlign: 'center' }}>Contact Us</Box>
-                <a
-                  href="tel:+97226500000"
-                  onClick={() => setTimeout(() => setShowPhonePopover(false), 400)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                    color: '#232946',
-                    fontWeight: 700,
-                    fontSize: 17,
-                    borderRadius: 8,
-                    marginBottom: 8,
-                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
-                    padding: '12px 24px',
-                    width: '100%',
-                    textDecoration: 'none',
-                    justifyContent: 'flex-start',
-                    textTransform: 'none',
-                    transition: 'none',
-                    gap: 12,
-                  }}
-                >
-                  <PhoneIcon style={{ fontSize: 24, marginRight: 8 }} /> Jerusalem: 02-650-0000
-                </a>
-                <a
-                  href="tel:+97237770000"
-                  onClick={() => setTimeout(() => setShowPhonePopover(false), 400)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
-                    color: '#fff',
-                    fontWeight: 700,
-                    fontSize: 17,
-                    borderRadius: 8,
-                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
-                    padding: '12px 24px',
-                    width: '100%',
-                    textDecoration: 'none',
-                    justifyContent: 'flex-start',
-                    textTransform: 'none',
-                    transition: 'none',
-                    gap: 12,
-                  }}
-                >
-                  <PhoneIcon style={{ fontSize: 24, marginRight: 8 }} /> Tel Aviv: 03-777-0000
-                </a>
-              </Box>
-            )}
-          </Box>
-        </Box>
         <Box sx={{ 
           mt: 0, 
           width: '100%', 
@@ -529,7 +357,7 @@ const Intro = () => {
                         cursor: 'pointer',
                         minWidth: { xs: '70vw', sm: 'auto' },
                         maxWidth: { xs: 340, sm: 'none' },
-                        mx: { xs: 1, sm: 0 },
+                        mx: { xs: 1, md: 0 },
                         minHeight: { xs: 260, sm: 260, md: 260 },
                         display: 'flex',
                         flexDirection: 'column',
@@ -549,38 +377,29 @@ const Intro = () => {
                         variant="contained"
                         size="small"
                         sx={{
-                          bgcolor: 'rgba(35,41,70,0.3)',
+                          bgcolor: '#232946',
                           color: '#fff',
+                          minWidth: 48,
+                          minHeight: 40,
+                          borderRadius: 2,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          p: 0,
+                          mt: 4,
                           '&:hover': {
-                            bgcolor: 'rgba(35,41,70,0.5)',
+                            bgcolor: '#1a1a3a',
                           },
                         }}
                       >
-                        See More
-                      </Button>
-                      {/* Special badge for section 5, now after the button */}
-                      {section === '5' && (
-                        <Box
+                        <KeyboardArrowDownIcon
                           sx={{
-                            display: 'inline-block',
-                            px: 1,
-                            py: 0.2,
-                            mt: 1,
-                            bgcolor: 'rgba(33,203,243,0.92)',
-                            color: '#232946',
-                            fontWeight: 700,
-                            fontSize: 10,
-                            borderRadius: 1.5,
-                            boxShadow: 1,
-                            letterSpacing: 0.5,
-                            textTransform: 'uppercase',
-                            border: '1px solid #43e97b',
-                            pointerEvents: 'none',
+                            color: '#fff',
+                            fontSize: 36,
+                            animation: 'bounceArrow 1.2s infinite',
                           }}
-                        >
-                          Valid until Aug 2031
-                        </Box>
-                      )}
+                        />
+                      </Button>
                     </Box>
                     <LawRequirements
                       section={`§${section}`}
@@ -606,10 +425,15 @@ const Intro = () => {
                 0% { opacity: 0; transform: scale(0.95); }
                 100% { opacity: 1; transform: scale(1); }
               }
+              @keyframes bounceArrow {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(6px); }
+              }
             `}</style>
           </motion.div>
         </Box>
-        <Footer />
+       
+        <Footer showContactButtons />
       </Box>
     </>
   );

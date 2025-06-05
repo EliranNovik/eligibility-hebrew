@@ -241,7 +241,6 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
       const austrian58c1 = answers.find(a => a.questionId === 'austrian_58c_1');
       const austrian58c2 = answers.find(a => a.questionId === 'austrian_58c_2');
       const austrian58c3 = answers.find(a => a.questionId === 'austrian_58c_3');
-      const austrian58c4 = answers.find(a => a.questionId === 'austrian_58c_4');
       const austrian58c5 = answers.find(a => a.questionId === 'austrian_58c_5');
       const austrian58c6 = answers.find(a => a.questionId === 'austrian_58c_6');
       const validRelations = ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'];
@@ -249,7 +248,6 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
         austrian58c1?.value === 'yes' &&
         austrian58c2?.value === 'yes' &&
         austrian58c3?.value === 'yes' &&
-        austrian58c4?.value === 'yes' &&
         austrian58c5 &&
         validRelations.includes(String(austrian58c5.value)) &&
         austrian58c6?.value === 'yes';
@@ -398,202 +396,195 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
           }}>
-            {/* Special case: not_sure */}
-            {result.notSure && !showContactForm && (
+            {showContactForm ? (
+              <Box width="100%" mt={3}>
+                <ContactFormPositive
+                  eligibleSections={result.eligibleSections || []}
+                  onSuccess={handleContactSuccess}
+                  userData={formState.userData}
+                  formState={formState}
+                />
+              </Box>
+            ) : (
               <>
-                <Box sx={{
-                  background: result.closeSection ? 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)' : 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)',
-                  color: '#232946',
-                  borderRadius: 3,
-                  p: 4,
-                  textAlign: 'center',
-                  boxShadow: 2,
-                  width: '100%',
-                  mb: 0,
-                }}>
-                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#232946' }}>
-                    {result.closeSection ? `You may be eligible under ${result.closeSection}!` : 'You may be eligible!'}
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 2, whiteSpace: 'pre-line' }}>
-                    {result.explanation.replace(/^You may be eligible under .*?!\n\n|^You may be eligible!\n\n/, '')}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    sx={{ 
-                      mt: 2, 
-                      fontWeight: 700, 
-                      fontSize: 18, 
-                      borderRadius: 3, 
-                      background: 'linear-gradient(90deg, #646cff, #535bf2)',
-                      color: '#fff', 
+                {/* Special case: not_sure */}
+                {result.notSure && (
+                  <>
+                    <Box sx={{
+                      background: result.closeSection ? 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)' : 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)',
+                      color: '#232946',
+                      borderRadius: 3,
+                      p: 4,
+                      textAlign: 'center',
                       boxShadow: 2,
-                      '&:hover': {
-                        background: 'linear-gradient(90deg, #535bf2, #646cff)',
-                      }
-                    }}
-                    onClick={() => setShowContactForm(true)}
-                  >
-                    Next Step
-                  </Button>
-                </Box>
-                {showContactForm && (
-                  <Box width="100%" mt={3}>
-                    <ContactFormPositive
-                      eligibleSections={result.eligibleSections || []}
-                      onSuccess={handleContactSuccess}
-                      userData={formState.userData}
-                      formState={formState}
-                    />
-                  </Box>
+                      width: '100%',
+                      mb: 0,
+                    }}>
+                      <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#232946' }}>
+                        {result.closeSection ? `You may be eligible under ${result.closeSection}!` : 'You may be eligible!'}
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 2, whiteSpace: 'pre-line' }}>
+                        {result.explanation.replace(/^You may be eligible under .*?!\n\n|^You may be eligible!\n\n/, '')}
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        sx={{ 
+                          mt: 2, 
+                          fontWeight: 700, 
+                          fontSize: 18, 
+                          borderRadius: 3, 
+                          background: 'linear-gradient(90deg, #646cff, #535bf2)',
+                          color: '#fff', 
+                          boxShadow: 2,
+                          '&:hover': {
+                            background: 'linear-gradient(90deg, #535bf2, #646cff)',
+                          }
+                        }}
+                        onClick={() => setShowContactForm(true)}
+                      >
+                        Next Step
+                      </Button>
+                    </Box>
+                  </>
                 )}
-              </>
-            )}
-            {/* Usual results logic */}
-            {!result.notSure && result.isEligible && !showContactForm && (
-              <>
-                <CongratsCard ref={congratsCardRef} sx={{ width: '100%', mb: 2 }}>
-                  <CelebrationIcon sx={{ fontSize: 48, mb: 1 }} />
-                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, color: '#232946' }}>
-                    {`Congratulations${formState.userData.fullName ? ` ${formState.userData.fullName}` : ''}!`}
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 1, whiteSpace: 'pre-line', textAlign: 'center' }}>
-                    {result.explanation}
-                  </Typography>
-                </CongratsCard>
-                <Box sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 2,
-                  width: '100%',
-                  mb: 2
-                }}>
-                  <StyledButton
-                    fullWidth
-                    sx={{ fontSize: 18, fontWeight: 600, py: 2, mt: 0, mb: 2 }}
-                    onClick={() => setShowContactForm(true)}
-                  >
-                    Next Step
-                  </StyledButton>
-                  <StyledButton
-                    fullWidth
-                    sx={{ fontSize: 18, fontWeight: 600, py: 2, mt: 0 }}
-                    onClick={handleRestart}
-                  >
-                    Start New Check
-                  </StyledButton>
-                </Box>
-                {/* Share section */}
-                <Box sx={{ 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  alignItems: 'center', 
-                  gap: 2, 
-                  width: '100%',
-                  mb: 2
-                }}>
-                  <Typography variant="subtitle1" sx={{ 
-                    color: 'white', 
-                    fontWeight: 500 
-                  }}>
-                    Share this eligibility checker with friends:
-                  </Typography>
-                  <Box sx={{ 
-                    display: 'flex', 
-                    gap: 2, 
-                    justifyContent: 'center' 
-                  }}>
-                    <Button
-                      variant="contained"
-                      onClick={() => captureAndShare('whatsapp')}
-                      sx={{
-                        background: '#25D366',
-                        minWidth: 56,
-                        minHeight: 56,
-                        width: 56,
-                        height: 56,
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        p: 0,
-                        '&:hover': {
-                          background: '#128C7E',
-                        },
-                      }}
-                    >
-                      <WhatsAppIcon sx={{ fontSize: 32, color: '#fff' }} />
-                    </Button>
-                    <Button
-                      variant="contained"
-                      onClick={() => captureAndShare('facebook')}
-                      sx={{
-                        background: '#1877F2',
-                        minWidth: 56,
-                        minHeight: 56,
-                        width: 56,
-                        height: 56,
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        p: 0,
-                        '&:hover': {
-                          background: '#0C5DC7',
-                        },
-                      }}
-                    >
-                      <FacebookIcon sx={{ fontSize: 32, color: '#fff' }} />
-                    </Button>
-                  </Box>
-                </Box>
-                {showContactForm && (
-                  <Box width="100%" mt={3}>
-                    <ContactFormPositive
-                      eligibleSections={result.eligibleSections || []}
-                      onSuccess={handleContactSuccess}
-                      userData={formState.userData}
-                      formState={formState}
-                    />
-                  </Box>
+                {/* Usual results logic */}
+                {!result.notSure && result.isEligible && (
+                  <>
+                    <CongratsCard ref={congratsCardRef} sx={{ width: '100%', mb: 2 }}>
+                      <CelebrationIcon sx={{ fontSize: 48, mb: 1 }} />
+                      <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, color: '#232946' }}>
+                        {`Congratulations${formState.userData.fullName ? ` ${formState.userData.fullName}` : ''}!`}
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 1, whiteSpace: 'pre-line', textAlign: 'center' }}>
+                        {result.explanation}
+                      </Typography>
+                    </CongratsCard>
+                    <Box sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 2,
+                      width: '100%',
+                      mb: 2
+                    }}>
+                      <StyledButton
+                        fullWidth
+                        sx={{ fontSize: 18, fontWeight: 600, py: 2, mt: 0, mb: 2 }}
+                        onClick={() => setShowContactForm(true)}
+                      >
+                        Next Step
+                      </StyledButton>
+                      <StyledButton
+                        fullWidth
+                        sx={{ fontSize: 18, fontWeight: 600, py: 2, mt: 0 }}
+                        onClick={handleRestart}
+                      >
+                        Start New Check
+                      </StyledButton>
+                    </Box>
+                    {/* Share section */}
+                    <Box sx={{ 
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      alignItems: 'center', 
+                      gap: 2, 
+                      width: '100%',
+                      mb: 2
+                    }}>
+                      <Typography variant="subtitle1" sx={{ 
+                        color: 'white', 
+                        fontWeight: 500 
+                      }}>
+                        Share this eligibility checker with friends:
+                      </Typography>
+                      <Box sx={{ 
+                        display: 'flex', 
+                        gap: 2, 
+                        justifyContent: 'center' 
+                      }}>
+                        <Button
+                          variant="contained"
+                          onClick={() => captureAndShare('whatsapp')}
+                          sx={{
+                            background: '#25D366',
+                            minWidth: 56,
+                            minHeight: 56,
+                            width: 56,
+                            height: 56,
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            p: 0,
+                            '&:hover': {
+                              background: '#128C7E',
+                            },
+                          }}
+                        >
+                          <WhatsAppIcon sx={{ fontSize: 32, color: '#fff' }} />
+                        </Button>
+                        <Button
+                          variant="contained"
+                          onClick={() => captureAndShare('facebook')}
+                          sx={{
+                            background: '#1877F2',
+                            minWidth: 56,
+                            minHeight: 56,
+                            width: 56,
+                            height: 56,
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            p: 0,
+                            '&:hover': {
+                              background: '#0C5DC7',
+                            },
+                          }}
+                        >
+                          <FacebookIcon sx={{ fontSize: 32, color: '#fff' }} />
+                        </Button>
+                      </Box>
+                    </Box>
+                  </>
                 )}
-              </>
-            )}
-            {!result.notSure && !result.isEligible && (
-              <>
-                <Box sx={{
-                  background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                  color: '#232946',
-                  borderRadius: 3,
-                  p: 4,
-                  textAlign: 'center',
-                  boxShadow: 2,
-                  width: '100%',
-                  mb: 0,
-                }}>
-                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#232946' }}>
-                    Eligibility Assessment
-                  </Typography>
-                  <Typography variant="body1" sx={{ 
-                    mb: 4, 
-                    color: '#232946', 
-                    whiteSpace: 'pre-line',
-                    fontWeight: 600,
-                    fontSize: 18,
-                    lineHeight: 1.6
-                  }}>
-                    {result.explanation}
-                  </Typography>
-                </Box>
-                <Box width="100%" mt={3}>
-                  <ContactFormPage
-                    formState={formState}
-                    setFormState={setFormState}
-                    hideHeader={true}
-                  />
-                </Box>
+                {!result.notSure && !result.isEligible && (
+                  <>
+                    <Box sx={{
+                      background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
+                      color: '#232946',
+                      borderRadius: 3,
+                      p: 4,
+                      textAlign: 'center',
+                      boxShadow: 2,
+                      width: '100%',
+                      mb: 0,
+                    }}>
+                      <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#232946' }}>
+                        Eligibility Assessment
+                      </Typography>
+                      <Typography variant="body1" sx={{ 
+                        mb: 4, 
+                        color: '#232946', 
+                        whiteSpace: 'pre-line',
+                        fontWeight: 600,
+                        fontSize: 18,
+                        lineHeight: 1.6
+                      }}>
+                        {result.explanation}
+                      </Typography>
+                    </Box>
+                    <Box width="100%" mt={3}>
+                      <ContactFormPage
+                        formState={formState}
+                        setFormState={setFormState}
+                        hideHeader={true}
+                      />
+                    </Box>
+                  </>
+                )}
               </>
             )}
           </Paper>
@@ -613,76 +604,85 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
         zIndex: 1000,
       }}>
         <Container maxWidth="lg">
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 4,
-            flexWrap: 'wrap',
-          }}>
-            <Button
-              href="https://www.deckerpexlevi.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              startIcon={<PublicIcon />}
-              sx={{
-                color: 'white',
-                '&:hover': {
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  bgcolor: 'rgba(255, 255, 255, 0.1)',
-                },
-                transition: 'all 0.2s ease-in-out',
-              }}
-            >
-              Visit Our Website
-            </Button>
-            <Button
-              href="https://www.facebook.com/deckerpexlevi"
-              target="_blank"
-              rel="noopener noreferrer"
-              startIcon={<FacebookIcon />}
-              sx={{
-                color: 'white',
-                '&:hover': {
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  bgcolor: 'rgba(255, 255, 255, 0.1)',
-                },
-                transition: 'all 0.2s ease-in-out',
-              }}
-            >
-              Follow Us on Facebook
-            </Button>
-            <Button
-              href="https://wa.me/1234567890"
-              target="_blank"
-              rel="noopener noreferrer"
-              startIcon={<WhatsAppIcon />}
-              sx={{
-                color: 'white',
-                '&:hover': {
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  bgcolor: 'rgba(255, 255, 255, 0.1)',
-                },
-                transition: 'all 0.2s ease-in-out',
-              }}
-            >
-              Contact Us on WhatsApp
-            </Button>
-            <Button
-              href="https://www.youtube.com/@deckerpexlevi"
-              target="_blank"
-              rel="noopener noreferrer"
-              startIcon={<YouTubeIcon />}
-              sx={{
-                color: 'white',
-                '&:hover': {
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  bgcolor: 'rgba(255, 255, 255, 0.1)',
-                },
-                transition: 'all 0.2s ease-in-out',
-              }}
-            >
-              Watch us on YouTube
-            </Button>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'row', sm: 'row' },
+              justifyContent: { xs: 'space-between', sm: 'center' },
+              alignItems: 'center',
+              width: '100%',
+              gap: { xs: 0, sm: 4 },
+              flexWrap: 'wrap',
+            }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
+              <Button
+                href="https://www.deckerpexlevi.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<PublicIcon />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                Visit Our Website
+              </Button>
+              <Button
+                href="https://www.facebook.com/deckerpexlevi"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<FacebookIcon />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                Follow Us on Facebook
+              </Button>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
+              <Button
+                href="https://wa.me/1234567890"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<WhatsAppIcon />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                Contact on WhatsApp
+              </Button>
+              <Button
+                href="https://www.youtube.com/@deckerpexlevi"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<YouTubeIcon />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                YouTube Channel
+              </Button>
+            </Box>
           </Box>
         </Container>
       </Box>

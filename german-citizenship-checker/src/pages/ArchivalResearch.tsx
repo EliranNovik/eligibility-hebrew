@@ -92,13 +92,18 @@ const ArchivalResearch = () => {
           </Typography>
           <Box
             sx={{
+              overflowX: { xs: 'auto', sm: 'visible' },
+              whiteSpace: { xs: 'nowrap', sm: 'normal' },
               display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
+              flexDirection: { xs: 'row', sm: 'row' },
               justifyContent: 'center',
               alignItems: 'stretch',
               gap: 5,
               mb: 6,
               mt: 3,
+              pb: { xs: 2, sm: 0 },
+              pr: { xs: 2, sm: 0 },
+              pl: { xs: 23, sm: 0 },
             }}
           >
             {offers.map((offer, idx) => (
@@ -106,20 +111,22 @@ const ArchivalResearch = () => {
                 key={idx}
                 sx={{
                   flex: 1,
-                  minWidth: 220,
-                  maxWidth: 320,
+                  minWidth: { xs: 280, sm: 220 },
+                  maxWidth: { xs: 340, sm: 320 },
                   background: offer.color,
                   borderRadius: 5,
                   boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
-                  display: 'flex',
+                  display: 'inline-flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  py: 3,
-                  px: 2,
+                  py: { xs: 4, sm: 3 },
+                  px: { xs: 3, sm: 2 },
                   textAlign: 'center',
                   gap: 1.5,
                   transition: 'transform 0.18s',
+                  mr: { xs: 2, sm: 0 },
+                  '&:last-of-type': { mr: 0 },
                   '&:hover': {
                     transform: 'translateY(-4px) scale(1.04)',
                     boxShadow: '0 6px 24px 0 rgba(67,233,123,0.13)',
@@ -127,7 +134,7 @@ const ArchivalResearch = () => {
                 }}
               >
                 <Box sx={{ mb: 1 }}>{offer.icon}</Box>
-                <Typography fontWeight={600} fontSize={17} color="#232946">
+                <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="#232946" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                   {offer.label}
                 </Typography>
               </Box>
