@@ -152,50 +152,88 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
 
     if (selectedCountry === 'Germany') {
       // New Section 5 Analysis Logic
-      const section5Answers = answers.filter(a => a.questionId.startsWith('german_5_q'));
-      if (section5Answers.length > 0) {
-        const categoryScores: Record<'1' | '2' | '3' | '4' | '5', number> = { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 };
-        
-        // Calculate scores for each category based on 'yes' answers
-        section5Answers.forEach(answer => {
-          if (answer.value === 'yes') {
-            const question = questions.find((q: Question) => q.id === answer.questionId);
-            question?.categoryMatch?.forEach((cat: string) => {
-              if (cat in categoryScores) {
-                categoryScores[cat as keyof typeof categoryScores] += 1;
-              }
-            });
-          }
-        });
-
-        // Find the category with the highest score
-        const maxScore = Math.max(...Object.values(categoryScores));
-        const matchedCategories = Object.entries(categoryScores)
-          .filter(([_, score]) => score === maxScore && score > 0)
-          .map(([cat]) => cat);
-
-        if (matchedCategories.length > 0) {
-          isEligible = true;
-          eligibleSections = matchedCategories.map(cat => `§5 Category ${cat}`);
-          
-          // Generate explanation based on matched categories
-          const categoryExplanations: Record<'1' | '2' | '3' | '4' | '5', string> = {
-            '1': 'No acquisition from German mother (born between 1949-1974)',
-            '2': 'No acquisition from German father (born between 1949-1993)',
-            '3': 'Loss through marriage (before April 1953)',
-            '4': 'Loss through legitimation',
-            '5': 'Descendant of eligible parent'
-          };
-          
-          explanation = 'You appear to be eligible for German citizenship under:\n\n';
-          matchedCategories.forEach(cat => {
-            if (cat in categoryExplanations) {
-              explanation += `§5 Category ${cat}: ${categoryExplanations[cat as keyof typeof categoryExplanations]}\n`;
+      const ancestorAnswer = answers.find(a => a.questionId === 'german_5_earliest_ancestor');
+      if (ancestorAnswer) {
+        let pathIds: string[] = [];
+        if (ancestorAnswer.value === 'Mother') {
+          pathIds = questions.filter(q => q.id.startsWith('german_5_mother_q')).map(q => q.id);
+        } else if (ancestorAnswer.value === 'Father') {
+          pathIds = questions.filter(q => q.id.startsWith('german_5_father_q')).map(q => q.id);
+        } else if (ancestorAnswer.value === 'Grandparent') {
+          const gp1 = answers.find(a => a.questionId === 'german_5_grandparent_q1');
+          const gp2 = answers.find(a => a.questionId === 'german_5_grandparent_q2');
+          if (gp1 && gp2) {
+            if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
+              pathIds = questions.filter(q => q.id.startsWith('german_5_grandfather_mother_father_q')).map(q => q.id);
+            } else if (gp1.value === 'Grandfather' && gp2.value === "My dad's parent") {
+              pathIds = questions.filter(q => q.id.startsWith('german_5_grandfather_father_father_q')).map(q => q.id);
+            } else if (gp1.value === 'Grandmother' && gp2.value === "My mom's parent") {
+              pathIds = questions.filter(q => q.id.startsWith('german_5_grandmother_mother_mother_q')).map(q => q.id);
+            } else if (gp1.value === 'Grandmother' && gp2.value === "My dad's parent") {
+              pathIds = questions.filter(q => q.id.startsWith('german_5_grandmother_father_mother_q')).map(q => q.id);
             }
-          });
-          explanation += '\nNote: You must apply before 19 August 2031.\n\n';
-        } else {
-          explanation = 'Based on your answers, you do not clearly qualify under any of the defined §5 categories. However, you may still be eligible. Please consult with a legal expert for review.\n\n';
+          }
+        } else if (ancestorAnswer.value === 'Great-grandparent') {
+          pathIds = questions.filter(q => q.id.startsWith('german_5_greatgrandparent_q')).map(q => q.id);
+        }
+        if (pathIds.length > 0) {
+          const pathAnswers = pathIds
+            .map(id => answers.find(a => a.questionId === id))
+            .filter((a): a is { questionId: string; value: string | boolean } => !!a);
+          if (pathAnswers.some(a => a && a.value === 'no')) {
+            return {
+              isEligible: false,
+              eligibleSections: ['§5'],
+              explanation: 'Based on your answers, you are not eligible for German citizenship under §5. One or more answers indicate ineligibility.'
+            };
+          }
+          if (pathAnswers.some(a => a && a.value === 'not_sure')) {
+            return {
+              isEligible: false,
+              eligibleSections: ['§5'],
+              explanation: 'Some of your answers require further assessment. Please consult with a legal expert for a detailed review.',
+              notSure: true,
+              closeSection: '§5'
+            };
+          }
+          if (pathAnswers.length === pathIds.length && pathAnswers.every(a => a && a.value === 'yes')) {
+            // Determine Section 5 category and explanation
+            let category = '';
+            let categoryExplanation = '';
+            if (ancestorAnswer.value === 'Mother') {
+              category = 'Category 1';
+              categoryExplanation = 'No acquisition from German mother (born between 1949-1974)';
+            } else if (ancestorAnswer.value === 'Father') {
+              category = 'Category 2';
+              categoryExplanation = 'No acquisition from German father (born between 1949-1993)';
+            } else if (ancestorAnswer.value === 'Grandparent') {
+              const gp1 = answers.find(a => a.questionId === 'german_5_grandparent_q1');
+              const gp2 = answers.find(a => a.questionId === 'german_5_grandparent_q2');
+              if (gp1 && gp2) {
+                if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
+                  category = 'Category 2';
+                  categoryExplanation = 'No acquisition from German father (born between 1949-1993)';
+                } else if (gp1.value === 'Grandfather' && gp2.value === "My dad's parent") {
+                  category = 'Category 2';
+                  categoryExplanation = 'No acquisition from German father (born between 1949-1993)';
+                } else if (gp1.value === 'Grandmother' && gp2.value === "My mom's parent") {
+                  category = 'Category 1';
+                  categoryExplanation = 'No acquisition from German mother (born between 1949-1974)';
+                } else if (gp1.value === 'Grandmother' && gp2.value === "My dad's parent") {
+                  category = 'Category 1';
+                  categoryExplanation = 'No acquisition from German mother (born between 1949-1974)';
+                }
+              }
+            } else if (ancestorAnswer.value === 'Great-grandparent') {
+              category = 'Category 5';
+              categoryExplanation = 'Descendant of eligible parent';
+            }
+            return {
+              isEligible: true,
+              eligibleSections: ['§5'],
+              explanation: `You appear to be eligible for German citizenship under §5 (Correction of historical discrimination).\n\n${category ? `\n${category}: ${categoryExplanation}` : ''}`
+            };
+          }
         }
       }
 

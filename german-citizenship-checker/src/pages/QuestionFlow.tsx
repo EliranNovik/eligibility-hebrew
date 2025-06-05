@@ -25,8 +25,69 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
       // Check §116 Jewish ancestor question
       const jewishAnswer = formState.answers.find(a => a.questionId === 'german_116_1');
       if (jewishAnswer && jewishAnswer.value === 'no') {
-        // Show simplified Section 5 questions
-        return questions.filter(q => q.id.startsWith('german_5_q'));
+        // Section 5 branching logic
+        const ancestorAnswer = formState.answers.find(a => a.questionId === 'german_5_earliest_ancestor');
+        if (!ancestorAnswer) {
+          // Show ancestor selection question
+          const q = questions.find(q => q.id === 'german_5_earliest_ancestor');
+          return q ? [q] : [];
+        }
+        // Branch by ancestor type
+        const ancestorType = ancestorAnswer.value;
+        if (ancestorType === 'Mother') {
+          const q = questions.find(q => q.id === 'german_5_earliest_ancestor');
+          const path = questions.filter(q => q.id.startsWith('german_5_mother_q'));
+          return [q, ...path].filter(Boolean);
+        }
+        if (ancestorType === 'Father') {
+          const q = questions.find(q => q.id === 'german_5_earliest_ancestor');
+          const path = questions.filter(q => q.id.startsWith('german_5_father_q'));
+          return [q, ...path].filter(Boolean);
+        }
+        if (ancestorType === 'Grandparent') {
+          const gp1 = formState.answers.find(a => a.questionId === 'german_5_grandparent_q1');
+          const gp2 = formState.answers.find(a => a.questionId === 'german_5_grandparent_q2');
+          const base = [
+            questions.find(q => q.id === 'german_5_earliest_ancestor'),
+            questions.find(q => q.id === 'german_5_grandparent_q1'),
+            questions.find(q => q.id === 'german_5_grandparent_q2')
+          ].filter(Boolean);
+          if (!gp1 || !gp2) return base;
+          // Determine sub-path
+          if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
+            return [
+              ...base,
+              ...questions.filter(q => q.id.startsWith('german_5_grandfather_mother_father_q'))
+            ].filter(Boolean);
+          }
+          if (gp1.value === 'Grandfather' && gp2.value === "My dad's parent") {
+            return [
+              ...base,
+              ...questions.filter(q => q.id.startsWith('german_5_grandfather_father_father_q'))
+            ].filter(Boolean);
+          }
+          if (gp1.value === 'Grandmother' && gp2.value === "My mom's parent") {
+            return [
+              ...base,
+              ...questions.filter(q => q.id.startsWith('german_5_grandmother_mother_mother_q'))
+            ].filter(Boolean);
+          }
+          if (gp1.value === 'Grandmother' && gp2.value === "My dad's parent") {
+            return [
+              ...base,
+              ...questions.filter(q => q.id.startsWith('german_5_grandmother_father_mother_q'))
+            ].filter(Boolean);
+          }
+          return base;
+        }
+        if (ancestorType === 'Great-grandparent') {
+          const q = questions.find(q => q.id === 'german_5_earliest_ancestor');
+          const path = questions.filter(q => q.id.startsWith('german_5_greatgrandparent_q'));
+          return [q, ...path].filter(Boolean);
+        }
+        // fallback
+        const q = questions.find(q => q.id === 'german_5_earliest_ancestor');
+        return q ? [q] : [];
       }
 
       // Check German citizenship status
@@ -54,6 +115,10 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
 
   const handleAnswer = (value: string | boolean) => {
     const currentQuestion = filteredQuestions[formState.currentStep];
+    if (!currentQuestion) {
+      // Defensive: shouldn't happen, but prevents crash
+      return;
+    }
     const newAnswers = [...formState.answers];
     const existingAnswerIndex = newAnswers.findIndex((a) => a.questionId === currentQuestion.id);
 
@@ -70,6 +135,12 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
       setTimeout(() => {
         setShowNotification(false);
       }, 5000);
+      // Immediately reset to Section 5 ancestor selection
+      setFormState((prev) => ({
+        ...prev,
+        currentStep: 0,
+      }));
+      return;
     }
 
     if (currentQuestion.type === 'yesNo') {
@@ -99,6 +170,7 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
 
   const handleNext = () => {
     const currentQuestion = filteredQuestions[formState.currentStep];
+    if (!currentQuestion) return;
     if (currentQuestion.type === 'date') {
       const currentAnswer = getCurrentAnswer();
       if (!currentAnswer) return;
@@ -127,14 +199,27 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
 
   const getCurrentAnswer = () => {
     const currentQuestion = filteredQuestions[formState.currentStep];
+    if (!currentQuestion) return undefined;
     const answer = formState.answers.find(
       (a) => a.questionId === currentQuestion.id
     );
     return answer?.value;
   };
 
-  if (!filteredQuestions[formState.currentStep]) {
-    return null;
+  // Debug logging for troubleshooting white screen
+  console.log('filteredQuestions:', filteredQuestions);
+  console.log('formState.currentStep:', formState.currentStep);
+
+  // Defensive: Only render main UI if currentQuestion is defined
+  const currentQuestion = filteredQuestions[formState.currentStep];
+  if (!currentQuestion) {
+    return (
+      <Box sx={{ color: 'white', p: 4, textAlign: 'center' }}>
+        Sorry, something went wrong with the question flow.<br />
+        Please refresh the page or start again.<br />
+        (Debug: No valid question at step {formState.currentStep})
+      </Box>
+    );
   }
 
   return (
@@ -190,11 +275,11 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
         )}
         <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
           <QuestionCard
-            question={filteredQuestions[formState.currentStep]}
+            question={currentQuestion}
             onAnswer={handleAnswer}
             currentAnswer={getCurrentAnswer()}
             onNext={handleNext}
-            showNext={filteredQuestions[formState.currentStep].type === 'dropdown'}
+            showNext={currentQuestion.type === 'dropdown'}
             totalQuestions={filteredQuestions.length}
             currentQuestion={formState.currentStep + 1}
           />
