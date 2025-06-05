@@ -408,7 +408,8 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
             WebkitBackdropFilter: 'blur(16px)',
           }}>
             {showContactForm ? (
-              contactFormType === 'positive' ? (
+              // Show positive contact form for positive results, or if user chose 'Proceed with Archival Research' after negative
+              (result.isEligible || contactFormType === 'positive') ? (
                 <Box width="100%" mt={3}>
                   <ContactFormPositive
                     eligibleSections={result.eligibleSections || []}
@@ -493,7 +494,10 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                       <StyledButton
                         fullWidth
                         sx={{ fontSize: 18, fontWeight: 600, py: 2, mt: 0, mb: 2 }}
-                        onClick={() => setShowContactForm(true)}
+                        onClick={() => {
+                          setShowContactForm(true);
+                          setContactFormType('positive');
+                        }}
                       >
                         Next Step
                       </StyledButton>
