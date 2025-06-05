@@ -241,16 +241,26 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
       const austrian58c1 = answers.find(a => a.questionId === 'austrian_58c_1');
       const austrian58c2 = answers.find(a => a.questionId === 'austrian_58c_2');
       const austrian58c3 = answers.find(a => a.questionId === 'austrian_58c_3');
-      const austrian58c5 = answers.find(a => a.questionId === 'austrian_58c_5');
-      const austrian58c6 = answers.find(a => a.questionId === 'austrian_58c_6');
+      const austrian58c4 = answers.find(a => a.questionId === 'austrian_58c_4');
       const validRelations = ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'];
+
+      // Check if any answer is "no"
+      if (austrian58c1?.value === 'no' || austrian58c2?.value === 'no' || austrian58c3?.value === 'no') {
+        isEligible = false;
+        explanation = 'Based on your answers, you are not eligible for Austrian citizenship under §58c. To be eligible, your ancestor must have lived in Austria before 1955, been a citizen of one of the listed countries, and been in danger from the Nazis.';
+        return {
+          isEligible,
+          eligibleSections: [],
+          explanation,
+        };
+      }
+
       const isAustrian58cEligible =
         austrian58c1?.value === 'yes' &&
         austrian58c2?.value === 'yes' &&
         austrian58c3?.value === 'yes' &&
-        austrian58c5 &&
-        validRelations.includes(String(austrian58c5.value)) &&
-        austrian58c6?.value === 'yes';
+        austrian58c4 &&
+        validRelations.includes(String(austrian58c4.value));
 
       if (isAustrian58cEligible) {
         isEligible = true;

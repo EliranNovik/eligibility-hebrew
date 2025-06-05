@@ -173,34 +173,35 @@ export const questions: Question[] = [
   // Austrian Citizenship - §58c
   {
     id: 'austrian_58c_1',
-    text: 'Did your ancestor live in Austria before 15 May 1955?',
+    text: 'Did any of your ancestors live in Austria (as it is today) before 1955?',
     type: 'yesNo',
     section: 'austrian_58c',
     required: true
   },
   {
     id: 'austrian_58c_2',
-    text: 'Was your ancestor Jewish or otherwise persecuted by the Nazis?',
+    text: 'Was that ancestor one of the following?',
     type: 'yesNo',
     section: 'austrian_58c',
     required: true
   },
   {
     id: 'austrian_58c_3',
-    text: 'Did your ancestor flee Austria between 1933 and 1955?',
+    text: 'Was your ancestor ever in danger from the Nazis?',
     type: 'yesNo',
     section: 'austrian_58c',
     required: true
   },
+  //{
+   // id: 'austrian_58c_3',
+    //text: 'Did your ancestor flee Austria between 1933 and 1955?',
+    //type: 'yesNo',
+    //section: 'austrian_58c',
+    //required: true
+  //},
+  
   {
-    id: 'austrian_58c_6',
-    text: 'Was your ancestor a citizen of one of the countries listed below?',
-    type: 'yesNo',
-    section: 'austrian_58c',
-    required: true
-  },
-  {
-    id: 'austrian_58c_5',
+    id: 'austrian_58c_4',
     text: 'What is your relation to that ancestor?',
     type: 'dropdown',
     options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'],

@@ -75,64 +75,189 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             {question.text}
           </Typography>
 
-          {/* Special styled country list for austrian_58c_6 */}
-          {question.id === 'austrian_58c_6' && (
+          {/* Special styled country list for austrian_58c_2 */}
+          {question.id === 'austrian_58c_2' && (
             <Box
               sx={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: 1.5,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 3,
                 mb: 3,
                 width: '100%',
               }}
             >
-              {[
-                'Austria',
-                'Hungary',
-                'Czech Republic',
-                'Slovakia',
-                'Poland',
-                'Ukraine',
-                'Romania',
-                'Italy',
-                'Slovenia',
-                'Croatia',
-                'Bosnia and Herzegovina',
-                'Serbia',
-                'Montenegro',
-                'North Macedonia',
-                'Stateless',
-              ].map((country) => (
-                <Box
-                  key={country}
-                  sx={{
-                    borderRadius: 4,
-                    borderColor: '#43e97b',
-                    color: '#43e97b',
-                    fontWeight: 600,
-                    fontSize: 14,
-                    px: 1.5,
-                    py: 1,
-                    background: '#232946',
-                    borderWidth: 2,
-                    borderStyle: 'solid',
-                    textAlign: 'center',
-                    userSelect: 'none',
-                    pointerEvents: 'none',
-                    boxShadow: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minHeight: 40,
-                    '&:hover': {
-                      background: '#1a1d2e',
-                      borderColor: '#43e97b',
-                    }
-                  }}
-                >
-                  {country}
+              {/* Austrian Citizen Section */}
+              <Box sx={{ 
+                background: 'linear-gradient(90deg, rgba(67, 233, 123, 0.1) 0%, rgba(56, 249, 215, 0.1) 100%)',
+                borderRadius: 4,
+                p: 2,
+                border: '2px solid #43e97b',
+                position: 'relative',
+              }}>
+                <Box sx={{
+                  position: 'absolute',
+                  top: -12,
+                  left: -12,
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  background: '#43e97b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#232946',
+                  fontWeight: 700,
+                  fontSize: 18,
+                  border: '2px solid #232946',
+                }}>
+                  1
                 </Box>
-              ))}
+                <Typography sx={{ 
+                  color: '#43e97b', 
+                  fontWeight: 700, 
+                  fontSize: 18, 
+                  mb: 1,
+                  textAlign: 'center',
+                  mt: 1,
+                }}>
+                  Austrian Citizen
+                </Typography>
+                <Box sx={{ 
+                  background: '#232946',
+                  borderRadius: 3,
+                  p: 1.5,
+                  textAlign: 'center',
+                  color: '#43e97b',
+                  fontWeight: 600,
+                  fontSize: 16,
+                }}>
+                  Austrian Citizenship
+                </Box>
+              </Box>
+
+              {/* Stateless Section */}
+              <Box sx={{ 
+                background: 'linear-gradient(90deg, rgba(255, 195, 113, 0.1) 0%, rgba(255, 95, 109, 0.1) 100%)',
+                borderRadius: 4,
+                p: 2,
+                border: '2px solid #ffc371',
+                position: 'relative',
+              }}>
+                <Box sx={{
+                  position: 'absolute',
+                  top: -12,
+                  left: -12,
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  background: '#ffc371',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#232946',
+                  fontWeight: 700,
+                  fontSize: 18,
+                  border: '2px solid #232946',
+                }}>
+                  2
+                </Box>
+                <Typography sx={{ 
+                  color: '#ffc371', 
+                  fontWeight: 700, 
+                  fontSize: 18, 
+                  mb: 1,
+                  textAlign: 'center',
+                  mt: 1,
+                }}>
+                  Stateless
+                </Typography>
+                <Box sx={{ 
+                  background: '#232946',
+                  borderRadius: 3,
+                  p: 1.5,
+                  textAlign: 'center',
+                  color: '#ffc371',
+                  fontWeight: 600,
+                  fontSize: 16,
+                }}>
+                  No Citizenship
+                </Box>
+              </Box>
+
+              {/* Other Countries Section */}
+              <Box sx={{ 
+                background: 'linear-gradient(90deg, rgba(100, 108, 255, 0.1) 0%, rgba(83, 91, 242, 0.1) 100%)',
+                borderRadius: 4,
+                p: 2,
+                border: '2px solid #646cff',
+                position: 'relative',
+              }}>
+                <Box sx={{
+                  position: 'absolute',
+                  top: -12,
+                  left: -12,
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  background: '#646cff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#232946',
+                  fontWeight: 700,
+                  fontSize: 18,
+                  border: '2px solid #232946',
+                }}>
+                  3
+                </Box>
+                <Typography sx={{ 
+                  color: '#646cff', 
+                  fontWeight: 700, 
+                  fontSize: 18, 
+                  mb: 1,
+                  textAlign: 'center',
+                  mt: 1,
+                }}>
+                  Part of Austria-Hungary
+                </Typography>
+                <Box sx={{ 
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: 1,
+                }}>
+                  {[
+                    'Hungary',
+                    'Czech Republic',
+                    'Slovakia',
+                    'Poland',
+                    'Ukraine',
+                    'Romania',
+                    'Italy',
+                    'Slovenia',
+                    'Croatia',
+                    'Bosnia and Herzegovina',
+                    'Serbia',
+                    'Montenegro',
+                    'North Macedonia'
+                  ].map((country) => (
+                    <Box
+                      key={country}
+                      sx={{
+                        background: '#232946',
+                        borderRadius: 2,
+                        p: 1,
+                        textAlign: 'center',
+                        color: '#646cff',
+                        fontWeight: 600,
+                        fontSize: 14,
+                        border: '1px solid rgba(100, 108, 255, 0.3)',
+                      }}
+                    >
+                      {country}
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
             </Box>
           )}
 

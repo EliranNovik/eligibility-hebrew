@@ -343,7 +343,37 @@ const Intro = () => {
                 }}
               >
                 {Object.entries(lawRequirements).map(([section, data], idx) => (
-                  <Box key={section} sx={{ scrollSnapAlign: { xs: 'center', sm: 'none' }, animation: { xs: `fadeInBox 0.7s ${idx * 0.1}s both`, sm: 'none' } }}>
+                  <Box key={section} sx={{ scrollSnapAlign: { xs: 'center', sm: 'none' }, animation: { xs: `fadeInBox 0.7s ${idx * 0.1}s both`, sm: 'none' }, position: 'relative' }}>
+                    {/* Left arrow for mobile */}
+                    <Box
+                      sx={{
+                        display: { xs: 'flex', sm: 'none' },
+                        position: 'absolute',
+                        left: -18,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        zIndex: 2,
+                        pointerEvents: 'none',
+                        animation: 'bounceRight 1.2s infinite',
+                      }}
+                    >
+                      <ChevronRightIcon sx={{ color: '#fff', fontSize: 28, opacity: 0.7 }} />
+                    </Box>
+                    {/* Right arrow for mobile */}
+                    <Box
+                      sx={{
+                        display: { xs: 'flex', sm: 'none' },
+                        position: 'absolute',
+                        right: -18,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        zIndex: 2,
+                        pointerEvents: 'none',
+                        animation: 'bounceRight 1.2s infinite',
+                      }}
+                    >
+                     
+                    </Box>
                     <Box
                       onClick={() => handleSectionClick(section)}
                       sx={{

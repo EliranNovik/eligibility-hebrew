@@ -1,7 +1,8 @@
-import { Box, Button, Menu, MenuItem } from '@mui/material';
+import { Box, Button, Menu, MenuItem, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PublicIcon from '@mui/icons-material/Public';
+import MenuIcon from '@mui/icons-material/Menu';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -12,15 +13,25 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [mobileMenuAnchor, setMobileMenuAnchor] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isIntro = location.pathname === '/intro';
 
   const handleContactClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  // Hamburger menu handlers
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setMobileMenuAnchor(event.currentTarget);
+  };
+  const handleMobileMenuClose = () => {
+    setMobileMenuAnchor(null);
   };
 
   return (
@@ -40,7 +51,6 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         border: 0,
       }}
     >
-      
       {showBackButton && (
         <Button
           startIcon={<ArrowBackIcon />}
@@ -60,23 +70,17 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           Back
         </Button>
       )}
-      {/* Logo: left on mobile homepage, centered otherwise */}
+      {/* Logo: always centered on Intro, left on mobile homepage, centered otherwise */}
       <Box
         sx={{
           height: 60,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: {
-            xs: isHome ? 'flex-start' : 'center',
-            sm: 'center',
-          },
+          justifyContent: 'center',
           position: 'absolute',
-          left: { xs: isHome ? 16 : '50%', sm: '50%' },
-          transform: {
-            xs: isHome ? 'none' : 'translateX(-50%)',
-            sm: 'translateX(-50%)',
-          },
-          width: { xs: isHome ? 'auto' : '100%', sm: '100%' },
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '100%',
           cursor: 'pointer',
           '&:hover': {
             opacity: 0.8,
@@ -97,20 +101,47 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           }}
         />
       </Box>
-      {/* Social icons on the right */}
+      {/* Hamburger menu for mobile */}
+      <Box
+        sx={{
+          position: 'absolute',
+          right: 16,
+          top: 0,
+          height: '100%',
+          display: { xs: 'flex', sm: 'none' },
+          alignItems: 'center',
+        }}
+      >
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleMobileMenuOpen}
+          sx={{ color: '#232946' }}
+        >
+          <MenuIcon sx={{ fontSize: 32 }} />
+        </IconButton>
+        <Menu
+          anchorEl={mobileMenuAnchor}
+          open={Boolean(mobileMenuAnchor)}
+          onClose={handleMobileMenuClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/about'); }}>About Us</MenuItem>
+          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/archival-research'); }}>Archival Research</MenuItem>
+        </Menu>
+      </Box>
+      {/* Social icons and nav on right (hidden on mobile except homepage) */}
       <Box
         sx={{
           position: 'absolute',
           right: 24,
           top: 0,
           height: '100%',
-          display: 'flex',
+          display: { xs: 'none', sm: 'flex' },
           alignItems: 'center',
           gap: { xs: 1, sm: 2 },
-          // Hide nav items on mobile except on homepage
-          ...(isHome
-            ? {}
-            : { display: { xs: 'none', sm: 'flex' } }),
         }}
       >
         <Button

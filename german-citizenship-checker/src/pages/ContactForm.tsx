@@ -226,11 +226,24 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
 
   if (hideHeader) {
     return (
-      <Card sx={{ width: '100%', maxWidth: 420, mx: 'auto', boxShadow: 4, borderRadius: 4, p: 3, bgcolor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: '#232946', mt: 1 }}>
+      <Box sx={{ 
+        width: '100%', 
+        maxWidth: 420, 
+        mx: 'auto', 
+        p: 3, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center',
+        background: 'rgba(255,255,255,0.18)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderRadius: 4,
+        boxShadow: '0 6px 32px 0 rgba(67, 233, 123, 0.15)',
+      }}>
+        <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mt: 1 }}>
           Contact Information
         </Typography>
-        <Typography align="center" color="#232946" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6 }}>
+        <Typography align="center" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6, color: 'rgba(255,255,255,0.87)' }}>
           Please provide your phone number and any comments. We will get in touch with you about your eligibility assessment.
         </Typography>
         {message && (
@@ -246,7 +259,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
               variant="outlined"
               sx={{
                 minWidth: 120,
-                bgcolor: '#fff',
+                bgcolor: 'rgba(255,255,255,0.9)',
                 borderRadius: 2,
                 fontWeight: 600,
                 fontSize: 16,
@@ -275,15 +288,15 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
               fullWidth
               margin="normal"
               sx={{ 
-                bgcolor: '#fff', 
+                bgcolor: 'rgba(255,255,255,0.9)', 
                 borderRadius: 2,
                 flex: 1,
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {
-                    borderColor: 'rgba(100, 108, 255, 0.3)',
+                    borderColor: 'rgba(255,255,255,0.3)',
                   },
                   '&:hover fieldset': {
-                    borderColor: 'rgba(100, 108, 255, 0.5)',
+                    borderColor: 'rgba(255,255,255,0.5)',
                   },
                   '&.Mui-focused fieldset': {
                     borderColor: '#646cff',
@@ -301,14 +314,14 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
             fullWidth
             margin="normal"
             sx={{ 
-              bgcolor: '#fff', 
+              bgcolor: 'rgba(255,255,255,0.9)', 
               borderRadius: 2,
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
-                  borderColor: 'rgba(100, 108, 255, 0.3)',
+                  borderColor: 'rgba(255,255,255,0.3)',
                 },
                 '&:hover fieldset': {
-                  borderColor: 'rgba(100, 108, 255, 0.5)',
+                  borderColor: 'rgba(255,255,255,0.5)',
                 },
                 '&.Mui-focused fieldset': {
                   borderColor: '#646cff',
@@ -340,7 +353,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
             {isSubmitting ? 'Submitting...' : 'Submit Information'}
           </Button>
         </Box>
-      </Card>
+      </Box>
     );
   }
 
