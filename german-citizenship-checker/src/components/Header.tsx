@@ -5,6 +5,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigation } from '../context/NavigationContext';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -18,6 +19,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const isIntro = location.pathname === '/intro';
+  const { goBack } = useNavigation();
 
   const handleContactClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -54,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
       {showBackButton && (
         <Button
           startIcon={<ArrowBackIcon />}
-          onClick={onBack}
+          onClick={onBack ? onBack : goBack}
           sx={{
             position: 'absolute',
             left: 16,

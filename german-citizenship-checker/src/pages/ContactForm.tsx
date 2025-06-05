@@ -59,7 +59,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
         sid,
         name: formState.userData.fullName || '',
         topic: `${selectedCountry} Citizenship - Not Eligible`,
-        desc: `Preferred Contact Method: ${contactMethod}\nComments: ${formState.userData.comments || 'No comments provided'}`,
+        desc: `The client wants to be contacted by ${CONTACT_METHODS.find(m => m.value === contactMethod)?.label || contactMethod}. Comments: ${formState.userData.comments || 'No comments provided'}`,
         email: formState.userData.email || '',
         phone: `${countryCode}${formState.userData.phone.replace(/^\+\d+\s*/, '')}`,
         ref_url: window.location.href,
@@ -168,46 +168,63 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
               }}>
                 We at Decker Pex Levi Law Offices have received your submission and will get back to you as soon as possible.
               </Typography>
-              <Box sx={{ 
-                display: 'flex', 
-                gap: 2, 
-                mt: 2 
+              <Typography sx={{ color: 'white', fontWeight: 600, mt: 2, mb: 1, fontSize: 16 }}>
+                Share the eligibility checker with your friends:
+              </Typography>
+              <Box sx={{
+                display: 'flex',
+                gap: 2,
+                mt: 1,
+                justifyContent: 'center',
               }}>
                 <Button
                   variant="contained"
-                  startIcon={<WhatsAppIcon />}
                   onClick={() => {
-                    const url = encodeURIComponent(window.location.origin);
-                    window.open(`https://wa.me/?text=${encodeURIComponent('Check your German citizenship eligibility here: ' + url)}`, '_blank');
+                    const shareUrl = 'https://eligibility-checker-o4xu.onrender.com/';
+                    const shareText = 'Check your German citizenship eligibility here:';
+                    window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`, '_blank');
                   }}
                   sx={{
                     background: '#25D366',
+                    minWidth: 56,
+                    minHeight: 56,
+                    width: 56,
+                    height: 56,
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    p: 0,
                     '&:hover': {
                       background: '#128C7E',
                     },
-                    borderRadius: 2,
-                    px: 3
                   }}
                 >
-                  WhatsApp
+                  <WhatsAppIcon sx={{ fontSize: 32, color: '#fff' }} />
                 </Button>
                 <Button
                   variant="contained"
-                  startIcon={<FacebookIcon />}
                   onClick={() => {
-                    const url = encodeURIComponent(window.location.origin);
-                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+                    const shareUrl = 'https://eligibility-checker-o4xu.onrender.com/';
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
                   }}
                   sx={{
                     background: '#1877F2',
+                    minWidth: 56,
+                    minHeight: 56,
+                    width: 56,
+                    height: 56,
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    p: 0,
                     '&:hover': {
                       background: '#0C5DC7',
                     },
-                    borderRadius: 2,
-                    px: 3
                   }}
                 >
-                  Facebook
+                  <FacebookIcon sx={{ fontSize: 32, color: '#fff' }} />
                 </Button>
               </Box>
               <Button

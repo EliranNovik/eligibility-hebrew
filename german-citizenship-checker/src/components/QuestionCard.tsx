@@ -7,8 +7,6 @@ interface QuestionCardProps {
   question: Question;
   onAnswer: (value: string | boolean) => void;
   currentAnswer: string | boolean | undefined;
-  onNext: () => void;
-  showNext: boolean;
   totalQuestions: number;
   currentQuestion: number;
 }
@@ -17,8 +15,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   question,
   onAnswer,
   currentAnswer,
-  onNext,
-  showNext,
   totalQuestions,
   currentQuestion,
 }) => {
@@ -393,35 +389,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           )}
         </CardContent>
       </Card>
-
-      {/* Next Button for dropdown */}
-      {showNext && (
-        <Button
-          variant="contained"
-          size="large"
-          sx={{
-            maxWidth: { xs: 420, md: 540 },
-            width: '100%',
-            mx: 'auto',
-            borderRadius: 999,
-            fontWeight: 700,
-            fontSize: { xs: 22, md: 28 },
-            py: { xs: 1.5, md: 2 },
-            background: 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)',
-            color: '#fff',
-            boxShadow: '0 4px 24px 0 rgba(33, 203, 243, 0.2)',
-            mt: 2,
-            mb: 2,
-            '&:hover': {
-              background: 'linear-gradient(90deg, #21cbf3 0%, #2196f3 100%)',
-            },
-          }}
-          onClick={onNext}
-          disabled={!currentAnswer}
-        >
-          {currentQuestion === totalQuestions ? 'See Results' : 'Next'}
-        </Button>
-      )}
     </>
   );
 };

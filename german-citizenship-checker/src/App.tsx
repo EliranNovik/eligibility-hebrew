@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { NavigationProvider } from './context/NavigationContext';
 import { useState } from 'react';
 import type { FormState } from './types';
 
@@ -24,41 +25,43 @@ function App() {
   });
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Intro />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/archival-research" element={<ArchivalResearch />} />
-        <Route path="/userinfo" element={<UserInfo formState={formState} setFormState={setFormState} />} />
-        <Route 
-          path="/questions" 
-          element={
-            <QuestionFlow 
-              formState={formState} 
-              setFormState={setFormState} 
-            />
-          } 
-        />
-        <Route 
-          path="/results" 
-          element={
-            <Results 
-              formState={formState} 
-              setFormState={setFormState} 
-            />
-          } 
-        />
-        <Route 
-          path="/contact" 
-          element={
-            <ContactForm 
-              formState={formState} 
-              setFormState={setFormState} 
-            />
-          } 
-        />
-      </Routes>
-    </Router>
+    <BrowserRouter>
+      <NavigationProvider>
+        <Routes>
+          <Route path="/" element={<Intro />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/archival-research" element={<ArchivalResearch />} />
+          <Route path="/userinfo" element={<UserInfo formState={formState} setFormState={setFormState} />} />
+          <Route 
+            path="/questions" 
+            element={
+              <QuestionFlow 
+                formState={formState} 
+                setFormState={setFormState} 
+              />
+            } 
+          />
+          <Route 
+            path="/results" 
+            element={
+              <Results 
+                formState={formState} 
+                setFormState={setFormState} 
+              />
+            } 
+          />
+          <Route 
+            path="/contact" 
+            element={
+              <ContactForm 
+                formState={formState} 
+                setFormState={setFormState} 
+              />
+            } 
+          />
+        </Routes>
+      </NavigationProvider>
+    </BrowserRouter>
   );
 }
 

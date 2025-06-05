@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Paper, Typography, Avatar, TextField, Button, Fade, Container } from '@mui/material';
 import Header from '../components/Header';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -22,6 +22,7 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
   const [email, setEmail] = useState('');
   const [nameError, setNameError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   const timeoutRef = useRef<number | null>(null);
 
   // Robust typewriter effect for chat bubble
@@ -71,7 +72,7 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
         email: email,
       }
     }));
-    navigate('/questions');
+    navigate('/questions', { state: { from: location.pathname } });
   };
 
   return (

@@ -370,22 +370,22 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
       setShowShareDialog(true);
 
       // Share the intro page link
-      const introUrl = window.location.origin + '/intro';
+      const shareUrl = 'https://eligibility-checker-o4xu.onrender.com/';
       const shareText = 'Check your German citizenship eligibility here:';
 
       if (platform === 'whatsapp') {
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${introUrl}`)}`, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`, '_blank');
       } else if (platform === 'facebook') {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(introUrl)}`, '_blank');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
       }
     } catch (error) {
       console.error('Error sharing:', error);
       // Fallback to simple URL sharing if image sharing fails
-      const introUrl = window.location.origin + '/intro';
+      const shareUrl = 'https://eligibility-checker-o4xu.onrender.com/';
       if (platform === 'whatsapp') {
-        window.open(`https://wa.me/?text=${encodeURIComponent('Check your German citizenship eligibility here: ' + introUrl)}`, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent('Check your German citizenship eligibility here: ' + shareUrl)}`, '_blank');
       } else {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(introUrl)}`, '_blank');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
       }
     }
   };
@@ -727,7 +727,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
           >
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
               <Button
-                href="https://www.deckerpexlevi.com"
+                href="https://lawoffice.org.il/en/"
                 target="_blank"
                 rel="noopener noreferrer"
                 startIcon={<PublicIcon />}
@@ -777,7 +777,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                 Contact on WhatsApp
               </Button>
               <Button
-                href="https://www.youtube.com/@deckerpexlevi"
+                href="https://www.youtube.com/@DeckerPexLawoffice"
                 target="_blank"
                 rel="noopener noreferrer"
                 startIcon={<YouTubeIcon />}
