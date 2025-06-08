@@ -502,7 +502,10 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                             background: 'linear-gradient(90deg, #535bf2, #646cff)',
                           }
                         }}
-                        onClick={() => setShowContactForm(true)}
+                        onClick={() => {
+                          setShowContactForm(true);
+                          setContactFormType('positive');
+                        }}
                       >
                         Next Step
                       </Button>
