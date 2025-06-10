@@ -4,6 +4,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import type { FormState } from '../types';
+import { supabase, saveEligibilityResult } from '../lib/supabase';
 
 const AVATARS = ['/Avatar1.png'];
 const CHAT_TEXT = "Submit your information and we'll get back to you! We at Decker Pex Levi will review your case, conduct an archival research and provide you with a free consultation.";
@@ -36,6 +37,21 @@ const COUNTRY_CODES = [
   { code: '+90', label: '🇹🇷 +90' },
   { code: '+27', label: '🇿🇦 +27' },
 ];
+
+async function saveContactSubmission(userData: any, formType?: string) {
+  const { data, error } = await supabase
+    .from('contact_submissions')
+    .insert([
+      {
+        user_data: userData,
+        form_type: formType || 'positive',
+      }
+    ]);
+  if (error) {
+    console.error('Error saving contact submission:', error);
+  }
+  return data;
+}
 
 const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: ContactFormProps) => {
   const [formData, setFormData] = useState({
@@ -92,23 +108,40 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
       topic: `${selectedCountry} Citizenship - ${eligibleSections[0]}`,
       desc: `Persecuted Person: ${formData.persecutedName}\nDate of Birth: ${formData.persecutedDob}\nPlace of Birth: ${formData.persecutedPlace}`,
       email: userData.email,
-      phone: `${countryCode}${formData.phone.replace(/^\+\d+\s*/, '')}`,
+      phone: `${countryCode}${formData.phone.replace(/^[+\d]+\s*/, '')}`,
       ref_url: window.location.href,
       user_data: JSON.stringify({
         persecutedName: formData.persecutedName,
         persecutedDob: formData.persecutedDob,
         persecutedPlace: formData.persecutedPlace,
-        eligibleSections,
-        phone: `${countryCode}${formData.phone.replace(/^\+\d+\s*/, '')}`,
+        phone: `${countryCode}${formData.phone.replace(/^[+\d]+\s*/, '')}`,
       }),
     });
     const url = `https://backend-eligibility-checker.onrender.com/api/proxy?${params.toString()}`;
     try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Network response was not ok');
+      // Save contact form submission (user_data and form_type only)
+      const { data, error } = await supabase
+        .from('contact_submissions')
+        .insert([
+          {
+            user_data: {
+              fullName: userData.fullName,
+              email: userData.email,
+              phone: `${countryCode}${formData.phone.replace(/^[+\d]+\s*/, '')}`,
+              persecutedName: formData.persecutedName,
+              persecutedDob: formData.persecutedDob,
+              persecutedPlace: formData.persecutedPlace,
+            },
+            form_type: 'positive'
+          }
+        ]);
+      if (error) throw error;
+
+      await saveContactSubmission(userData, 'positive');
       setShowThankYou(true);
     } catch (error) {
-      setMessage('There was an error submitting your information. Please try again.');
+      console.error('Error submitting form:', error);
+      setMessage('Failed to submit form. Please try again.');
       setMessageType('error');
     } finally {
       setIsSubmitting(false);

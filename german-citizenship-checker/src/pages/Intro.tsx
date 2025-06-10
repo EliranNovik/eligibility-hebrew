@@ -96,29 +96,15 @@ const Intro = () => {
     <>
       <Header />
       <Box sx={{ 
-        minHeight: '100vh', 
-        width: '100vw', 
-        bgcolor: 'rgba(35, 41, 70, 0.85)',
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        justifyContent: 'flex-start', 
+        minHeight: '100vh',
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         pt: 8,
         position: 'relative',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: 'url(/german_documents.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.4,
-          zIndex: 0,
-        }
+        zIndex: 1,
       }}>
         <Box sx={{ 
           mt: 0, 
@@ -154,9 +140,15 @@ const Intro = () => {
             >
               START ELIGIBILITY CHECK
             </StyledButton>
-            <Typography variant="h3" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mb: 8, fontSize: 40 }}>
-              Are you eligible for German or Austrian citizenship?
-            </Typography>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <Typography variant="h3" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mb: 8, fontSize: 40 }}>
+                Are you eligible for German or Austrian citizenship?
+              </Typography>
+            </motion.div>
             <Box sx={{
               position: 'relative',
               width: '100%',
@@ -209,19 +201,25 @@ const Intro = () => {
               }}>
                 {/* About Section */}
                 <Box sx={{
-                  background: 'rgba(255, 255, 255, 0.03)',
+                  background: 'rgba(0, 0, 0, 0.15)',
                   borderRadius: 4,
                   p: 4,
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
                   transition: 'transform 0.3s ease-in-out',
                   '&:hover': {
                     transform: 'translateY(-5px)',
                   },
                   scrollSnapAlign: { xs: 'center', md: 'none' },
                   minWidth: { xs: '70vw', md: 'auto' },
-                  maxWidth: { xs: 340, md: 'none' },
+                  maxWidth: { xs: 340, md: 600 },
                   mx: { xs: 1, md: 0 },
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
                 }}>
                   <Typography variant="h6" sx={{ 
                     color: 'white', 
@@ -229,7 +227,8 @@ const Intro = () => {
                     mb: 3, 
                     letterSpacing: 1,
                     fontSize: 20,
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    width: '100%'
                   }}>
                     About Decker Pex Levi
                   </Typography>
@@ -237,7 +236,10 @@ const Intro = () => {
                     color: 'rgba(255,255,255,0.92)', 
                     fontWeight: 500, 
                     fontSize: 16,
-                    lineHeight: 1.8
+                    lineHeight: 1.8,
+                    maxWidth: '90%',
+                    textAlign: 'justify',
+                    hyphens: 'auto'
                   }}>
                     At Decker Pex Levi Law Offices, we specialize in German and Austrian citizenship law. Our expertise covers cases based on family heritage and historical circumstances, including those where ancestors were not citizens of these countries. We assist clients whose relatives were persecuted, displaced, or affected by past regimes, as well as those with ancestral connections qualifying under current nationality laws.
                   </Typography>
@@ -245,19 +247,25 @@ const Intro = () => {
 
                 {/* How it works Section */}
                 <Box sx={{
-                  background: 'rgba(255, 255, 255, 0.03)',
+                  background: 'rgba(0, 0, 0, 0.15)',
                   borderRadius: 4,
                   p: 4,
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
                   transition: 'transform 0.3s ease-in-out',
                   '&:hover': {
                     transform: 'translateY(-5px)',
                   },
                   scrollSnapAlign: { xs: 'center', md: 'none' },
                   minWidth: { xs: '70vw', md: 'auto' },
-                  maxWidth: { xs: 340, md: 'none' },
+                  maxWidth: { xs: 340, md: 600 },
                   mx: { xs: 1, md: 0 },
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
                 }}>
                   <Typography variant="h6" sx={{ 
                     color: 'white', 
@@ -265,7 +273,8 @@ const Intro = () => {
                     mb: 3, 
                     letterSpacing: 1,
                     fontSize: 20,
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    width: '100%'
                   }}>
                     How it works
                   </Typography>
@@ -274,11 +283,21 @@ const Intro = () => {
                     fontWeight: 500, 
                     fontSize: 16,
                     lineHeight: 1.8,
-                    mb: 2
+                    mb: 2,
+                    maxWidth: '90%',
+                    textAlign: 'justify',
+                    hyphens: 'auto'
                   }}>
-                    Our eligibility checker will guide you through a series of simple questions to determine if you may qualify for German or Austrian citizenship. Answer each question as accurately as possible, and you'll receive a personalized eligibility result in minutes.
-                  </Typography>
-                  <Box sx={{ display: 'flex', gap: 3, mb: 2 }}>
+Our eligibility checker is a quick and user-friendly tool designed to help you find out if you may qualify for German or Austrian citizenship. Simply answer a short series of straightforward questions based on your family history and personal background. Within minutes, you’ll receive a personalized eligibility assessment—no paperwork or legal knowledge required.
+</Typography>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    gap: 3, 
+                    mb: 2, 
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                    width: '100%'
+                  }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <GroupsIcon sx={{ color: '#2196f3', fontSize: 28 }} />
                       <Typography variant="body1" sx={{ 
@@ -306,10 +325,12 @@ const Intro = () => {
                     color: 'rgba(255,255,255,0.92)', 
                     fontWeight: 500, 
                     fontSize: 16,
-                    lineHeight: 1.8
+                    lineHeight: 1.8,
+                    maxWidth: '90%',
+                    textAlign: 'justify',
+                    hyphens: 'auto'
                   }}>
-                    We offer you a free consultation and express archival research to maximize your eligibility in the fastest and simplest way possible.
-                  </Typography>
+Once you complete the checker, you’ll have the opportunity to schedule a free consultation with one of our citizenship experts. If your case shows potential, we’ll conduct express archival research to gather supporting evidence and give you the clearest path forward. Our goal is to help you unlock your eligibility as efficiently and accurately as possible—with minimal hassle and maximum support.                  </Typography>
                 </Box>
               </Box>
             </Box>

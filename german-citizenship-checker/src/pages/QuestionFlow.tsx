@@ -230,6 +230,19 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
       newAnswers.push({ questionId: currentQuestion.id, value });
     }
 
+    // Handle Austrian §58c first question
+    if (currentQuestion.id === 'austrian_58c_1' && value === 'no') {
+      setFormState((prev) => ({ ...prev, answers: newAnswers }));
+      navigate('/results', { 
+        state: { 
+          eligible: false,
+          eligibleSections: [],
+          answers: newAnswers
+        }
+      });
+      return;
+    }
+
     if (currentQuestion.id === 'german_116_1' && value === 'no') {
       setFormState((prev) => ({ ...prev, answers: newAnswers }));
       setShowNotification(true);

@@ -27,24 +27,25 @@ const Footer: React.FC<FooterProps> = ({ showContactButtons }) => {
         display: 'flex',
         justifyContent: 'center',
         background: 'none',
+        position: 'relative',
+        zIndex: 10,
       }}
     >
       <Box
         sx={{
           width: '100%',
-          maxWidth: '80%',
           mx: 'auto',
-          px: 0,
+          px: { xs: 2, sm: 4 },
           py: { xs: 2, sm: 4 },
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          boxShadow: '0 4px 20px 0 rgba(0,0,0,0.10)',
-          borderRadius: { xs: 4, sm: 6 },
+          background: 'rgba(0, 0, 0, 0.15)',
+          border: '1px solid rgba(255,255,255,0.15)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          boxShadow: '0 4px 30px rgba(0,0,0,0.1)',
+          borderRadius: 0,
         }}
       >
         {showContactButtons && (

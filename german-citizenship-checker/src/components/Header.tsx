@@ -3,6 +3,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PublicIcon from '@mui/icons-material/Public';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useNavigation } from '../context/NavigationContext';
@@ -41,26 +42,27 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
       sx={{
         width: '100%',
         height: 64,
-        bgcolor: '#fff',
+        background: 'rgba(255,255,255,0.25)',
+        border: '1px solid rgba(255,255,255,0.18)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 2px 8px 0 rgb(255, 255, 255)',
         position: 'relative',
         zIndex: 10,
         margin: 0,
         padding: 0,
-        border: 0,
       }}
     >
       {showBackButton && (
         <Button
-          startIcon={<ArrowBackIcon />}
           onClick={onBack ? onBack : goBack}
           sx={{
             position: 'absolute',
             left: 16,
-            color: '#232946',
+            color: 'white',
             background: 'rgba(35,41,70,0.07)',
             borderRadius: 2,
             px: 2,
@@ -91,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         onClick={() => navigate('/')}
       >
         <img
-          src="/DPL-LOGO.png"
+          src="/DPLOGO1.png"
           alt="DPL Logo"
           style={{
             height: 60,
@@ -119,9 +121,13 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           color="inherit"
           aria-label="menu"
           onClick={handleMobileMenuOpen}
-          sx={{ color: '#232946' }}
+          sx={{ color: '#fff' }}
         >
-          <MenuIcon sx={{ fontSize: 32 }} />
+          {Boolean(mobileMenuAnchor) ? (
+            <CloseIcon sx={{ fontSize: 32 }} />
+          ) : (
+            <MenuIcon sx={{ fontSize: 32 }} />
+          )}
         </IconButton>
         <Menu
           anchorEl={mobileMenuAnchor}
@@ -129,9 +135,26 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           onClose={handleMobileMenuClose}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          PaperProps={{
+            sx: {
+              background: 'linear-gradient(90deg, #646cff, #535bf2)',
+              color: 'white',
+              mt: 1,
+              minWidth: 200,
+              '& .MuiMenuItem-root': {
+                color: 'white',
+                fontSize: '1.1rem',
+                padding: '12px 24px',
+                '&:hover': {
+                  background: 'rgba(255, 255, 255, 0.1)',
+                },
+              },
+            },
+          }}
         >
           <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/about'); }}>About Us</MenuItem>
           <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/archival-research'); }}>Archival Research</MenuItem>
+          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/admin'); }}>Admin</MenuItem>
         </Menu>
       </Box>
       {/* Social icons and nav on right (hidden on mobile except homepage) */}
@@ -149,17 +172,19 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         <Button
           onClick={() => navigate('/about')}
           sx={{
-            color: '#232946',
-            fontWeight: 600,
+            background: 'linear-gradient(90deg, #646cff, #535bf2)',
+            color: 'white',
+            fontWeight: 700,
             fontSize: { xs: 14, sm: 16 },
             textTransform: 'none',
-            borderRadius: 2,
-            px: { xs: 1.5, sm: 2.5 },
+            borderRadius: 3,
+            px: { xs: 2, sm: 3 },
             py: 1,
-            background: 'rgba(35,41,70,0.07)',
+            boxShadow: '0 2px 8px 0 rgba(100,108,255,0.10)',
+            transition: 'all 0.2s',
             '&:hover': {
-              background: 'rgba(35,41,70,0.15)',
-              color: '#535bf2',
+              background: 'linear-gradient(90deg, #535bf2, #646cff)',
+              color: 'white',
             },
           }}
         >
@@ -168,21 +193,44 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         <Button
           onClick={() => navigate('/archival-research')}
           sx={{
-            color: '#232946',
-            fontWeight: 600,
+            background: 'linear-gradient(90deg, #646cff, #535bf2)',
+            color: 'white',
+            fontWeight: 700,
             fontSize: { xs: 14, sm: 16 },
             textTransform: 'none',
-            borderRadius: 2,
-            px: { xs: 1.5, sm: 2.5 },
+            borderRadius: 3,
+            px: { xs: 2, sm: 3 },
             py: 1,
-            background: 'rgba(35,41,70,0.07)',
+            boxShadow: '0 2px 8px 0 rgba(100,108,255,0.10)',
+            transition: 'all 0.2s',
             '&:hover': {
-              background: 'rgba(35,41,70,0.15)',
-              color: '#535bf2',
+              background: 'linear-gradient(90deg, #535bf2, #646cff)',
+              color: 'white',
             },
           }}
         >
           Archival Research
+        </Button>
+        <Button
+          onClick={() => navigate('/admin')}
+          sx={{
+            background: 'linear-gradient(90deg, #646cff, #535bf2)',
+            color: 'white',
+            fontWeight: 700,
+            fontSize: { xs: 14, sm: 16 },
+            textTransform: 'none',
+            borderRadius: 3,
+            px: { xs: 2, sm: 3 },
+            py: 1,
+            boxShadow: '0 2px 8px 0 rgba(100,108,255,0.10)',
+            transition: 'all 0.2s',
+            '&:hover': {
+              background: 'linear-gradient(90deg, #535bf2, #646cff)',
+              color: 'white',
+            },
+          }}
+        >
+          Admin
         </Button>
       </Box>
     </Box>

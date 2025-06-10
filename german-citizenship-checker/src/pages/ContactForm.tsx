@@ -7,6 +7,7 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { supabase } from '../lib/supabase';
 
 // Country codes for phone numbers
 const COUNTRY_CODES = [
@@ -27,6 +28,28 @@ interface ContactFormProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
   hideHeader?: boolean;
+}
+
+async function saveContactSubmission(userData: any, formType?: string) {
+  const { data, error } = await supabase
+    .from('contact_submissions')
+    .insert([
+      {
+        user_data: {
+          fullName: userData.fullName,
+          email: userData.email,
+          phone: `${userData.phone}`,
+          comments: userData.comments,
+          answers: userData.answers,
+          contactMethod: userData.contactMethod,
+        },
+        form_type: formType || 'negative'
+      }
+    ]);
+  if (error) {
+    console.error('Error saving contact submission:', error);
+  }
+  return data;
 }
 
 const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFormProps) => {
@@ -77,6 +100,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
       if (!response.ok) throw new Error('Network response was not ok');
       
       setShowThankYou(true);
+      await saveContactSubmission(formState.userData, 'negative');
     } catch (error) {
       setMessage('There was an error submitting your information. Please try again.');
       setMessageType('error');

@@ -110,7 +110,13 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
               {typedText}
             </Box>
             <Fade in={showInputs} timeout={700}>
-              <Paper sx={{ mt: 3, p: 4, borderRadius: 4, maxWidth: 400, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 6, bgcolor: '#1a1a1a' }}>
+              <Paper sx={{ mt: 3, p: 4, borderRadius: 4, maxWidth: 400, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center',
+                background: 'rgba(0, 0, 0, 0.15)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                boxShadow: '0 4px 30px rgba(0,0,0,0.1)',
+              }}>
                 <Box component="form" onSubmit={handleContinue} sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <TextField
                     placeholder="Full Name"

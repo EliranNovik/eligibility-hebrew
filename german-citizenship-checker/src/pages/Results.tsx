@@ -15,6 +15,13 @@ import ContactFormPositive from '../components/ContactFormPositive';
 import Header from '../components/Header';
 import ContactFormPage from './ContactForm';
 import { questions } from '../questions/questions';
+import { supabase } from '../lib/supabase';
+
+declare global {
+  interface Window {
+    __eligibilitySaved?: boolean;
+  }
+}
 
 const AVATARS = ['/Avatar1.png'];
 const CHAT_TEXT = "Submit your application and we'll get back to you!";
@@ -56,6 +63,21 @@ const CongratsCard = styled(Box)(({ theme }) => ({
 interface ResultsProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
+}
+
+async function saveEligibilityResult(section: string, additionalInfo?: any) {
+  const { data, error } = await supabase
+    .from('eligibility_results')
+    .insert([
+      {
+        eligible_section: section,
+        additional_info: additionalInfo || null,
+      }
+    ]);
+  if (error) {
+    console.error('Error saving eligibility result:', error);
+  }
+  return data;
 }
 
 const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
@@ -338,6 +360,26 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
       };
     }
   }, [result.isEligible, showContactForm]);
+
+  useEffect(() => {
+    // Save eligibility result to Supabase only once per check
+    if (result && typeof result.isEligible !== 'undefined' && result.eligibleSections && result.eligibleSections.length > 0) {
+      if (!window.__eligibilitySaved) {
+        window.__eligibilitySaved = true;
+        result.eligibleSections.forEach(async section => {
+          const { data, error } = await supabase.from('eligibility_results').insert([
+            {
+              eligible_section: section,
+              is_eligible: result.isEligible,
+              explanation: result.explanation || null,
+              user_data: formState.userData || null,
+            }
+          ]);
+          console.log('Eligibility insert', { section, data, error });
+        });
+      }
+    }
+  }, [result, formState.userData]);
 
   const handleRestart = () => {
     setFormState((prev) => ({

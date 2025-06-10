@@ -23,8 +23,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   return (
     <>
       {/* Progress bar and question number */}
-      <Box sx={{ width: '100%', maxWidth: 420, mb: 4 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+      <Box sx={{ width: '100%', maxWidth: 420, mb: 4, mx: 'auto' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, justifyContent: 'center' }}>
           <Typography variant="subtitle1" sx={{ color: '#fff', fontWeight: 600 }}>
             Question {currentQuestion}/{totalQuestions}
           </Typography>
@@ -65,11 +65,48 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       </Box>
 
       {/* Question Card */}
-      <Card sx={{ width: '100%', maxWidth: { xs: 420, md: 540 }, background: 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)', color: '#232946', borderRadius: 6, boxShadow: 6, mb: 4, p: { xs: 0, md: 2 } }}>
-        <CardContent>
-          <Typography variant="h5" sx={{ color: '#232946', fontWeight: 700, mb: 2, fontSize: { xs: 24, md: 32 } }}>
+      <Card sx={{ 
+        width: '100%', 
+        maxWidth: { xs: '100%', md: 540 }, 
+        background: 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)', 
+        color: '#232946', 
+        borderRadius: 6, 
+        boxShadow: 6, 
+        mb: 4, 
+        p: { xs: 0, md: 2 },
+        mx: 'auto'
+      }}>
+        <CardContent sx={{ px: { xs: 2, md: 3 }, py: { xs: 2, md: 3 } }}>
+          <Typography variant="h5" sx={{ color: '#232946', fontWeight: 700, mb: 2, fontSize: { xs: 24, md: 32 }, textAlign: 'center' }}>
             {question.text}
           </Typography>
+
+          {/* Note for german_116_1 */}
+          {question.id === 'german_116_1' && (
+            <Box sx={{
+              background: 'rgba(67, 233, 123, 0.18)',
+              color: '#232946',
+              borderRadius: 2,
+              p: 2,
+              mb: 2,
+              fontSize: 15,
+              fontWeight: 500,
+              boxShadow: 1,
+              borderLeft: '4px solid #43e97b',
+              mx: 'auto',
+              maxWidth: '100%'
+            }}>
+              Examples include:<br />
+              <ul style={{ margin: 0, paddingLeft: 18 }}>
+                <li>Jewish, Romani, or Slavic background</li>
+                <li>Political opponents (e.g., Communists, Social Democrats)</li>
+                <li>LGBTQ+ individuals</li>
+                <li>Jehovah's Witnesses</li>
+                <li>Persons with disabilities</li>
+                <li>Freemasons, pacifists, "non-Aryans" by Nazi definition</li>
+              </ul>
+            </Box>
+          )}
 
           {/* Note for austrian_58c_3 */}
           {question.id === 'austrian_58c_3' && (
@@ -83,6 +120,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               fontWeight: 500,
               boxShadow: 1,
               borderLeft: '4px solid #43e97b',
+              mx: 'auto',
+              maxWidth: '100%'
             }}>
               For example: Did they flee Austria (between 1933-1955), avoid returning, get deported, or die due to being Jewish, Roma, politically active, religious, disabled, etc.?
             </Box>
@@ -97,6 +136,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 gap: 3,
                 mb: 3,
                 width: '100%',
+                mx: 'auto'
               }}
             >
               {/* Austrian Citizen Section */}
@@ -276,7 +316,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
           {/* Answer Options */}
           {question.type === 'yesNo' && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto' }}>
               {['yes', 'no', 'not_sure'].map((option) => (
                 <Button
                   key={option}
@@ -295,6 +335,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     borderWidth: 2,
                     borderStyle: 'solid',
                     transition: '0.2s',
+                    width: '100%',
                     '&:hover': {
                       background: '#232946',
                       color: option === 'not_sure' ? '#ffc371' : '#43e97b',
@@ -316,7 +357,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           )}
 
           {question.type === 'date' && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto' }}>
               <TextField
                 type="date"
                 value={currentAnswer || ''}
@@ -349,7 +390,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           )}
 
           {question.type === 'dropdown' && question.options && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto' }}>
               {question.options.map((option) => (
                 <Button
                   key={option}
@@ -368,6 +409,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     borderWidth: 2,
                     borderStyle: 'solid',
                     transition: '0.2s',
+                    width: '100%',
                     '&:hover': {
                       background: '#232946',
                       color: '#43e97b',

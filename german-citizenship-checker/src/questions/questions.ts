@@ -14,7 +14,7 @@ export const questions: Question[] = [
   // German Citizenship - §116 StAG
   {
     id: 'german_116_1',
-    text: 'Was your ancestor of Jewish descent?',
+    text: 'Was your ancestor of Jewish descent or otherwise persecuted by the Nazi regime (1933–1945)?',
     type: 'yesNo',
     section: 'german_116',
     required: true
