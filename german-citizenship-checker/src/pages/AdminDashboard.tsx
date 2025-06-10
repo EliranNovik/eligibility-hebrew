@@ -89,15 +89,54 @@ function useGoogleAnalyticsStats() {
   });
 
   useEffect(() => {
-    // This is a placeholder for actual GA4 API integration
-    // You'll need to implement the actual GA4 API calls here
-    // For now, we'll use mock data
-    setGaStats({
-      pageViews: 1234,
-      users: 567,
-      sessions: 890,
-      bounceRate: 45.5,
-    });
+    async function fetchGAStats() {
+      try {
+        // Get the current date and 30 days ago
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 30);
+
+        // Format dates for GA4 API
+        const formattedStartDate = startDate.toISOString().split('T')[0];
+        const formattedEndDate = endDate.toISOString().split('T')[0];
+
+        // Make API request to your backend endpoint that will fetch GA4 data
+        const response = await fetch('/api/analytics', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch analytics data');
+        }
+
+        const data = await response.json();
+        
+        setGaStats({
+          pageViews: data.pageViews || 0,
+          users: data.users || 0,
+          sessions: data.sessions || 0,
+          bounceRate: data.bounceRate || 0,
+        });
+      } catch (error) {
+        console.error('Error fetching Google Analytics data:', error);
+        // Fallback to showing 0s if there's an error
+        setGaStats({
+          pageViews: 0,
+          users: 0,
+          sessions: 0,
+          bounceRate: 0,
+        });
+      }
+    }
+
+    fetchGAStats();
   }, []);
 
   return gaStats;
@@ -230,11 +269,63 @@ const AdminDashboard = () => {
                 '& a[href*="recover"]': { display: 'none !important' },
                 '& a[href*="forgot"]': { display: 'none !important' },
                 '& a[href*="reset"]': { display: 'none !important' },
+                '& input': { color: '#fff !important' },
+                '& label': { color: '#fff !important' },
+                '& .MuiInputLabel-root': { color: '#fff !important' },
+                '& .MuiOutlinedInput-root': { 
+                  '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3) !important' },
+                  '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.5) !important' },
+                  '&.Mui-focused fieldset': { borderColor: '#646cff !important' }
+                },
+                '& .MuiInputBase-input': { color: '#fff !important' },
+                '& .MuiFormLabel-root': { color: '#fff !important' },
+                '& .MuiInputLabel-root.Mui-focused': { color: '#646cff !important' },
+                '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255, 255, 255, 0.3) !important' },
+                '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255, 255, 255, 0.5) !important' },
+                '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#646cff !important' },
+                '& .MuiButton-contained': {
+                  background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                  color: '#fff',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                  }
+                }
               }}
             >
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  color: '#fff', 
+                  textAlign: 'center', 
+                  mb: 3, 
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: 1
+                }}
+              >
+                Admin Access Only
+              </Typography>
               <Auth
                 supabaseClient={supabase}
-                appearance={{ theme: ThemeSupa }}
+                appearance={{ 
+                  theme: ThemeSupa,
+                  variables: {
+                    default: {
+                      colors: {
+                        brand: '#646cff',
+                        brandAccent: '#535bf2',
+                      },
+                    },
+                  },
+                }}
+                localization={{
+                  variables: {
+                    sign_in: {
+                      email_label: 'Email',
+                      password_label: 'Password',
+                    },
+                  },
+                }}
                 providers={[]}
                 redirectTo={window.location.origin + '/admin'}
                 view="sign_in"
