@@ -402,7 +402,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
 
   return (
     <>
-      <Header showBackButton onBack={() => navigate('/questions')} />
+      <Header showBackButton={false} />
       <Box sx={{ 
         minHeight: '100vh', 
         width: '100vw', 
@@ -523,29 +523,77 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                       <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 2, whiteSpace: 'pre-line' }}>
                         {result.message.replace(/^You may be eligible under .*?!\n\n|^You may be eligible!\n\n/, '')}
                       </Typography>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        sx={{ 
-                          mt: 2, 
-                          fontWeight: 700, 
-                          fontSize: 18, 
-                          borderRadius: 3, 
-                          background: 'linear-gradient(90deg, #646cff, #535bf2)',
-                          color: '#fff', 
-                          boxShadow: 2,
-                          '&:hover': {
-                            background: 'linear-gradient(90deg, #535bf2, #646cff)',
-                          }
-                        }}
-                        onClick={() => {
-                          setShowContactForm(true);
-                          setContactFormType('positive');
-                        }}
-                      >
-                        Next Step
-                      </Button>
+                      <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: 2,
+                        width: '100%',
+                        mb: 2,
+                        justifyContent: 'center',
+                      }}>
+                        <Button
+                          fullWidth
+                          sx={{
+                            fontSize: 18,
+                            fontWeight: 600,
+                            py: 2,
+                            mt: 0,
+                            mb: 1,
+                            background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
+                            color: '#232946',
+                            boxShadow: 2,
+                            borderRadius: 3,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            '&:hover': {
+                              background: 'linear-gradient(90deg, #38f9d7 0%, #43e97b 100%)',
+                            },
+                          }}
+                          onClick={() => {
+                            setShowContactForm(true);
+                            setContactFormType('positive');
+                          }}
+                        >
+                          <Box sx={{ fontWeight: 700, fontSize: 18 }}>
+                            Proceed with Archival Research
+                          </Box>
+                          <Box sx={{ fontSize: 12, color: '#232946', opacity: 0.6, fontWeight: 400, mt: 0.5 }}>
+                            further information submission needed
+                          </Box>
+                        </Button>
+                        <Button
+                          fullWidth
+                          sx={{
+                            fontSize: 18,
+                            fontWeight: 600,
+                            py: 2,
+                            mt: 0,
+                            background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                            color: '#fff',
+                            boxShadow: 2,
+                            borderRadius: 3,
+                            '&:hover': {
+                              background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                            },
+                          }}
+                          onClick={() => {
+                            setShowContactForm(true);
+                            setContactFormType('negative');
+                            navigate('/contact', {
+                              state: {
+                                eligible: false,
+                                eligibleSections: result.sections || [],
+                                answers: formState.answers,
+                                explanation: result.message,
+                              }
+                            });
+                          }}
+                        >
+                          I wish to be contacted by a representative
+                        </Button>
+                      </Box>
                     </Box>
                   </>
                 )}
@@ -584,25 +632,70 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                       alignItems: 'center',
                       gap: 2,
                       width: '100%',
-                      mb: 2
+                      mb: 2,
+                      justifyContent: 'center',
                     }}>
-                      <StyledButton
+                      <Button
                         fullWidth
-                        sx={{ fontSize: 18, fontWeight: 600, py: 2, mt: 0, mb: 2 }}
+                        sx={{
+                          fontSize: 18,
+                          fontWeight: 600,
+                          py: 2,
+                          mt: 0,
+                          mb: 1,
+                          background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
+                          color: '#232946',
+                          boxShadow: 2,
+                          borderRadius: 3,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          '&:hover': {
+                            background: 'linear-gradient(90deg, #38f9d7 0%, #43e97b 100%)',
+                          },
+                        }}
                         onClick={() => {
                           setShowContactForm(true);
                           setContactFormType('positive');
                         }}
                       >
-                        Next Step
-                      </StyledButton>
-                      <StyledButton
+                        <Box sx={{ fontWeight: 700, fontSize: 18 }}>
+                          Proceed with Archival Research
+                        </Box>
+                        <Box sx={{ fontSize: 12, color: '#232946', opacity: 0.6, fontWeight: 400, mt: 0.5 }}>
+                          further information submission needed
+                        </Box>
+                      </Button>
+                      <Button
                         fullWidth
-                        sx={{ fontSize: 18, fontWeight: 600, py: 2, mt: 0 }}
-                        onClick={handleRestart}
+                        sx={{
+                          fontSize: 18,
+                          fontWeight: 600,
+                          py: 2,
+                          mt: 0,
+                          background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                          color: '#fff',
+                          boxShadow: 2,
+                          borderRadius: 3,
+                          '&:hover': {
+                            background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                          },
+                        }}
+                        onClick={() => {
+                          setShowContactForm(true);
+                          setContactFormType('negative');
+                          navigate('/contact', {
+                            state: {
+                              eligible: false,
+                              eligibleSections: result.sections || [],
+                              answers: formState.answers,
+                              explanation: result.message,
+                            }
+                          });
+                        }}
                       >
-                        Start New Check
-                      </StyledButton>
+                        I wish to be contacted by a representative
+                      </Button>
                     </Box>
                     {/* Share section */}
                     <Box sx={{ 

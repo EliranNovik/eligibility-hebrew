@@ -6,7 +6,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import type { FormState } from '../types';
 import { supabase, saveEligibilityResult } from '../lib/supabase';
 
-const AVATARS = ['/Avatar1.png'];
+const AVATAR_SRC = '/MDPIC.jpg';
 const CHAT_TEXT = "Submit your information and we'll get back to you! We at Decker Pex Levi will review your case, conduct an archival research and provide you with a free consultation.";
 
 interface ContactFormProps {
@@ -68,7 +68,6 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
   const [showThankYou, setShowThankYou] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const timeoutRef = useRef<number | null>(null);
-  const avatar = AVATARS[Math.floor(Math.random() * AVATARS.length)];
   const [countryCode, setCountryCode] = useState(COUNTRY_CODES[0].code);
 
   useEffect(() => {
@@ -254,61 +253,54 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
                 }}>
                   <Button
                     variant="contained"
-                    startIcon={<WhatsAppIcon />}
                     onClick={() => {
                       const url = encodeURIComponent(window.location.origin);
                       window.open(`https://wa.me/?text=Check%20your%20German%20citizenship%20eligibility%20here:%20${url}`, '_blank');
                     }}
                     sx={{
                       background: '#25D366',
+                      minWidth: 56,
+                      minHeight: 56,
+                      width: 56,
+                      height: 56,
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      p: 0,
                       '&:hover': {
                         background: '#128C7E',
                       },
-                      borderRadius: 2,
-                      px: 3
                     }}
                   >
-                    WhatsApp
+                    <WhatsAppIcon sx={{ fontSize: 32, color: '#fff' }} />
                   </Button>
                   <Button
                     variant="contained"
-                    startIcon={<FacebookIcon />}
                     onClick={() => {
                       const url = encodeURIComponent(window.location.origin);
                       window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
                     }}
                     sx={{
                       background: '#1877F2',
+                      minWidth: 56,
+                      minHeight: 56,
+                      width: 56,
+                      height: 56,
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      p: 0,
                       '&:hover': {
                         background: '#0C5DC7',
                       },
-                      borderRadius: 2,
-                      px: 3
                     }}
                   >
-                    Facebook
+                    <FacebookIcon sx={{ fontSize: 32, color: '#fff' }} />
                   </Button>
                 </Box>
               </Box>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={onSuccess}
-                sx={{
-                  mt: 2,
-                  fontWeight: 700,
-                  fontSize: 18,
-                  borderRadius: 3,
-                  background: 'linear-gradient(90deg, #646cff, #535bf2)',
-                  color: 'white',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.10)',
-                  '&:hover': {
-                    background: 'linear-gradient(90deg, #535bf2, #646cff)',
-                  },
-                }}
-              >
-                Start New Check
-              </Button>
             </Box>
           </Box>
         </Fade>
@@ -321,7 +313,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
       <Box sx={{ width: '100%', maxWidth: 800, display: 'flex', flexDirection: 'column', alignItems: 'center', mx: 'auto', p: 2, pb: { xs: 10, sm: 4 } }}>
         <CardContent sx={{ width: '100%', maxWidth: 800, display: 'flex', flexDirection: 'column', alignItems: 'center', p: 0, mx: 'auto' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
-            <Avatar src={avatar} sx={{ width: 72, height: 72, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
+            <Avatar src={AVATAR_SRC} sx={{ width: 120, height: 120, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
             <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 500, minHeight: 56, textAlign: 'center' }}>
               {typedText}
             </Box>

@@ -183,7 +183,9 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
           <Card sx={{ 
             width: '100%', 
             boxShadow: 6, 
-            bgcolor: '#1a1a1a', 
+            bgcolor: 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
             borderRadius: 4, 
             display: 'flex', 
             flexDirection: 'column', 
@@ -195,32 +197,29 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
               flexDirection: 'column', 
               alignItems: 'center', 
               gap: 3,
-              textAlign: 'center'
+              textAlign: 'center',
+              color: '#232946',
             }}>
               <CheckCircleIcon sx={{ 
                 fontSize: 80, 
                 color: '#43e97b',
-                animation: 'scaleIn 0.5s ease-out'
               }} />
               <Typography variant="h4" sx={{ 
-                color: 'white', 
+                color: '#232946', 
                 fontWeight: 700,
-                background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
               }}>
                 Thank You{formState.userData.fullName ? ` ${formState.userData.fullName}` : ''}!
               </Typography>
               <Typography variant="h6" sx={{ 
-                color: 'rgba(255,255,255,0.87)', 
+                color: '#232946', 
                 fontWeight: 500,
                 maxWidth: '80%',
                 lineHeight: 1.6
               }}>
                 We at Decker Pex Levi Law Offices have received your submission and will get back to you as soon as possible.
               </Typography>
-              <Typography sx={{ color: 'white', fontWeight: 600, mt: 2, mb: 1, fontSize: 16 }}>
-                Share the eligibility checker with your friends:
+              <Typography sx={{ color: '#232946', fontWeight: 600, mt: 2, mb: 1, fontSize: 16 }}>
+                <span style={{ color: '#232946' }}>Share the eligibility checker with your friends:</span>
               </Typography>
               <Box sx={{
                 display: 'flex',
@@ -389,11 +388,12 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center',
-        background: 'rgba(255,255,255,0.18)',
+        background: 'rgba(255,255,255,0.85)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderRadius: 4,
         boxShadow: '0 6px 32px 0 rgba(67, 233, 123, 0.15)',
+        color: '#232946',
       }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%', mb: 2 }}>
   <Button
@@ -420,10 +420,10 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
     Back
   </Button>
 </Box>
-        <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mt: 1 }}>
-          Contact Information
+        <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: '#232946', mt: 1 }}>
+          <span style={{ color: '#000' }}>Contact Information</span>
         </Typography>
-        <Typography align="center" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6, color: 'rgba(255,255,255,0.87)' }}>
+        <Typography align="center" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6, color: '#000' }}>
           Please provide your phone number and any comments. We will get in touch with you about your eligibility assessment.
         </Typography>
         {message && (
@@ -573,12 +573,14 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
 
   return (
     <>
-      <Header />
+      <Header showBackButton={false} />
       <Box
         sx={{
           minHeight: '100vh',
           width: '100vw',
-          bgcolor: 'rgba(35, 41, 70, 0.85)',
+          bgcolor: 'rgba(255,255,255,0.85)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -586,6 +588,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
           position: 'relative',
           p: 0,
           m: 0,
+          color: '#232946',
           '&::before': {
             content: '""',
             position: 'absolute',
@@ -600,23 +603,35 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
             opacity: 0.4,
             zIndex: 0,
           },
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(35, 41, 70, 0.5)',
+            zIndex: 1,
+          },
+          zIndex: 1,
         }}
       >
         <Container maxWidth="sm" sx={{ 
           position: 'relative', 
-          zIndex: 1, 
+          zIndex: 2, 
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
           justifyContent: 'center', 
           minHeight: { xs: '90vh', sm: 650 },
           maxWidth: 400,
-          background: 'rgba(10, 10, 10, 0.65)',
+          background: 'rgba(255,255,255,0.85)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           borderRadius: 4,
-          boxShadow: '0 6px 32px 0 rgba(0,0,0,0.25)',
+          boxShadow: '0 6px 32px 0 rgba(0,0,0,0.10)',
           p: { xs: 2, sm: 6 },
+          color: '#232946',
         }}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%', mb: 2 }}>
             <Button
@@ -644,9 +659,9 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
             </Button>
           </Box>
           <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: '#fff', mt: 1 }}>
-            Contact Information
+            <span style={{ color: '#000' }}>Contact Information</span>
           </Typography>
-          <Typography align="center" color="#fff" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6 }}>
+          <Typography align="center" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6, color: '#000' }}>
             Please provide your phone number and any comments. We will get in touch with you about your eligibility assessment.
           </Typography>
           {message && (

@@ -139,12 +139,41 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
     // Special logic for the German flow
     if (currentQuestion.id === 'german_116_3' && value === 'no') {
       setFormState((prev) => ({ ...prev, answers: newAnswers }));
+      const username = formState.userData?.fullName ? formState.userData.fullName : '';
       navigate('/results', { 
         state: { 
           eligible: false,
           eligibleSections: [],
-          answers: newAnswers
+          answers: newAnswers,
+          explanation: `${username ? username + ', ' : ''}unfortunately you may not be eligible for Paragraph 116 or 15 of the German Citizenship Act. If you wish to discuss your case with a representetive please press the button below.`
         }
+      });
+      return;
+    }
+
+    // Special logic for the Austrian flow
+    if (
+      (currentQuestion.id === 'austrian_58c_1' && value === 'no') ||
+      (currentQuestion.id === 'austrian_58c_2' && value === 'no') ||
+      (currentQuestion.id === 'austrian_58c_3' && value === 'no')
+    ) {
+      const username = formState.userData?.fullName ? formState.userData.fullName + ', ' : '';
+      let explanation = '';
+      if (currentQuestion.id === 'austrian_58c_1') {
+        explanation = `${username}unfortunately you are not eligible for Austrian citizenship under §58c because your ancestor did not live in Austria (as it is today) before 1955.`;
+      } else if (currentQuestion.id === 'austrian_58c_2') {
+        explanation = `${username}unfortunately you are not eligible for Austrian citizenship under §58c because your ancestor was not an Austrian citizen, stateless, or from a country that was part of Austria-Hungary.`;
+      } else if (currentQuestion.id === 'austrian_58c_3') {
+        explanation = `${username}unfortunately you are not eligible for Austrian citizenship under §58c because your ancestor was not in danger from the Nazis or did not flee Austria due to persecution.`;
+      }
+      setFormState((prev) => ({ ...prev, answers: newAnswers }));
+      navigate('/results', {
+        state: {
+          eligible: false,
+          eligibleSections: [],
+          answers: newAnswers,
+          explanation,
+        },
       });
       return;
     }

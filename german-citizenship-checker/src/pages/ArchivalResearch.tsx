@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Container, Button, Divider, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Typography, Container, Button, useTheme, useMediaQuery } from '@mui/material';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
@@ -69,24 +69,18 @@ const ArchivalResearch = () => {
           <Typography variant="h3" fontWeight={700} mb={6} sx={{ color: 'white', textAlign: 'center' }}>
             Archival Research
           </Typography>
-          <Divider sx={{ mb: 6, mx: 'auto', width: 80, borderColor: 'primary.main', opacity: 0.5 }} />
           <Typography variant="h5" fontWeight={600} mb={5} sx={{ color: 'white', textAlign: 'center' }}>
             Are you exploring the possibility of reclaiming German or Austrian citizenship?
           </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'center' }} mb={5}>
-            Our internal archival research team is designated to help you uncover the historical evidence needed to support your citizenship claim under:
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
+            Our internal archival research team is designated to help you uncover the historical evidence needed to support your citizenship process.
           </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: '#7ecbff', fontWeight: 600, textAlign: 'center' }} mb={4}>
-            §116, §15, and §5 of the German Nationality Act<br />
-            §58c of the Austrian Citizenship Act
-          </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'center' }} mb={5}>
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
             Whether you're just beginning your journey or have already gathered partial information, our team of German-speaking archival researchers is here to assist. With over three years of focused experience in German and Austrian citizenship law, we understand the challenges and intricacies of tracing family records through decades of history, war, migration, and persecution.
           </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'center' }} mb={5}>
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
             Using advanced research tools, exclusive access to digital archives, and multilingual expertise, we are often able to determine a client's eligibility within just one business day—even with minimal starting information, such as only the name and birthdate of a persecuted ancestor.
           </Typography>
-          <Divider sx={{ my: 6, mx: 'auto', width: 60, borderColor: 'primary.light', opacity: 0.5 }} />
           <Typography variant="h5" fontWeight={600} mb={4} sx={{ color: 'white', textAlign: 'center' }}>
             What We Offer:
           </Typography>
@@ -151,10 +145,10 @@ const ArchivalResearch = () => {
               </Box>
             ))}
           </Box>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'center' }} mb={5}>
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
             We take pride in our <b>80% success rate</b> in identifying eligibility quickly and accurately. Our team has helped hundreds of families reconnect with their roots and reclaim citizenship that was unjustly stripped during the Nazi era or post-war period.
           </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'center' }} mb={5}>
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
             By choosing us, you're not only gaining access to expertise—you're working with a team that cares about history, justice, and restoring what was once taken away.
           </Typography>
           <Typography variant="h6" fontWeight={700} sx={{ color: '#7ecbff', textAlign: 'center' }} mb={6}>

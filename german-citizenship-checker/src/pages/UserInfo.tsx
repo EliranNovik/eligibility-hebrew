@@ -5,8 +5,8 @@ import Header from '../components/Header';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import type { FormState } from '../types';
 
-const AVATARS = ['/Avatar1.png'];
-const CHAT_TEXT = "Welcome! Please share your name and email so we can guide you through the process.";
+const AVATAR_SRC = '/MDPIC.jpg';
+const CHAT_TEXT = "Hi, I am Michael Decker. I welcome you to our Eligibility Checker. Please share your name and email so I can guide you through the process.";
 
 interface UserInfoProps {
   formState: FormState;
@@ -15,7 +15,6 @@ interface UserInfoProps {
 
 const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
   // Pick a random avatar on mount
-  const avatar = useMemo(() => AVATARS[Math.floor(Math.random() * AVATARS.length)], []);
   const [showInputs, setShowInputs] = useState(false);
   const [typedText, setTypedText] = useState('');
   const [name, setName] = useState('');
@@ -105,7 +104,7 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
       }}>
         <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-            <Avatar src={avatar} sx={{ width: 72, height: 72, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
+            <Avatar src={AVATAR_SRC} sx={{ width: 120, height: 120, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
             <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 340, minHeight: 56, textAlign: 'center', mb: 0 }}>
               {typedText}
             </Box>

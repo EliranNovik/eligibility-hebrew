@@ -241,7 +241,8 @@ const Intro = () => {
                     textAlign: 'justify',
                     hyphens: 'auto'
                   }}>
-                    At Decker Pex Levi Law Offices, we specialize in German and Austrian citizenship law. Our expertise covers cases based on family heritage and historical circumstances, including those where ancestors were not citizens of these countries. We assist clients whose relatives were persecuted, displaced, or affected by past regimes, as well as those with ancestral connections qualifying under current nationality laws.
+At Decker, Pex, Levi Law Offices, we provide expert legal guidance in the field of German and Austrian citizenship law. Our team specializes in assisting clients with claims based on ancestry, heritage, and historical injustices—including cases where family members were persecuted, displaced, or stripped of their rights under former regimes. Even if your ancestors were not officially recognized as citizens, current nationality laws may still offer a pathway to reclaim citizenship, and we are here to navigate that process with you. <br /><br />
+With decades of combined experience and a multilingual, client-centered approach, our firm has become a trusted name in immigration and nationality law. While our leading focus is on German and Austrian citizenship, we also provide legal support in related areas such as Israeli immigration, foreign visas, and dual nationality matters. Whether you're restoring a lost connection to your family's past or planning for a new future abroad, Decker, Pex, Levi is here to help—with professionalism, dedication, and personal care.
                   </Typography>
                 </Box>
 
@@ -288,8 +289,9 @@ const Intro = () => {
                     textAlign: 'justify',
                     hyphens: 'auto'
                   }}>
-Our eligibility checker is a quick and user-friendly tool designed to help you find out if you may qualify for German or Austrian citizenship. Simply answer a short series of straightforward questions based on your family history and personal background. Within minutes, you’ll receive a personalized eligibility assessment—no paperwork or legal knowledge required.
+Our eligibility checker is a quick and user-friendly tool designed to help you find out if you may qualify for German or Austrian citizenship. Simply answer a short series of straightforward questions based on your family history and personal background. Within minutes, you'll receive a personalized eligibility assessment—no paperwork or legal knowledge required.
 </Typography>
+                  <Box sx={{ mb: 4 }} />
                   <Box sx={{ 
                     display: 'flex', 
                     gap: 3, 
@@ -321,6 +323,18 @@ Our eligibility checker is a quick and user-friendly tool designed to help you f
                       </Typography>
                     </Box>
                   </Box>
+                  <Box sx={{ mb: 4 }} />
+                  <Typography variant="h6" sx={{ 
+                    color: 'white', 
+                    fontWeight: 700, 
+                    mb: 2, 
+                    letterSpacing: 1,
+                    fontSize: 20,
+                    textAlign: 'center',
+                    width: '100%'
+                  }}>
+                    What Happens Next?
+                  </Typography>
                   <Typography variant="body1" sx={{ 
                     color: 'rgba(255,255,255,0.92)', 
                     fontWeight: 500, 
@@ -330,7 +344,7 @@ Our eligibility checker is a quick and user-friendly tool designed to help you f
                     textAlign: 'justify',
                     hyphens: 'auto'
                   }}>
-Once you complete the checker, you’ll have the opportunity to schedule a free consultation with one of our citizenship experts. If your case shows potential, we’ll conduct express archival research to gather supporting evidence and give you the clearest path forward. Our goal is to help you unlock your eligibility as efficiently and accurately as possible—with minimal hassle and maximum support.                  </Typography>
+Once you complete the checker, you'll have the opportunity to schedule a free consultation with one of our citizenship experts. If your case shows potential, we'll conduct express archival research to gather supporting evidence and give you the clearest path forward. Our goal is to help you unlock your eligibility as efficiently and accurately as possible—with minimal hassle and maximum support.                  </Typography>
                 </Box>
               </Box>
             </Box>

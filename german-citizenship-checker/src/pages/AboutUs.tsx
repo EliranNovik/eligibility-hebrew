@@ -66,7 +66,7 @@ Decker, Pex, Levi Law Offices is a dynamic and respected Israeli law firm with o
               p: { xs: 3, sm: 4 },
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               mb: { xs: 4, md: 0 },
             }}>
               <Typography variant="h5" fontWeight={700} mb={2} sx={{ color: titleColor, textAlign: 'left' }}>
@@ -95,7 +95,7 @@ A core focus of our practice is assisting clients in reclaiming German and Austr
               p: { xs: 3, sm: 4 },
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
             }}>
               <Typography variant="h5" fontWeight={700} mb={2} sx={{ color: titleColor, textAlign: 'left' }}>
                 What We Do
@@ -107,7 +107,7 @@ A core focus of our practice is assisting clients in reclaiming German and Austr
                 In addition to European citizenship services, we provide legal counsel in:
               </Typography>
               <Box sx={{ textAlign: 'left', display: 'inline-block', mx: 'auto', mb: 2 }}>
-                <ul style={{ fontSize: 18, color: '#7ecbff', fontWeight: 500, margin: 0, paddingLeft: 24 }}>
+                <ul style={{ fontSize: 21, color: '#7ecbff', fontWeight: 500, margin: 0, paddingLeft: 24 }}>
                   <li>Immigration law (Aliyah, visas, naturalization)</li>
                   <li>Israeli administrative law</li>
                   <li>Family law and inheritance matters</li>

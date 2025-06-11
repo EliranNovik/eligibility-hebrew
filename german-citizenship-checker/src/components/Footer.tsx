@@ -87,7 +87,7 @@ const Footer: React.FC<FooterProps> = ({ showContactButtons }) => {
               </Box>
             </a>
             <a
-              href="tel:+97226500000"
+              href="tel:+972503489649"
               style={{ textDecoration: 'none' }}
             >
               <Box
