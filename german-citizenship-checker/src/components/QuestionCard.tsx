@@ -314,6 +314,34 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             </Box>
           )}
 
+          {/* Note for german_116_3 */}
+          {question.id === 'german_116_3' && (
+            <Box sx={{
+              background: 'rgba(67, 233, 123, 0.18)',
+              color: '#232946',
+              borderRadius: 2,
+              p: 2,
+              mb: 2,
+              fontSize: 15,
+              fontWeight: 500,
+              boxShadow: 1,
+              borderLeft: '4px solid #43e97b',
+              mx: 'auto',
+              maxWidth: '100%'
+            }}>
+              Examples of Nazi-controlled territories:<br />
+              <ul style={{ margin: 0, paddingLeft: 18 }}>
+                <li>Danzig (Gdańsk)</li>
+                <li>Memel (Klaipėda)</li>
+                <li>Sudetenland</li>
+                <li>Königsberg / Kaliningrad</li>
+                <li>Schlesien (Silesia)</li>
+                <li>Austria (after 1938)</li>
+                <li>German-occupied areas (Poland, France, etc.)</li>
+              </ul>
+            </Box>
+          )}
+
           {/* Answer Options */}
           {question.type === 'yesNo' && (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto' }}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, Paper, Container, styled, Avatar, Fade, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Box, Typography, Button, Paper, Container, styled, Avatar, Fade, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -82,6 +82,7 @@ async function saveEligibilityResult(section: string, additionalInfo?: any) {
 
 const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showContactForm, setShowContactForm] = useState(false);
   const [contactFormType, setContactFormType] = useState<'positive' | 'negative' | null>(null);
   const [typedText, setTypedText] = useState('');
@@ -105,246 +106,199 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
   }
 
   const analyzeEligibility = () => {
-    const answers = formState.answers;
-    const countryAnswer = answers.find(a => a.questionId === 'country_selection');
-    const selectedCountry = countryAnswer?.value as string;
-    
-    if (!selectedCountry) {
+    const location = useLocation();
+    const { eligible, eligibleSections, assessmentNeeded, answers } = location.state || {};
+
+    // Austrian citizenship logic
+    const austrian1 = answers && answers.find((a: { questionId: string }) => a.questionId === 'austrian_58c_1');
+    const austrian2 = answers && answers.find((a: { questionId: string }) => a.questionId === 'austrian_58c_2');
+    const austrian3 = answers && answers.find((a: { questionId: string }) => a.questionId === 'austrian_58c_3');
+    const austrian4 = answers && answers.find((a: { questionId: string }) => a.questionId === 'austrian_58c_4');
+    if (austrian1 && austrian2 && austrian3 && austrian4) {
+      // Only allow positive if relation is Child, Grandchild, Great-grandchild, or Further descendant
+      if (["Child", "Grandchild", "Great-grandchild", "Further descendant"].includes(austrian4.value)) {
+        return {
+          eligible: true,
+          message: "You are eligible for Austrian citizenship under §58c. All required conditions are met.",
+          sections: ['§58c']
+        };
+      } else {
+        return {
+          eligible: false,
+          message: "You are not eligible for Austrian citizenship because you are not a direct descendant of the ancestor.",
+          sections: []
+        };
+      }
+    }
+
+    // If the user selected 'Not directly related' for german_5_relation, always return negative result
+    if (answers && answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_5_relation' && a.value === 'Not directly related')) {
       return {
-        isEligible: false,
-        explanation: 'Please complete the questionnaire to check your eligibility.',
+        eligible: false,
+        message: "You are not eligible for German citizenship under §5 StAG because you are not directly related to the ancestor.",
+        sections: []
       };
     }
 
-    // Check for "not sure" answers
-    const notSureAnswers = answers.filter(a => a.value === 'not_sure');
-    if (notSureAnswers.length > 0) {
-      // Get the first "not sure" answer's question ID
-      const firstNotSureQuestionId = notSureAnswers[0].questionId;
-
-      // Special case for German citizenship before 1933 question
-      if (firstNotSureQuestionId === 'german_116_2') {
-        return {
-          isEligible: false,
-          eligibleSections: ['§15'],
-          explanation: `You may be eligible under §15!\n\nBased on your answers, there is a real possibility that you qualify for citizenship under this section.\n\nHowever, some of your responses require a more detailed review by our legal experts to ensure you receive the most accurate advice for your unique situation.\n\nOur Lawyers team at Decker Pex Levi will be happy to assess your case and guide you through the next steps.`,
-          notSure: true,
-          closeSection: '§15'
-        };
+    // Section 5 result logic (should be before §116/§15 logic)
+    const section5Ancestor = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_5_earliest_ancestor');
+    const section5Relation = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_5_relation');
+    if (section5Ancestor && section5Relation && section5Relation.value !== 'Not directly related') {
+      let category = '';
+      let lawCategory = '';
+      let explanation = '';
+      // Category 2: Mother lost citizenship by marriage to a foreigner before April 1, 1953
+      const motherLostCitizenship = answers.find(
+        (a: { questionId: string; value: string }) =>
+          a.questionId === 'german_5_mother_q5' && a.value === 'yes'
+      );
+      // Category 3: Lost by legitimization by foreign father before April 1, 1953
+      const lostByLegitimization = answers.find(
+        (a: { questionId: string; value: string }) =>
+          a.questionId === 'german_5_mother_q6' && a.value === 'yes'
+      );
+      if (motherLostCitizenship) {
+        category = '2';
+        lawCategory = 'Category 2: Children whose German mother had lost German citizenship through marriage to a foreigner prior to April 1st 1953 pursuant to Section 17 (6) of the Reich and Nationality Act (old version)';
+        explanation = 'You are eligible for German citizenship under §5 StAG.';
+      } else if (lostByLegitimization) {
+        category = '3';
+        lawCategory = 'Category 3: Children who lost their German nationality acquired by birth through legitimization by their foreign father prior to April 1st 1953 and valid under German law pursuant to Section 17 (5) of the Reich and Nationality Act (old Version)';
+        explanation = 'You are eligible for German citizenship under §5 StAG.';
+      } else if (section5Ancestor.value === 'Mother' || section5Ancestor.value === 'Father') {
+        category = '1';
+        lawCategory = 'Category 1: Children born to a German parent who did not acquire German nationality by birth (children born in wedlock prior to January 1st 1975 to a German mother and a foreign father or children born out of wedlock prior to July 1st 1993 to a German father and a foreign mother)';
+        explanation = 'You are eligible for German citizenship under §5 StAG.';
+      } else if (section5Ancestor.value === 'Grandparent' || section5Ancestor.value === 'Great-grandparent') {
+        category = '4';
+        lawCategory = 'Category 4: Descendants of the above-mentioned children';
+        explanation = 'You are eligible for German citizenship under §5 StAG.';
+      } else {
+        category = '';
+        lawCategory = '';
+        explanation = 'You are eligible for German citizenship under §5 StAG based on your family history.';
       }
-
-      // If the first "not sure" is in section 5 questions
-      if (firstNotSureQuestionId.startsWith('german_5')) {
-        return {
-          isEligible: false,
-          eligibleSections: ['§5'],
-          explanation: `You may be eligible under §5!\n\nBased on your answers, there is a real possibility that you qualify for citizenship under this section.\n\nHowever, some of your responses require a more detailed review by our legal experts to ensure you receive the most accurate advice for your unique situation.\n\nOur Lawyers team at Decker Pex Levi will be happy to assess your case and guide you through the next steps.`,
-          notSure: true,
-          closeSection: '§5'
-        };
-      }
-      
-      // If "not sure" appears in §116 or §15 questions (except for german_116_2)
-      if (firstNotSureQuestionId.startsWith('german_116') || firstNotSureQuestionId.startsWith('german_15')) {
-        const section = firstNotSureQuestionId.startsWith('german_116') ? '§116' : '§15';
-        return {
-          isEligible: false,
-          eligibleSections: [section],
-          explanation: `You may be eligible under ${section}!\n\nBased on your answers, there is a real possibility that you qualify for citizenship under this section.\n\nHowever, some of your responses require a more detailed review by our legal experts to ensure you receive the most accurate advice for your unique situation.\n\nOur Lawyers team at Decker Pex Levi will be happy to assess your case and guide you through the next steps.`,
-          notSure: true,
-          closeSection: section
-        };
-      }
-
-      // For Austrian citizenship
-      if (firstNotSureQuestionId.startsWith('austrian_58c')) {
-        return {
-          isEligible: false,
-          eligibleSections: ['§58c'],
-          explanation: `You may be eligible under §58c!\n\nBased on your answers, there is a real possibility that you qualify for Austrian citizenship under this section.\n\nHowever, some of your responses require a more detailed review by our legal experts to ensure you receive the most accurate advice for your unique situation.\n\nOur Lawyers team at Decker Pex Levi will be happy to assess your case and guide you through the next steps.`,
-          notSure: true,
-          closeSection: '§58c'
-        };
-      }
+      return {
+        eligible: true,
+        message: explanation,
+        sections: ['§5'],
+        category,
+        lawCategory
+      };
     }
 
-    let explanation = '';
-    let isEligible = false;
-    let eligibleSections: string[] = [];
+    // If the user selected 'Not directly related' for german_15_5, always return negative result
+    if (answers && answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_15_5' && a.value === 'Not directly related')) {
+      return {
+        eligible: false,
+        message: "You are not eligible because you are not directly related to the ancestor.",
+        sections: []
+      };
+    }
 
-    if (selectedCountry === 'Germany') {
-      // New Section 5 Analysis Logic
-      const ancestorAnswer = answers.find(a => a.questionId === 'german_5_earliest_ancestor');
-      if (ancestorAnswer) {
-        let pathIds: string[] = [];
-        if (ancestorAnswer.value === 'Mother') {
-          pathIds = questions.filter(q => q.id.startsWith('german_5_mother_q')).map(q => q.id);
-        } else if (ancestorAnswer.value === 'Father') {
-          pathIds = questions.filter(q => q.id.startsWith('german_5_father_q')).map(q => q.id);
-        } else if (ancestorAnswer.value === 'Grandparent') {
-          const gp1 = answers.find(a => a.questionId === 'german_5_grandparent_q1');
-          const gp2 = answers.find(a => a.questionId === 'german_5_grandparent_q2');
-          if (gp1 && gp2) {
-            if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
-              pathIds = questions.filter(q => q.id.startsWith('german_5_grandfather_mother_father_q')).map(q => q.id);
-            } else if (gp1.value === 'Grandfather' && gp2.value === "My dad's parent") {
-              pathIds = questions.filter(q => q.id.startsWith('german_5_grandfather_father_father_q')).map(q => q.id);
-            } else if (gp1.value === 'Grandmother' && gp2.value === "My mom's parent") {
-              pathIds = questions.filter(q => q.id.startsWith('german_5_grandmother_mother_mother_q')).map(q => q.id);
-            } else if (gp1.value === 'Grandmother' && gp2.value === "My dad's parent") {
-              pathIds = questions.filter(q => q.id.startsWith('german_5_grandmother_father_mother_q')).map(q => q.id);
-            }
-          }
-        } else if (ancestorAnswer.value === 'Great-grandparent') {
-          pathIds = questions.filter(q => q.id.startsWith('german_5_greatgrandparent_q')).map(q => q.id);
-        }
-        if (pathIds.length > 0) {
-          const pathAnswers = pathIds
-            .map(id => answers.find(a => a.questionId === id))
-            .filter((a): a is { questionId: string; value: string | boolean } => !!a);
-          if (pathAnswers.some(a => a && a.value === 'no')) {
-            return {
-              isEligible: false,
-              eligibleSections: ['§5'],
-              explanation: 'Based on your answers, you are not eligible for German citizenship under §5. One or more answers indicate ineligibility.'
-            };
-          }
-          if (pathAnswers.some(a => a && a.value === 'not_sure')) {
-            return {
-              isEligible: false,
-              eligibleSections: ['§5'],
-              explanation: 'Some of your answers require further assessment. Please consult with a legal expert for a detailed review.',
-              notSure: true,
-              closeSection: '§5'
-            };
-          }
-          if (pathAnswers.length === pathIds.length && pathAnswers.every(a => a && a.value === 'yes')) {
-            // Determine Section 5 category and explanation
-            let category = '';
-            let categoryExplanation = '';
-            if (ancestorAnswer.value === 'Mother') {
-              category = 'Category 1';
-              categoryExplanation = 'No acquisition from German mother (born between 1949-1974)';
-            } else if (ancestorAnswer.value === 'Father') {
-              category = 'Category 2';
-              categoryExplanation = 'No acquisition from German father (born between 1949-1993)';
-            } else if (ancestorAnswer.value === 'Grandparent') {
-              const gp1 = answers.find(a => a.questionId === 'german_5_grandparent_q1');
-              const gp2 = answers.find(a => a.questionId === 'german_5_grandparent_q2');
-              if (gp1 && gp2) {
-                if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
-                  category = 'Category 2';
-                  categoryExplanation = 'No acquisition from German father (born between 1949-1993)';
-                } else if (gp1.value === 'Grandfather' && gp2.value === "My dad's parent") {
-                  category = 'Category 2';
-                  categoryExplanation = 'No acquisition from German father (born between 1949-1993)';
-                } else if (gp1.value === 'Grandmother' && gp2.value === "My mom's parent") {
-                  category = 'Category 1';
-                  categoryExplanation = 'No acquisition from German mother (born between 1949-1974)';
-                } else if (gp1.value === 'Grandmother' && gp2.value === "My dad's parent") {
-                  category = 'Category 1';
-                  categoryExplanation = 'No acquisition from German mother (born between 1949-1974)';
-                }
-              }
-            } else if (ancestorAnswer.value === 'Great-grandparent') {
-              category = 'Category 5';
-              categoryExplanation = 'Descendant of eligible parent';
-            }
-            return {
-              isEligible: true,
-              eligibleSections: ['§5'],
-              explanation: `You appear to be eligible for German citizenship under §5 (Correction of historical discrimination).\n\n${category ? `\n${category}: ${categoryExplanation}` : ''}`
-            };
-          }
-        }
-      }
+    // If no state is provided, return default not eligible state
+    if (!location.state) {
+      return {
+        eligible: false,
+        message: "Please complete the questionnaire to check your eligibility.",
+        sections: []
+      };
+    }
 
-      // Continue with existing §116 and §15 logic
-      if (!isEligible) {
-        const jewishAnswer = answers.find(a => a.questionId === 'german_116_1');
-        const citizenAnswer = answers.find(a => a.questionId === 'german_116_2');
-        const livedInGermany = answers.find(a => a.questionId === 'german_116_3');
-        const centerOfLife = answers.find(a => a.questionId === 'german_116_4');
-        const emigrated = answers.find(a => a.questionId === 'german_116_5');
-        const relationAnswer = answers.find(a => a.questionId === 'german_116_6');
-
-        // If they were a German citizen, check §116 eligibility
-        if (citizenAnswer?.value === 'yes') {
-          if (jewishAnswer?.value === 'yes' && 
-              livedInGermany?.value === 'yes' && 
-              centerOfLife?.value === 'yes' && 
-              emigrated?.value === 'yes' && 
-              relationAnswer?.value) {
-            isEligible = true;
-            eligibleSections.push('§116');
-            explanation += 'You appear to be eligible for German citizenship under §116 (Restoration of citizenship to victims of Nazi persecution).\n\n';
-          }
-        }
-        // If they were NOT a German citizen, check §15 eligibility
-        else if (citizenAnswer?.value === 'no') {
-          const german15Answers = answers.filter(a => a.questionId.startsWith('german_15'));
-          const isGerman15Eligible = german15Answers.every(a => {
-            if (a.questionId === 'german_15_5') {
-              return a.value !== undefined && a.value !== '';
-            }
-            return a.value === 'yes';
-          });
-          
-          if (isGerman15Eligible) {
-            isEligible = true;
-            eligibleSections.push('§15');
-            explanation += 'You appear to be eligible for German citizenship under §15 (Naturalization of descendants of persecuted residents).\n\n';
-          }
-        }
-      }
-    } else if (selectedCountry === 'Austria') {
-      // Existing Austrian citizenship logic
-      const austrian58c1 = answers.find(a => a.questionId === 'austrian_58c_1');
-      const austrian58c2 = answers.find(a => a.questionId === 'austrian_58c_2');
-      const austrian58c3 = answers.find(a => a.questionId === 'austrian_58c_3');
-      const austrian58c4 = answers.find(a => a.questionId === 'austrian_58c_4');
-      const validRelations = ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'];
-
-      // Check if any answer is "no"
-      if (austrian58c1?.value === 'no' || austrian58c2?.value === 'no' || austrian58c3?.value === 'no') {
-        isEligible = false;
-        explanation = 'Based on your answers, you are not eligible for Austrian citizenship under §58c. To be eligible, your ancestor must have lived in Austria before 1955, been a citizen of one of the listed countries, and been in danger from the Nazis.';
+    // If we have answers but they're incomplete, stay on the current page
+    if (answers && answers.length > 0) {
+      // Check for §116 eligibility: all 116 questions are 'yes', or 116_4 is 'no' and 116_4a is 'yes'
+      const a1 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_1');
+      const a2 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_2');
+      const a3 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_3');
+      const a4 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_4');
+      const a4a = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_4a');
+      if (
+        a1 && a1.value === 'yes' &&
+        a2 && a2.value === 'yes' &&
+        (!a3 || a3.value === 'yes') &&
+        (
+          (a4 && a4.value === 'yes' && (!a4a || a4a.value === 'yes')) ||
+          (a4 && a4.value === 'no' && a4a && a4a.value === 'yes')
+        )
+      ) {
         return {
-          isEligible,
-          eligibleSections: [],
-          explanation,
+          eligible: true,
+          message: "You are eligible for German citizenship under §116 StAG. All required conditions are met.",
+          sections: ['§116']
+        };
+      }
+      // If user clicked 'no' on 116_2, and the rest are yes, eligible for §15
+      if (
+        a1 && a1.value === 'yes' &&
+        a2 && a2.value === 'no' &&
+        (!a3 || a3.value === 'yes') &&
+        a4 && a4.value === 'yes' &&
+        (!a4a || a4a.value === 'yes')
+      ) {
+        return {
+          eligible: true,
+          message: "You are eligible for German citizenship under §15 StAG. Your ancestor was not a German citizen, but all other conditions are met.",
+          sections: ['§15']
+        };
+      }
+      if (assessmentNeeded) {
+        return {
+          eligible: true,
+          message: "You may be eligible for German citizenship under §15, but an assessment is needed.",
+          sections: ['§15'],
+          assessmentNeeded: true
+        };
+      }
+      if (eligible) {
+        return {
+          eligible: true,
+          message: "You are eligible for German citizenship!",
+          sections: eligibleSections || []
         };
       }
 
-      const isAustrian58cEligible =
-        austrian58c1?.value === 'yes' &&
-        austrian58c2?.value === 'yes' &&
-        austrian58c3?.value === 'yes' &&
-        austrian58c4 &&
-        validRelations.includes(String(austrian58c4.value));
+      // Negative explanation logic
+      let negativeReason = "";
+      const no116_1 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_1' && a.value === 'no');
+      const no116_2 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_2' && a.value === 'no');
+      const no116_3 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_3' && a.value === 'no');
+      const no116_4 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_4' && a.value === 'no');
+      const no116_4a = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_4a' && a.value === 'no');
+      const no15_5 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_15_5' && a.value === 'Not directly related');
 
-      if (isAustrian58cEligible) {
-        isEligible = true;
-        eligibleSections.push('§58c');
-        explanation += 'You appear to be eligible for Austrian citizenship under §58c (Descendants of victims of Nazi persecution).\n\n';
+      if (no116_1) negativeReason = "You are not eligible because your ancestor was not persecuted by the Nazi regime.";
+      else if (no116_2) negativeReason = "You are not eligible because your ancestor was not a German citizen before or during the Nazi era.";
+      else if (no116_3) negativeReason = "You are not eligible because your ancestor was not a resident of Germany or Nazi-controlled territory at the relevant time.";
+      else if (no116_4) negativeReason = "You are not eligible because your ancestor did not flee due to persecution between 1933 and 1945.";
+      else if (no116_4a) negativeReason = "You are not eligible because your ancestor did not leave Germany (or Nazi-controlled territory) between 1926 and 1933.";
+      else if (no15_5) negativeReason = "You are not eligible because you are not directly related to the ancestor.";
+
+      // Use explanation from navigation state if present
+      if (location.state && location.state.explanation) {
+        negativeReason = location.state.explanation;
       }
+
+      return {
+        eligible: false,
+        message: negativeReason || "Based on your answers, you are not eligible for German citizenship.",
+        sections: []
+      };
     }
 
-    if (!isEligible && !explanation) {
-      explanation = `Based on your answers, you may not be eligible for automatic ${selectedCountry} citizenship restoration. However, we recommend consulting with a legal expert for a detailed assessment of your specific case.`;
-    }
-
+    // If we have no answers at all, redirect to questions
+    navigate('/questions');
     return {
-      isEligible,
-      eligibleSections,
-      explanation,
+      eligible: false,
+      message: "Please complete the questionnaire to check your eligibility.",
+      sections: []
     };
   };
 
   const result = analyzeEligibility();
 
   useEffect(() => {
-    if (result.isEligible && !showContactForm) {
+    if (result.eligible && !showContactForm) {
       setTypedText('');
       let i = 0;
       function typeNext() {
@@ -359,19 +313,19 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
       };
     }
-  }, [result.isEligible, showContactForm]);
+  }, [result.eligible, showContactForm]);
 
   useEffect(() => {
     // Save eligibility result to Supabase only once per check
-    if (result && typeof result.isEligible !== 'undefined' && result.eligibleSections && result.eligibleSections.length > 0) {
+    if (result && typeof result.eligible !== 'undefined' && result.sections && result.sections.length > 0) {
       if (!window.__eligibilitySaved) {
         window.__eligibilitySaved = true;
-        result.eligibleSections.forEach(async section => {
+        result.sections.forEach(async (section: string) => {
           const { data, error } = await supabase.from('eligibility_results').insert([
             {
               eligible_section: section,
-              is_eligible: result.isEligible,
-              explanation: result.explanation || null,
+              is_eligible: result.eligible,
+              explanation: result.message || null,
               user_data: formState.userData || null,
             }
           ]);
@@ -443,6 +397,9 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
     document.body.removeChild(link);
   };
 
+  // Always return to the first question (country selection)
+  const returnToStep = 0;
+
   return (
     <>
       <Header showBackButton onBack={() => navigate('/questions')} />
@@ -472,6 +429,44 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
         }
       }}>
         <Container maxWidth="md" sx={{ py: 1, mt: 0, position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
+          {/* Custom Back Button */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2, mt: 2, ml: { xs: 2, sm: 4 } }}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<ArrowBackIcon sx={{ fontSize: 28 }} />}
+              onClick={() => {
+                setFormState({
+                  answers: [],
+                  currentStep: 0,
+                  userData: {
+                    fullName: '',
+                    email: '',
+                    phone: '',
+                    comments: '',
+                  },
+                });
+                navigate('/questions');
+              }}
+              sx={{
+                borderRadius: 999,
+                px: 3,
+                py: 1.5,
+                fontWeight: 700,
+                fontSize: 18,
+                background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                color: '#fff',
+                boxShadow: '0 4px 20px rgba(100, 108, 255, 0.2)',
+                minWidth: 0,
+                transition: 'all 0.2s',
+                '&:hover': {
+                  background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                },
+              }}
+            >
+              Back to Citizenship Selection
+            </Button>
+          </Box>
           {/* Group assessment and contact form in a single card */}
           <Paper elevation={6} sx={{
             width: '100%',
@@ -489,10 +484,10 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
           }}>
             {showContactForm ? (
               // Show positive contact form for positive results, or if user chose 'Proceed with Archival Research' after negative
-              (result.isEligible || contactFormType === 'positive') ? (
+              (result.eligible || contactFormType === 'positive') ? (
                 <Box width="100%" mt={3}>
                   <ContactFormPositive
-                    eligibleSections={result.eligibleSections || []}
+                    eligibleSections={result.sections || []}
                     onSuccess={handleContactSuccess}
                     userData={formState.userData}
                     formState={formState}
@@ -510,10 +505,10 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
             ) : (
               <>
                 {/* Special case: not_sure */}
-                {result.notSure && (
+                {result.assessmentNeeded && (
                   <>
                     <Box sx={{
-                      background: result.closeSection ? 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)' : 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)',
+                      background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
                       color: '#232946',
                       borderRadius: 3,
                       p: 4,
@@ -523,10 +518,10 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                       mb: 0,
                     }}>
                       <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#232946' }}>
-                        {result.closeSection ? `You may be eligible under ${result.closeSection}!` : 'You may be eligible!'}
+                        {result.message}
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 2, whiteSpace: 'pre-line' }}>
-                        {result.explanation.replace(/^You may be eligible under .*?!\n\n|^You may be eligible!\n\n/, '')}
+                        {result.message.replace(/^You may be eligible under .*?!\n\n|^You may be eligible!\n\n/, '')}
                       </Typography>
                       <Button
                         variant="contained"
@@ -555,7 +550,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                   </>
                 )}
                 {/* Usual results logic */}
-                {!result.notSure && result.isEligible && (
+                {!result.assessmentNeeded && result.eligible && (
                   <>
                     <CongratsCard ref={congratsCardRef} sx={{ width: '100%', mb: 2 }}>
                       <CelebrationIcon sx={{ fontSize: 48, mb: 1 }} />
@@ -563,8 +558,25 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                         {`Congratulations${formState.userData.fullName ? ` ${formState.userData.fullName}` : ''}!`}
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 1, whiteSpace: 'pre-line', textAlign: 'center' }}>
-                        {result.explanation}
+                        {result.message}
                       </Typography>
+                      {result.lawCategory && (
+                        <Box sx={{
+                          mt: 2,
+                          background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
+                          color: '#232946',
+                          borderRadius: 2,
+                          px: 2,
+                          py: 1,
+                          fontWeight: 600,
+                          fontSize: 15,
+                          display: 'inline-block',
+                          boxShadow: 1,
+                          border: '1px solid #232946',
+                        }}>
+                          {result.lawCategory}
+                        </Box>
+                      )}
                     </CongratsCard>
                     <Box sx={{
                       display: 'flex',
@@ -656,10 +668,15 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                         </Button>
                       </Box>
                     </Box>
+                    {result.assessmentNeeded && (
+                      <Alert severity="info" sx={{ mt: 2, mb: 2 }}>
+                        A detailed assessment of your case is recommended to determine your exact eligibility.
+                      </Alert>
+                    )}
                   </>
                 )}
                 {/* Negative result: show choice before contact form */}
-                {!result.notSure && !result.isEligible && (
+                {!result.eligible && (
                   <>
                     <Box sx={{
                       background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
@@ -682,36 +699,12 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                         fontSize: 18,
                         lineHeight: 1.6
                       }}>
-                        {result.explanation}
+                        {result.message}
                       </Typography>
                     </Box>
                     {/* Choice buttons before contact form */}
                     {contactFormType === null && (
                       <Box sx={{ width: '100%', mt: 4, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, alignItems: 'center', justifyContent: 'center' }}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="large"
-                          sx={{
-                            fontWeight: 700,
-                            fontSize: 18,
-                            borderRadius: 3,
-                            background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                            color: '#232946',
-                            boxShadow: '0 4px 20px rgba(67,233,123,0.10)',
-                            px: 4,
-                            py: 2,
-                            '&:hover': {
-                              background: 'linear-gradient(90deg, #38f9d7 0%, #43e97b 100%)',
-                            },
-                          }}
-                          onClick={() => {
-                            setContactFormType('positive');
-                            setShowContactForm(true);
-                          }}
-                        >
-                          Proceed with Archival Research
-                        </Button>
                         <Button
                           variant="contained"
                           color="secondary"
@@ -732,6 +725,14 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                           onClick={() => {
                             setContactFormType('negative');
                             setShowContactForm(true);
+                            navigate('/contact', {
+                              state: {
+                                eligible: false,
+                                eligibleSections: result.sections || [],
+                                answers: formState.answers,
+                                explanation: result.message,
+                              }
+                            });
                           }}
                         >
                           I wish to be contacted by a representative

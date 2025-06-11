@@ -21,69 +21,69 @@ export const questions: Question[] = [
   },
   {
     id: 'german_116_2',
-    text: 'Did your ancestor hold German citizenship before 1933?',
+    text: 'Was your ancestor a German citizen — either before or during the Nazi era?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
     id: 'german_116_3',
-    text: 'Did your ancestor live in Germany before 1933?',
+    text: 'Was your ancestor a resident of Germany (within current borders) or of a territory under Nazi control at the time — even if they held foreign citizenship?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
     id: 'german_116_4',
-    text: 'Did your ancestor have their center of life in Germany (e.g., work, school, permanent residence)?',
+    text: 'Did your ancestor flee due to persecution between 1933 and 1945?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
-    id: 'german_116_5',
-    text: 'Did your ancestor or close relatives emigrate due to persecution after 1933?',
+    id: 'german_116_4a',
+    text: 'Did your ancestor leave Germany (or Nazi-controlled territory) between 1926 and 1933?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
-  {
-    id: 'german_116_6',
-    text: 'What is your relation to that ancestor?',
-    type: 'dropdown',
-    options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'],
-    section: 'german_116',
-    required: true
-  },
+  //{
+    //id: 'german_116_6',
+    //text: 'What is your relation to that ancestor?',
+    //type: 'dropdown',
+   // options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'],
+   // section: 'german_116',
+   // required: true
+  //},
 
   // German Citizenship - §15 StAG
-  {
-    id: 'german_15_1',
-    text: 'Was your ancestor NOT a German citizen before 1933?',
-    type: 'yesNo',
-    section: 'german_15',
-    required: true
-  },
+  //{
+   // id: 'german_15_1',
+    //text: 'Was your ancestor NOT a German citizen before 1933?',
+    //type: 'yesNo',
+    //section: 'german_15',
+    //required: true
+ // },
   
-  {
-    id: 'german_15_3',
-    text: 'Did your ancestor have their center of life in Germany (e.g., work, school, permanent residence)?',
-    type: 'yesNo',
-    section: 'german_15',
-    required: true
-  },
-  {
-    id: 'german_15_4',
-    text: 'Did your ancestor emigrate after 30 January 1933 due to Nazi persecution?',
-    type: 'yesNo',
-    section: 'german_15',
-    required: true
-  },
+  //{
+  //  id: 'german_15_3',
+    //text: 'Did your ancestor have their center of life in Germany (e.g., work, school, permanent residence)?',
+    //type: 'yesNo',
+    //section: 'german_15',
+    //required: true
+  //},
+  //{
+    //id: 'german_15_4',
+    //text: 'Did your ancestor emigrate after 30 January 1933 due to Nazi persecution?',
+    //type: 'yesNo',
+    //section: 'german_15',
+    //required: true
+  //},
   {
     id: 'german_15_5',
     text: 'What is your relation to that person?',
     type: 'dropdown',
-    options: ['Child', 'Grandchild', 'Great-grandchild'],
+    options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant', 'Not directly related'],
     section: 'german_15',
     required: true
   },
@@ -543,6 +543,15 @@ export const questions: Question[] = [
     type: 'dropdown',
     options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'],
     section: 'austrian_58c',
+    required: true
+  },
+
+  {
+    id: 'german_5_relation',
+    text: 'What is your relation to that ancestor?',
+    type: 'dropdown',
+    options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant', 'Not directly related'],
+    section: 'german_5',
     required: true
   },
 ]; 

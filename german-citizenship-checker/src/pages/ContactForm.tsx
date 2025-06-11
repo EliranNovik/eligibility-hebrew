@@ -5,7 +5,10 @@ import { Container, Card, CardContent, Typography, Button, TextField, Alert, Box
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import { useNavigate } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PublicIcon from '@mui/icons-material/Public';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import { supabase } from '../lib/supabase';
 
@@ -16,6 +19,24 @@ const COUNTRY_CODES = [
   { code: '+49', label: '+49 (DE)' },
   { code: '+972', label: '+972 (IL)' },
   { code: '+61', label: '+61 (AU)' },
+  { code: '+33', label: '+33 (FR)' },
+  { code: '+34', label: '+34 (ES)' },
+  { code: '+39', label: '+39 (IT)' },
+  { code: '+31', label: '+31 (NL)' },
+  { code: '+32', label: '+32 (BE)' },
+  { code: '+41', label: '+41 (CH)' },
+  { code: '+43', label: '+43 (AT)' },
+  { code: '+7', label: '+7 (RU)' },
+  { code: '+380', label: '+380 (UA)' },
+  { code: '+27', label: '+27 (ZA)' },
+  { code: '+55', label: '+55 (BR)' },
+  { code: '+54', label: '+54 (AR)' },
+  { code: '+91', label: '+91 (IN)' },
+  { code: '+86', label: '+86 (CN)' },
+  { code: '+81', label: '+81 (JP)' },
+  { code: '+90', label: '+90 (TR)' },
+  { code: '+30', label: '+30 (GR)' },
+  { code: '+351', label: '+351 (PT)' },
 ];
 
 const CONTACT_METHODS = [
@@ -60,6 +81,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
   const [showThankYou, setShowThankYou] = useState(false);
   const [contactMethod, setContactMethod] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -144,6 +166,11 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
         comments: '',
       },
     });
+  };
+
+  // Custom back logic (like QuestionFlow)
+  const handleBack = () => {
+    navigate('/results', { state: location.state });
   };
 
   // Defensive defaults for userData
@@ -251,28 +278,103 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
                   <FacebookIcon sx={{ fontSize: 32, color: '#fff' }} />
                 </Button>
               </Box>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={handleStartNewCheck}
-                sx={{
-                  mt: 2,
-                  fontWeight: 700,
-                  fontSize: 18,
-                  borderRadius: 3,
-                  background: 'linear-gradient(90deg, #646cff, #535bf2)',
-                  color: 'white',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.10)',
-                  '&:hover': {
-                    background: 'linear-gradient(90deg, #535bf2, #646cff)',
-                  },
-                }}
-              >
-                Start New Check
-              </Button>
             </Box>
           </Card>
         </Fade>
+        <Box sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          bgcolor: 'rgba(26, 26, 26, 0.95)',
+          backdropFilter: 'blur(10px)',
+          borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+          py: 2,
+          zIndex: 1000,
+        }}>
+          <Container maxWidth="lg">
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'row', sm: 'row' },
+                justifyContent: { xs: 'space-between', sm: 'center' },
+                alignItems: 'center',
+                width: '100%',
+                gap: { xs: 0, sm: 4 },
+                flexWrap: 'wrap',
+              }}
+            >
+              <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
+                <Button
+                  href="https://lawoffice.org.il/en/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<PublicIcon />}
+                  sx={{
+                    color: 'white',
+                    '&:hover': {
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    transition: 'all 0.2s ease-in-out',
+                  }}
+                >
+                  Visit Our Website
+                </Button>
+                <Button
+                  href="https://www.facebook.com/deckerpexlevi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<FacebookIcon />}
+                  sx={{
+                    color: 'white',
+                    '&:hover': {
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    transition: 'all 0.2s ease-in-out',
+                  }}
+                >
+                  Follow Us on Facebook
+                </Button>
+              </Box>
+              <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
+                <Button
+                  href="https://wa.me/1234567890"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<WhatsAppIcon />}
+                  sx={{
+                    color: 'white',
+                    '&:hover': {
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    transition: 'all 0.2s ease-in-out',
+                  }}
+                >
+                  Contact on WhatsApp
+                </Button>
+                <Button
+                  href="https://www.youtube.com/@DeckerPexLawoffice"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<YouTubeIcon />}
+                  sx={{
+                    color: 'white',
+                    '&:hover': {
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    transition: 'all 0.2s ease-in-out',
+                  }}
+                >
+                  YouTube Channel
+                </Button>
+              </Box>
+            </Box>
+          </Container>
+        </Box>
       </Container>
     );
   }
@@ -293,6 +395,31 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
         borderRadius: 4,
         boxShadow: '0 6px 32px 0 rgba(67, 233, 123, 0.15)',
       }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%', mb: 2 }}>
+  <Button
+    variant="contained"
+    color="primary"
+    startIcon={<ArrowBackIcon sx={{ fontSize: 28 }} />}
+    onClick={handleBack}
+    sx={{
+      borderRadius: 999,
+      px: 3,
+      py: 1.5,
+      fontWeight: 700,
+      fontSize: 18,
+      background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+      color: '#fff',
+      boxShadow: '0 4px 20px rgba(100, 108, 255, 0.2)',
+      minWidth: 0,
+      transition: 'all 0.2s',
+      '&:hover': {
+        background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+      },
+    }}
+  >
+    Back
+  </Button>
+</Box>
         <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mt: 1 }}>
           Contact Information
         </Typography>
@@ -445,41 +572,81 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
   }
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        width: '100vw',
-        bgcolor: 'rgba(35, 41, 70, 0.85)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        p: 0,
-        m: 0,
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: 'url(/german_documents.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.4,
-          zIndex: 0,
-        },
-      }}
-    >
-      <Header showBackButton onBack={() => navigate('/results')} />
-      <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: { xs: '80vh', sm: 500 } }}>
-        <Card sx={{ width: '100%', maxWidth: 420, mx: 'auto', boxShadow: 4, borderRadius: 4, p: 3, bgcolor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: '#232946', mt: 1 }}>
+    <>
+      <Header />
+      <Box
+        sx={{
+          minHeight: '100vh',
+          width: '100vw',
+          bgcolor: 'rgba(35, 41, 70, 0.85)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          p: 0,
+          m: 0,
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: 'url(/german_documents.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.4,
+            zIndex: 0,
+          },
+        }}
+      >
+        <Container maxWidth="sm" sx={{ 
+          position: 'relative', 
+          zIndex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: { xs: '90vh', sm: 650 },
+          maxWidth: 400,
+          background: 'rgba(10, 10, 10, 0.65)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderRadius: 4,
+          boxShadow: '0 6px 32px 0 rgba(0,0,0,0.25)',
+          p: { xs: 2, sm: 6 },
+        }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%', mb: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<ArrowBackIcon sx={{ fontSize: 28 }} />}
+              onClick={handleBack}
+              sx={{
+                borderRadius: 999,
+                px: 3,
+                py: 1.5,
+                fontWeight: 700,
+                fontSize: 18,
+                background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                color: '#fff',
+                boxShadow: '0 4px 20px rgba(100, 108, 255, 0.2)',
+                minWidth: 0,
+                transition: 'all 0.2s',
+                '&:hover': {
+                  background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                },
+              }}
+            >
+              Back
+            </Button>
+          </Box>
+          <Typography variant="h5" align="center" fontWeight={700} gutterBottom sx={{ color: '#fff', mt: 1 }}>
             Contact Information
           </Typography>
-          <Typography align="center" color="#232946" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6 }}>
+          <Typography align="center" color="#fff" sx={{ mb: 2, fontWeight: 600, fontSize: 18, lineHeight: 1.6 }}>
             Please provide your phone number and any comments. We will get in touch with you about your eligibility assessment.
           </Typography>
           {message && (
@@ -623,9 +790,103 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
               {isSubmitting ? 'Submitting...' : 'Submit Information'}
             </Button>
           </Box>
-        </Card>
-      </Container>
-    </Box>
+        </Container>
+      </Box>
+      <Box sx={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        bgcolor: 'rgba(26, 26, 26, 0.95)',
+        backdropFilter: 'blur(10px)',
+        borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+        py: 2,
+        zIndex: 1000,
+      }}>
+        <Container maxWidth="lg">
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'row', sm: 'row' },
+              justifyContent: { xs: 'space-between', sm: 'center' },
+              alignItems: 'center',
+              width: '100%',
+              gap: { xs: 0, sm: 4 },
+              flexWrap: 'wrap',
+            }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
+              <Button
+                href="https://lawoffice.org.il/en/"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<PublicIcon />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                Visit Our Website
+              </Button>
+              <Button
+                href="https://www.facebook.com/deckerpexlevi"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<FacebookIcon />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                Follow Us on Facebook
+              </Button>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
+              <Button
+                href="https://wa.me/1234567890"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<WhatsAppIcon />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                Contact on WhatsApp
+              </Button>
+              <Button
+                href="https://www.youtube.com/@DeckerPexLawoffice"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<YouTubeIcon />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                YouTube Channel
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    </>
   );
 };
 
