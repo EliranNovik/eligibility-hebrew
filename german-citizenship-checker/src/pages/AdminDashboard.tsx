@@ -288,12 +288,6 @@ const AdminDashboard = () => {
                 borderRadius: 2,
                 background: 'linear-gradient(135deg, rgba(13, 27, 62, 0.6) 0%, rgba(26, 26, 46, 0.6) 100%)',
                 backdropFilter: 'blur(10px)',
-                '& a[href*="sign-up"]': { display: 'none !important' },
-                '& a[href*="signup"]': { display: 'none !important' },
-                '& a[href*="sign_up"]': { display: 'none !important' },
-                '& a[href*="recover"]': { display: 'none !important' },
-                '& a[href*="forgot"]': { display: 'none !important' },
-                '& a[href*="reset"]': { display: 'none !important' },
                 '& input': { color: '#fff !important' },
                 '& label': { color: '#fff !important' },
                 '& .MuiInputLabel-root': { color: '#fff !important' },
@@ -353,7 +347,6 @@ const AdminDashboard = () => {
                 }}
                 providers={[]}
                 redirectTo={window.location.origin + '/admin'}
-                view="sign_in"
               />
             </Paper>
           </Container>
