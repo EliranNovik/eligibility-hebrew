@@ -62,7 +62,7 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
           const gp1 = formState.answers.find(a => a.questionId === 'german_5_grandparent_q1');
           const gp2 = formState.answers.find(a => a.questionId === 'german_5_grandparent_q2');
           if (gp1 && gp2) {
-            if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
+          if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
               sequence.push(...questions.filter(q => q.id.startsWith('german_5_grandfather_mother_father_q')));
             } else if (gp1.value === 'Grandfather' && gp2.value === "My dad's parent") {
               sequence.push(...questions.filter(q => q.id.startsWith('german_5_grandfather_father_father_q')));
@@ -358,7 +358,7 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
 
     // For all other questions, just go to the next question
     setFormState((prev) => ({
-      ...prev,
+          ...prev,
       answers: newAnswers,
       currentStep: newAnswers.length,
     }));

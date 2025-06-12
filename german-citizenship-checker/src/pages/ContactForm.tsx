@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import type { FormState } from '../types';
-import type { ChangeEvent, FormEvent } from 'react';
-import { Container, Card, CardContent, Typography, Button, TextField, Alert, Box, Select, MenuItem, Fade } from '@mui/material';
+import type { FormEvent, ChangeEvent } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Box, Container, Typography, TextField, Button, Paper, Alert, Select, MenuItem, FormControl, InputLabel, Avatar, Fade } from '@mui/material';
+import { supabase } from '../lib/supabase';
+import type { FormState, Question } from '../types';
+import Header from '../components/Header';
+import { questions } from '../questions/questions';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PublicIcon from '@mui/icons-material/Public';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Header from '../components/Header';
-import { supabase } from '../lib/supabase';
 
 // Country codes for phone numbers
 const COUNTRY_CODES = [
@@ -51,7 +52,26 @@ interface ContactFormProps {
   hideHeader?: boolean;
 }
 
+// Helper to format answers as readable string
+function formatAnswersForDescription(answers: any[]) {
+  return answers.map(answer => {
+    const question = questions.find((q: Question) => q.id === answer.questionId);
+    return `- ${question ? question.text : answer.questionId}: ${answer.value}`;
+  }).join('\n');
+}
+
 async function saveContactSubmission(userData: any, formType?: string) {
+  // Get all questions from the questions array
+  const formattedAnswers = userData.answers.map((answer: any) => {
+    const question = questions.find((q: Question) => q.id === answer.questionId);
+    return {
+      question: question ? question.text : answer.questionId,
+      answer: answer.value
+    };
+  });
+
+  const answersPretty = formatAnswersForDescription(userData.answers);
+
   const { data, error } = await supabase
     .from('contact_submissions')
     .insert([
@@ -61,7 +81,8 @@ async function saveContactSubmission(userData: any, formType?: string) {
           email: userData.email,
           phone: `${userData.phone}`,
           comments: userData.comments,
-          answers: userData.answers,
+          answers: formattedAnswers,
+          answers_pretty: answersPretty,
           contactMethod: userData.contactMethod,
         },
         form_type: formType || 'negative'
@@ -98,22 +119,17 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
       const sid = Math.floor(100000 + Math.random() * 900000).toString();
       
       // Prepare params
+      const formattedQnA = formatAnswersForDescription(formState.answers);
       const params = new URLSearchParams({
         uid: 'fxSOVhSeeRs9',
         lead_source: '31234',
         sid,
         name: formState.userData.fullName || '',
         topic: `${selectedCountry} Citizenship - Not Eligible`,
-        desc: `The client wants to be contacted by ${CONTACT_METHODS.find(m => m.value === contactMethod)?.label || contactMethod}. Comments: ${formState.userData.comments || 'No comments provided'}`,
+        desc: `The client wants to be contacted by ${CONTACT_METHODS.find(m => m.value === contactMethod)?.label || contactMethod}.\nComments: ${formState.userData.comments || 'No comments provided'}\nFacts of Case:\n${formattedQnA}`,
         email: formState.userData.email || '',
         phone: `${countryCode}${formState.userData.phone}`,
         ref_url: window.location.href,
-        user_data: JSON.stringify({
-          comments: formState.userData.comments,
-          phone: `${countryCode}${formState.userData.phone}`,
-          answers: formState.answers,
-          contactMethod,
-        }),
       });
 
       const url = `https://backend-eligibility-checker.onrender.com/api/proxy?${params.toString()}`;
@@ -180,7 +196,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
     return (
       <Container maxWidth="sm" sx={{ py: 4 }}>
         <Fade in={showThankYou} timeout={1000}>
-          <Card sx={{ 
+          <Paper sx={{ 
             width: '100%', 
             boxShadow: 6, 
             bgcolor: 'rgba(255,255,255,0.85)',
@@ -278,7 +294,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
                 </Button>
               </Box>
             </Box>
-          </Card>
+          </Paper>
         </Fade>
         <Box sx={{
           position: 'fixed',

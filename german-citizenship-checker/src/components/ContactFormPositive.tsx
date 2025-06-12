@@ -3,8 +3,9 @@ import { Container, Card, CardContent, Typography, Button, TextField, Alert, Box
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import type { FormState } from '../types';
+import type { FormState, Question } from '../types';
 import { supabase, saveEligibilityResult } from '../lib/supabase';
+import { questions } from '../questions/questions';
 
 const AVATAR_SRC = '/MDPIC.jpg';
 const CHAT_TEXT = "Submit your information and we'll get back to you! We at Decker Pex Levi will review your case, conduct an archival research and provide you with a free consultation.";
@@ -38,12 +39,37 @@ const COUNTRY_CODES = [
   { code: '+27', label: '🇿🇦 +27' },
 ];
 
+// Helper to format answers as readable string
+function formatAnswersForDescription(answers: any[]) {
+  return answers.map(answer => {
+    const question = questions.find((q: Question) => q.id === answer.questionId);
+    return `- ${question ? question.text : answer.questionId}: ${answer.value}`;
+  }).join('\n');
+}
+
 async function saveContactSubmission(userData: any, formType?: string) {
+  // Only map if userData.answers exists and is an array
+  const formattedAnswers = Array.isArray(userData.answers)
+    ? userData.answers.map((answer: any) => {
+        const question = questions.find((q: Question) => q.id === answer.questionId);
+        return {
+          question: question ? question.text : answer.questionId,
+          answer: answer.value
+        };
+      })
+    : [];
+
+  const answersPretty = Array.isArray(userData.answers) ? formatAnswersForDescription(userData.answers) : '';
+
   const { data, error } = await supabase
     .from('contact_submissions')
     .insert([
       {
-        user_data: userData,
+        user_data: {
+          ...userData,
+          answers: formattedAnswers,
+          answers_pretty: answersPretty,
+        },
         form_type: formType || 'positive',
       }
     ]);
@@ -100,26 +126,24 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
     // Generate random sid
     const sid = Math.floor(100000 + Math.random() * 900000).toString();
     // Prepare params
+    const formattedQnA = formatAnswersForDescription(formState.answers);
     const params = new URLSearchParams({
       uid: 'fxSOVhSeeRs9',
       lead_source: '31234',
       sid,
       name: userData.fullName,
       topic: `${selectedCountry} Citizenship - ${eligibleSections[0]}`,
-      desc: `Persecuted Person: ${formData.persecutedName}\nDate of Birth: ${formData.persecutedDob}\nPlace of Birth: ${formData.persecutedPlace}\nAdditional Information: ${formData.additionalInfo}`,
+      desc: `Persecuted Person: ${formData.persecutedName}\nDate of Birth: ${formData.persecutedDob}\nPlace of Birth: ${formData.persecutedPlace}\nAdditional Information: ${formData.additionalInfo}\nFacts of Case:\n${formattedQnA}`,
       email: userData.email,
       phone: `${countryCode}${formData.phone}`,
       ref_url: window.location.href,
-      user_data: JSON.stringify({
-        persecutedName: formData.persecutedName,
-        persecutedDob: formData.persecutedDob,
-        persecutedPlace: formData.persecutedPlace,
-        additionalInfo: formData.additionalInfo,
-        phone: `${countryCode}${formData.phone}`,
-      }),
     });
     const url = `https://backend-eligibility-checker.onrender.com/api/proxy?${params.toString()}`;
     try {
+      // Send to external API endpoint first
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Network response was not ok');
+
       // Save contact form submission (user_data and form_type only)
       const { data, error } = await supabase
         .from('contact_submissions')
@@ -132,6 +156,8 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
               persecutedName: formData.persecutedName,
               persecutedDob: formData.persecutedDob,
               persecutedPlace: formData.persecutedPlace,
+              answers: formState.answers,
+              answers_pretty: formattedQnA,
             },
             form_type: 'positive'
           }
@@ -354,7 +380,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
               mx: 'auto', 
               maxWidth: '100%' 
             }}>
-We’ll need a bit more information before we can begin our expedited archival research. Once received, we can locate records about your ancestry within one business day and include our findings in your complimentary consultation.            </Box>
+We'll need a bit more information before we can begin our expedited archival research. Once received, we can locate records about your ancestry within one business day and include our findings in your complimentary consultation.            </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, width: '100%' }}>
               <Select
                 value={countryCode}

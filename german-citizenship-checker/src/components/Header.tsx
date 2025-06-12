@@ -126,7 +126,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           {Boolean(mobileMenuAnchor) ? (
             <CloseIcon sx={{ fontSize: 32 }} />
           ) : (
-            <MenuIcon sx={{ fontSize: 32 }} />
+          <MenuIcon sx={{ fontSize: 32 }} />
           )}
         </IconButton>
         <Menu
