@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Container, Card, CardContent, Typography, Button, TextField, Alert, Box, Avatar, Fade, MenuItem, Select, InputAdornment, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Container, Card, CardContent, Typography, Button, TextField, Alert, Box, Avatar, Fade, MenuItem, Select, InputAdornment, Dialog, DialogTitle, DialogContent, DialogActions, FormControl } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -59,6 +59,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
     persecutedName: '',
     persecutedDob: '',
     persecutedPlace: '',
+    additionalInfo: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -105,15 +106,16 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
       sid,
       name: userData.fullName,
       topic: `${selectedCountry} Citizenship - ${eligibleSections[0]}`,
-      desc: `Persecuted Person: ${formData.persecutedName}\nDate of Birth: ${formData.persecutedDob}\nPlace of Birth: ${formData.persecutedPlace}`,
+      desc: `Persecuted Person: ${formData.persecutedName}\nDate of Birth: ${formData.persecutedDob}\nPlace of Birth: ${formData.persecutedPlace}\nAdditional Information: ${formData.additionalInfo}`,
       email: userData.email,
-      phone: `${countryCode}${formData.phone.replace(/^[+\d]+\s*/, '')}`,
+      phone: `${countryCode}${formData.phone}`,
       ref_url: window.location.href,
       user_data: JSON.stringify({
         persecutedName: formData.persecutedName,
         persecutedDob: formData.persecutedDob,
         persecutedPlace: formData.persecutedPlace,
-        phone: `${countryCode}${formData.phone.replace(/^[+\d]+\s*/, '')}`,
+        additionalInfo: formData.additionalInfo,
+        phone: `${countryCode}${formData.phone}`,
       }),
     });
     const url = `https://backend-eligibility-checker.onrender.com/api/proxy?${params.toString()}`;
@@ -126,7 +128,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
             user_data: {
               fullName: userData.fullName,
               email: userData.email,
-              phone: `${countryCode}${formData.phone.replace(/^[+\d]+\s*/, '')}`,
+              phone: `${countryCode}${formData.phone}`,
               persecutedName: formData.persecutedName,
               persecutedDob: formData.persecutedDob,
               persecutedPlace: formData.persecutedPlace,
@@ -157,11 +159,11 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Remove country code if user types it manually
-    let value = e.target.value.replace(/^\+\d+\s*/, '');
+    // Only allow digits, spaces, dashes, and parentheses
+    let value = e.target.value.replace(/[^0-9\s\-()]/g, '');
     setFormData(prev => ({
       ...prev,
-      phone: `${countryCode} ${value}`.trim(),
+      phone: value,
     }));
   };
 
@@ -187,6 +189,13 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
     console.log('Submitting without contact information');
     setOpenDialog(false);
     setShowThankYou(true);
+  };
+
+  const handleNotSure = (field: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: 'I am not sure right now.',
+    }));
   };
 
   if (showThankYou) {
@@ -312,10 +321,15 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Box sx={{ width: '100%', maxWidth: 800, display: 'flex', flexDirection: 'column', alignItems: 'center', mx: 'auto', p: 2, pb: { xs: 10, sm: 4 } }}>
         <CardContent sx={{ width: '100%', maxWidth: 800, display: 'flex', flexDirection: 'column', alignItems: 'center', p: 0, mx: 'auto' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
-            <Avatar src={AVATAR_SRC} sx={{ width: 120, height: 120, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
-            <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 500, minHeight: 56, textAlign: 'center' }}>
-              {typedText}
+          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
+            <Avatar src="/MDPIC.jpg" alt="Michael Decker" sx={{ width: 120, height: 120, mb: 2, boxShadow: 4 }} />
+            <Box sx={{ background: 'white', color: '#232946', borderRadius: 4, p: { xs: 2, md: 3 }, fontSize: { xs: 18, md: 20 }, fontWeight: 500, boxShadow: 2, textAlign: 'center', maxWidth: 700, width: '100%', mb: 2 }}>
+              {userData.fullName && (
+                <>
+                  Hi, {userData.fullName},<br />
+                </>
+              )}
+              We are at the final stage of the eligibility checker. Please submit your information and we'll get back to you!<br />
             </Box>
           </Box>
 
@@ -327,6 +341,20 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
             </Alert>
           )}
           <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 600, display: 'flex', flexDirection: 'column', gap: 2, mt: 1, mx: 'auto' }}>
+            <Box sx={{ 
+              background: 'rgba(67, 233, 123, 0.18)', 
+              color: '#fff', 
+              borderRadius: 2, 
+              p: 2, 
+              mb: 2, 
+              fontSize: 15, 
+              fontWeight: 500, 
+              boxShadow: 1, 
+              borderLeft: '4px solid #43e97b', 
+              mx: 'auto', 
+              maxWidth: '100%' 
+            }}>
+We’ll need a bit more information before we can begin our expedited archival research. Once received, we can locate records about your ancestry within one business day and include our findings in your complimentary consultation.            </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, width: '100%' }}>
               <Select
                 value={countryCode}
@@ -364,7 +392,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
                 placeholder="Phone Number"
                 name="phone"
                 type="tel"
-                value={formData.phone.replace(/^\u000b+d+\s*/, '')}
+                value={formData.phone}
                 onChange={handlePhoneChange}
                 required
                 fullWidth
@@ -383,67 +411,196 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
                 InputLabelProps={{ shrink: false }}
               />
             </Box>
-            <TextField
-              placeholder="Name of Persecuted"
-              name="persecutedName"
-              value={formData.persecutedName}
-              onChange={handleChange}
-              required
-              fullWidth
-              margin="normal"
-              InputProps={{
-                style: {
-                  background: '#fff',
-                  borderRadius: 8,
-                  fontSize: 18,
-                  fontWeight: 500,
-                  color: '#232946',
-                  boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
-                }
-              }}
-              InputLabelProps={{ shrink: false }}
-            />
-            <TextField
-              placeholder="Date of Birth"
-              name="persecutedDob"
-              type="text"
-              value={formData.persecutedDob}
-              onChange={handleChange}
-              required
-              fullWidth
-              margin="normal"
-              InputProps={{
-                style: {
-                  background: '#fff',
-                  borderRadius: 8,
-                  fontSize: 18,
-                  fontWeight: 500,
-                  color: '#232946',
-                  boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
-                }
-              }}
-              InputLabelProps={{ shrink: false }}
-            />
-            <TextField
-              placeholder="Place of Birth of Persecuted"
-              name="persecutedPlace"
-              value={formData.persecutedPlace}
-              onChange={handleChange}
-              required
-              fullWidth
-              margin="normal"
-              InputProps={{
-                style: {
-                  background: '#fff',
-                  borderRadius: 8,
-                  fontSize: 18,
-                  fontWeight: 500,
-                  color: '#232946',
-                  boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
-                }
-              }}
-              InputLabelProps={{ shrink: false }}
-            />
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', width: '100%' }}>
+              <TextField
+                placeholder="Name of Persecuted"
+                name="persecutedName"
+                value={formData.persecutedName}
+                onChange={handleChange}
+                required
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  style: {
+                    background: '#fff',
+                    borderRadius: 8,
+                    fontSize: 18,
+                    fontWeight: 500,
+                    color: '#232946',
+                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                  }
+                }}
+                InputLabelProps={{ shrink: false }}
+              />
+              <Button
+                variant="outlined"
+                sx={{
+                  height: 48,
+                  minWidth: 80,
+                  px: 0,
+                  ml: 2,
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: 1.2,
+                  textTransform: 'uppercase',
+                  color: '#fff',
+                  background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                  borderRadius: 999,
+                  boxShadow: '0 2px 8px 0 rgba(83,91,242,0.10)',
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  lineHeight: 1.1,
+                  transition: 'background 0.2s',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                  },
+                }}
+                onClick={() => handleNotSure('persecutedName')}
+              >
+                <span style={{ display: 'block' }}>NOT</span>
+                <span style={{ display: 'block' }}>SURE</span>
+              </Button>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', width: '100%' }}>
+              <TextField
+                placeholder="Date of Birth of Persecuted"
+                name="persecutedDob"
+                type="text"
+                value={formData.persecutedDob}
+                onChange={handleChange}
+                required
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  style: {
+                    background: '#fff',
+                    borderRadius: 8,
+                    fontSize: 18,
+                    fontWeight: 500,
+                    color: '#232946',
+                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                  }
+                }}
+                InputLabelProps={{ shrink: false }}
+              />
+              <Button
+                variant="outlined"
+                sx={{
+                  height: 48,
+                  minWidth: 80,
+                  px: 0,
+                  ml: 2,
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: 1.2,
+                  textTransform: 'uppercase',
+                  color: '#fff',
+                  background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                  borderRadius: 999,
+                  boxShadow: '0 2px 8px 0 rgba(83,91,242,0.10)',
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  lineHeight: 1.1,
+                  transition: 'background 0.2s',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                  },
+                }}
+                onClick={() => handleNotSure('persecutedDob')}
+              >
+                <span style={{ display: 'block' }}>NOT</span>
+                <span style={{ display: 'block' }}>SURE</span>
+              </Button>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', width: '100%' }}>
+              <TextField
+                placeholder="Place of Birth of Persecuted"
+                name="persecutedPlace"
+                value={formData.persecutedPlace}
+                onChange={handleChange}
+                required
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  style: {
+                    background: '#fff',
+                    borderRadius: 8,
+                    fontSize: 18,
+                    fontWeight: 500,
+                    color: '#232946',
+                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                  }
+                }}
+                InputLabelProps={{ shrink: false }}
+              />
+              <Button
+                variant="outlined"
+                sx={{
+                  height: 48,
+                  minWidth: 80,
+                  px: 0,
+                  ml: 2,
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: 1.2,
+                  textTransform: 'uppercase',
+                  color: '#fff',
+                  background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                  borderRadius: 999,
+                  boxShadow: '0 2px 8px 0 rgba(83,91,242,0.10)',
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  lineHeight: 1.1,
+                  transition: 'background 0.2s',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                  },
+                }}
+                onClick={() => handleNotSure('persecutedPlace')}
+              >
+                <span style={{ display: 'block' }}>NOT</span>
+                <span style={{ display: 'block' }}>SURE</span>
+              </Button>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', width: '100%' }}>
+              <TextField
+                placeholder="Additional Information (optional)"
+                multiline
+                rows={4}
+                value={formData.additionalInfo}
+                onChange={(e) => setFormData(prev => ({ ...prev, additionalInfo: e.target.value }))}
+                fullWidth
+                sx={{
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    color: '#232946',
+                    backgroundColor: '#fff',
+                    borderRadius: 2,
+                    '& fieldset': {
+                      borderColor: '#3a3f5a',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#43e97b',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#43e97b',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#232946',
+                  },
+                }}
+              />
+            </Box>
             <Button
               type="submit"
               variant="contained"

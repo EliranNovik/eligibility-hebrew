@@ -106,11 +106,11 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
         topic: `${selectedCountry} Citizenship - Not Eligible`,
         desc: `The client wants to be contacted by ${CONTACT_METHODS.find(m => m.value === contactMethod)?.label || contactMethod}. Comments: ${formState.userData.comments || 'No comments provided'}`,
         email: formState.userData.email || '',
-        phone: `${countryCode}${formState.userData.phone.replace(/^\+\d+\s*/, '')}`,
+        phone: `${countryCode}${formState.userData.phone}`,
         ref_url: window.location.href,
         user_data: JSON.stringify({
           comments: formState.userData.comments,
-          phone: `${countryCode}${formState.userData.phone.replace(/^\+\d+\s*/, '')}`,
+          phone: `${countryCode}${formState.userData.phone}`,
           answers: formState.answers,
           contactMethod,
         }),
@@ -142,8 +142,8 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
   };
 
   const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // Remove country code if user types it manually
-    let value = e.target.value.replace(/^\+\d+\s*/, '');
+    // Only allow digits, spaces, dashes, and parentheses
+    let value = e.target.value.replace(/[^0-9\s\-()]/g, '');
     handleInputChange('phone', value);
   };
 
