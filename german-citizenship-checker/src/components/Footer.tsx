@@ -6,6 +6,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import PrintIcon from '@mui/icons-material/Print';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import PublicIcon from '@mui/icons-material/Public';
 import { Box, useTheme, useMediaQuery } from '@mui/material';
 
 interface FooterProps {
@@ -59,7 +60,7 @@ const Footer: React.FC<FooterProps> = ({ showContactButtons }) => {
             flexWrap: 'wrap',
           }}>
             <a
-              href="https://wa.me/1234567890"
+              href="https://wa.me/+972503489649"
               target="_blank"
               rel="noopener noreferrer"
               style={{ textDecoration: 'none' }}
@@ -84,6 +85,34 @@ const Footer: React.FC<FooterProps> = ({ showContactButtons }) => {
                 }}
               >
                 <WhatsAppIcon sx={{ fontSize: 32 }} />
+              </Box>
+            </a>
+            <a
+              href="https://lawoffice.org.il/en/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'none' }}
+            >
+              <Box
+                component="span"
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'linear-gradient(90deg, #21cbf3 0%, #2196f3 100%)',
+                  color: '#fff',
+                  borderRadius: '50%',
+                  width: 56,
+                  height: 56,
+                  boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
+                  transition: 'background 0.2s',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)',
+                  },
+                  mb: { xs: 2, sm: 0 },
+                }}
+              >
+                <PublicIcon sx={{ fontSize: 32 }} />
               </Box>
             </a>
             <a

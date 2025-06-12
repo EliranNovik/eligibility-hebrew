@@ -339,7 +339,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
                 <Button
-                  href="https://wa.me/1234567890"
+                  href="https://wa.me/+972503489649"
                   target="_blank"
                   rel="noopener noreferrer"
                   startIcon={<WhatsAppIcon />}
