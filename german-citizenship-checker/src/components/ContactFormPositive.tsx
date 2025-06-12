@@ -211,10 +211,56 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
     setOpenDialog(false);
   };
 
-  const handleDialogContinue = () => {
-    console.log('Submitting without contact information');
+  const handleDialogContinue = async () => {
     setOpenDialog(false);
-    setShowThankYou(true);
+    setIsSubmitting(true);
+    setMessage(null);
+    setMessageType(null);
+    try {
+      // Get the selected country
+      const countryAnswer = formState.answers.find((a: { questionId: string }) => a.questionId === 'country_selection');
+      const selectedCountry = countryAnswer?.value as string || 'Unknown';
+      // Prepare Q&A
+      const formattedQnA = formatAnswersForDescription(formState.answers);
+      // Prepare params for endpoint
+      const params = new URLSearchParams({
+        uid: 'fxSOVhSeeRs9',
+        lead_source: '31234',
+        sid: Math.floor(100000 + Math.random() * 900000).toString(),
+        name: userData.fullName,
+        topic: `${selectedCountry} Citizenship - ${eligibleSections[0]}`,
+        desc: `Facts of Case:\n${formattedQnA}`,
+        email: userData.email,
+        phone: '', // No phone/contact info
+        ref_url: window.location.href,
+      });
+      const url = `https://backend-eligibility-checker.onrender.com/api/proxy?${params.toString()}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      // Save contact form submission (user_data and form_type only)
+      const { data, error } = await supabase
+        .from('contact_submissions')
+        .insert([
+          {
+            user_data: {
+              fullName: userData.fullName,
+              email: userData.email,
+              answers: formState.answers,
+              answers_pretty: formattedQnA,
+            },
+            form_type: 'positive'
+          }
+        ]);
+      if (error) throw error;
+      await saveContactSubmission(userData, 'positive');
+      setShowThankYou(true);
+    } catch (error) {
+      setMessage('Failed to submit form. Please try again.');
+      setMessageType('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleNotSure = (field: string) => {
