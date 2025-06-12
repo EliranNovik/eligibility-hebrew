@@ -436,16 +436,11 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
               color="primary"
               startIcon={<ArrowBackIcon sx={{ fontSize: 28 }} />}
               onClick={() => {
-                setFormState({
+                setFormState(prev => ({
+                  ...prev,
                   answers: [],
                   currentStep: 0,
-                  userData: {
-                    fullName: '',
-                    email: '',
-                    phone: '',
-                    comments: '',
-                  },
-                });
+                }));
                 navigate('/questions');
               }}
               sx={{

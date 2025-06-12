@@ -175,7 +175,7 @@ export const questions: Question[] = [
     id: 'german_5_earliest_ancestor',
     text: 'Who is your earliest known German ancestor?',
     type: 'dropdown',
-    options: ['Mother', 'Father', 'Grandparent', 'Great-grandparent'],
+    options: ['Mother', 'Father', 'Grandparent',],
     section: 'german_5',
     required: true
   },
