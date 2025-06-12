@@ -90,7 +90,7 @@ function App() {
                   />
                 } 
               />
-              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/*" element={<AdminDashboard />} />
             </Routes>
           </NavigationProvider>
         </BrowserRouter>

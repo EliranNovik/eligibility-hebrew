@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Container, Typography, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, IconButton, TextField, MenuItem, Grid } from '@mui/material';
+import { useNavigate, Outlet, Routes, Route } from 'react-router-dom';
+import { Box, Container, Typography, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, IconButton, TextField, MenuItem, Grid, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, ListItemButton } from '@mui/material';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import type { Session } from '@supabase/supabase-js';
@@ -15,6 +15,20 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import * as XLSX from 'xlsx';
+import HomeIcon from '@mui/icons-material/Home';
+import GroupIcon from '@mui/icons-material/Group';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import QuizIcon from '@mui/icons-material/Quiz';
+import LinkIcon from '@mui/icons-material/Link';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import SettingsIcon from '@mui/icons-material/Settings';
+import AdminsPage from './AdminsPage';
+import LeadsPage from './LeadsPage';
+import QuestionFlowManagementPage from './QuestionFlowManagementPage';
+import IntegrationWebhooksPage from './IntegrationWebhooksPage';
+import AnalyticsReportingPage from './AnalyticsReportingPage';
+import SystemSettingsPage from './SystemSettingsPage';
+import AdminHomePage from './AdminHomePage';
 
 function useEligibilityStats() {
   const [stats, setStats] = useState<{ [key: string]: number }>({});
@@ -189,6 +203,17 @@ const AdminDashboard = () => {
   const [search, setSearch] = useState('');
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const nav = useNavigate();
+  const navItems = [
+    { label: 'Dashboard', icon: <HomeIcon />, path: '/admin' },
+    { label: 'Admins', icon: <GroupIcon />, path: '/admin/admins' },
+    { label: 'Leads', icon: <AssignmentIndIcon />, path: '/admin/leads' },
+    { label: 'Question & Flow Management', icon: <QuizIcon />, path: '/admin/questions' },
+    { label: 'Integration & Webhooks', icon: <LinkIcon />, path: '/admin/integrations' },
+    { label: 'Analytics & Reporting', icon: <BarChartIcon />, path: '/admin/analytics' },
+    { label: 'System Settings', icon: <SettingsIcon />, path: '/admin/settings' },
+  ];
 
   useEffect(() => {
     // Check for active session
@@ -403,260 +428,155 @@ const AdminDashboard = () => {
     XLSX.writeFile(workbook, 'contact_submissions.xlsx');
   };
 
+  // Side navbar
+  const drawerWidth = sidebarOpen ? 280 : 72;
+  const sidebarBg = 'rgba(20, 24, 40, 0.95)';
+  const sidebarStyle = {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    background: sidebarBg,
+    borderRight: '1.5px solid rgba(255,255,255,0.08)',
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
+    transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+    overflowX: 'hidden',
+    zIndex: 1200,
+    height: '100vh',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    pt: 2,
+  };
+
+  const headerBar = (
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      px: 4,
+      height: 56,
+      background: '#181b2c',
+      position: 'relative',
+      zIndex: 1100,
+      boxShadow: '0 2px 8px rgba(20,24,40,0.10)'
+    }}>
+      <Button
+        variant="contained"
+        onClick={handleSignOut}
+        sx={{
+          background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+          color: '#fff',
+          fontWeight: 700,
+          fontSize: 16,
+          borderRadius: 3,
+          px: 3,
+          py: 1.2,
+          boxShadow: '0 2px 8px rgba(100,108,255,0.10)',
+          '&:hover': {
+            background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+            color: '#fff',
+          },
+        }}
+      >
+        Sign Out
+      </Button>
+    </Box>
+  );
+
+  // Main layout
   return (
     <>
       <Header />
-      <Box sx={{ 
-        minHeight: '100vh', 
-        width: '100vw', 
-        bgcolor: 'transparent',
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        justifyContent: 'flex-start',
-        position: 'relative',
-      }}>
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2, mt: 8 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-            <Typography variant="h4" sx={{ color: 'white', fontWeight: 700 }}>
-              Admin Dashboard
-            </Typography>
-            <Button
-              variant="contained"
-              onClick={handleSignOut}
-              sx={{
-                background: 'linear-gradient(90deg, #646cff, #535bf2)',
-                color: 'white',
-                '&:hover': {
-                  background: 'linear-gradient(90deg, #535bf2, #646cff)',
-                },
-              }}
-            >
-              Sign Out
-            </Button>
-          </Box>
-          
-          <Paper 
-            elevation={3} 
-            sx={{ 
-              p: 4, 
-              borderRadius: 2,
-              background: 'linear-gradient(135deg, rgba(13, 27, 62, 0.6) 0%, rgba(26, 26, 46, 0.6) 100%)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              border: '1.5px solid rgba(255,255,255,0.25)',
-              boxShadow: '0 6px 32px 0 rgba(67, 233, 123, 0.10)',
-              mb: 4
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-            </Typography>
-            <Box sx={{ mb: 8 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: '#fff', textAlign: 'center', mx: 'auto' }}>
-                Eligibility Stats
-              </Typography>
-              <ResponsiveContainer width="100%" height={260}>
-                <BarChart data={eligibilityData} style={{ fontFamily: 'inherit' }}>
-                  <XAxis dataKey="section" stroke="#fff" style={{ fontWeight: 600, fill: '#fff' }} tick={{ fill: '#fff', fontWeight: 600 }} />
-                  <YAxis stroke="#fff" allowDecimals={false} tick={{ fill: '#fff', fontWeight: 600 }} />
-                  <RechartsTooltip />
-                  <Bar dataKey="count" radius={[8, 8, 0, 0]}>
-                    {eligibilityData.map((entry, idx) => (
-                      <Cell key={`cell-${idx}`} fill={ELIGIBILITY_COLORS[idx % ELIGIBILITY_COLORS.length]} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </Box>
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: '#fff', textAlign: 'center', mx: 'auto' }}>
-                Contact Form Submissions
-              </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12, flexWrap: 'wrap', mb: 2, justifyContent: 'center' }}>
-                {(() => {
-                  const total = contactFormCounts.positive + contactFormCounts.negative;
-                  const posPercent = total > 0 ? Math.round((contactFormCounts.positive / total) * 100) : 0;
-                  const negPercent = total > 0 ? Math.round((contactFormCounts.negative / total) * 100) : 0;
-                  return <>
-                    <Box sx={{
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                      gap: 1,
-                      px: { xs: 4, sm: 7 }, py: { xs: 4, sm: 7 },
-                      borderRadius: 4,
-                      background: 'linear-gradient(90deg, #535bf2 0%, #43e97b 100%)',
-                      color: 'white', fontWeight: 700, fontSize: 36, boxShadow: 4, minWidth: 200, minHeight: 160,
-                      textAlign: 'center', position: 'relative',
-                    }}>
-                      <CheckCircleIcon sx={{ color: '#43e97b', fontSize: 48, mb: 1 }} />
-                      {contactFormCounts.positive}
-                      <Typography sx={{ fontSize: 22, fontWeight: 500, mt: 1, color: '#fff' }}>Positive</Typography>
-                      <Typography sx={{ fontSize: 20, fontWeight: 600, color: '#4fc3f7', mt: 0.5 }}>{posPercent}%</Typography>
-                    </Box>
-                    <Box sx={{
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                      gap: 1,
-                      px: { xs: 4, sm: 7 }, py: { xs: 4, sm: 7 },
-                      borderRadius: 4,
-                      background: 'linear-gradient(90deg, #535bf2 0%, #ff5e62 100%)',
-                      color: 'white', fontWeight: 700, fontSize: 36, boxShadow: 4, minWidth: 200, minHeight: 160,
-                      textAlign: 'center', position: 'relative',
-                    }}>
-                      <CancelIcon sx={{ color: '#ff5e62', fontSize: 48, mb: 1 }} />
-                      {contactFormCounts.negative}
-                      <Typography sx={{ fontSize: 22, fontWeight: 500, mt: 1, color: '#fff' }}>Negative</Typography>
-                      <Typography sx={{ fontSize: 20, fontWeight: 600, color: '#4fc3f7', mt: 0.5 }}>{negPercent}%</Typography>
-                    </Box>
-                  </>;
-                })()}
-              </Box>
-            </Box>
-
-            {/* Google Analytics Stats */}
-            <Box sx={{ mt: 6 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: '#fff', textAlign: 'center', mx: 'auto' }}>
-                Google Analytics Statistics
-              </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 3, flexWrap: 'wrap', mb: 2, justifyContent: 'center' }}>
-                <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'rgba(255,255,255,0.95)', minWidth: 200, flex: 1 }}>
-                  <Typography variant="h6">Page Views</Typography>
-                  <Typography variant="h4">{gaStats.pageViews.toLocaleString()}</Typography>
-                </Paper>
-                <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'rgba(255,255,255,0.95)', minWidth: 200, flex: 1 }}>
-                  <Typography variant="h6">Users</Typography>
-                  <Typography variant="h4">{gaStats.users.toLocaleString()}</Typography>
-                </Paper>
-                <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'rgba(255,255,255,0.95)', minWidth: 200, flex: 1 }}>
-                  <Typography variant="h6">Sessions</Typography>
-                  <Typography variant="h4">{gaStats.sessions.toLocaleString()}</Typography>
-                </Paper>
-                <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'rgba(255,255,255,0.95)', minWidth: 200, flex: 1 }}>
-                  <Typography variant="h6">Bounce Rate</Typography>
-                  <Typography variant="h4">{gaStats.bounceRate}%</Typography>
-                </Paper>
-              </Box>
-            </Box>
-          </Paper>
-
-          {/* Contact Submissions Table */}
-          <Paper
-            elevation={3}
+      {headerBar}
+      <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: '#181b2c', display: 'flex', flexDirection: 'column' }}>
+        {/* Sidebar under header */}
+        <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+          <Box
             sx={{
-              p: 4,
-              borderRadius: 2,
-              background: 'linear-gradient(135deg, rgba(13, 27, 62, 0.6) 0%, rgba(26, 26, 46, 0.6) 100%)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              border: '1.5px solid rgba(255,255,255,0.25)',
-              boxShadow: '0 6px 32px 0 rgba(67, 233, 123, 0.10)',
-              mb: 4,
-              mt: 4
+              ...sidebarStyle,
+              position: 'relative',
+              top: 0,
+              left: 0,
+              height: '100%',
+              zIndex: 1200,
             }}
+            onMouseEnter={() => setSidebarOpen(true)}
+            onMouseLeave={() => setSidebarOpen(false)}
           >
-            <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700, mb: 2 }}>
-              Contact Form Submissions (All)
-            </Typography>
-            {/* Filters */}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3, alignItems: 'center', justifyContent: 'center' }}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label={null}
-                  value={dateFrom}
-                  onChange={setDateFrom}
-                  slotProps={{ textField: { size: 'small', sx: { bgcolor: '#f5f5f5', borderRadius: 2, minWidth: 90 }, placeholder: 'From', InputLabelProps: { shrink: false } } }}
-                />
-                <DatePicker
-                  label={null}
-                  value={dateTo}
-                  onChange={setDateTo}
-                  slotProps={{ textField: { size: 'small', sx: { bgcolor: '#f5f5f5', borderRadius: 2, minWidth: 90 }, placeholder: 'To', InputLabelProps: { shrink: false } } }}
-                />
-              </LocalizationProvider>
-              <TextField
-                select
-                size="small"
-                label={null}
-                placeholder="Form Type"
-                value={formTypeFilter}
-                onChange={e => setFormTypeFilter(e.target.value)}
-                sx={{ bgcolor: '#fff', borderRadius: 2, minWidth: 120 }}
-                InputLabelProps={{ shrink: false }}
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="positive">Positive</MenuItem>
-                <MenuItem value="negative">Negative</MenuItem>
-              </TextField>
-              <TextField
-                size="small"
-                label={null}
-                placeholder="Search Name, Email, Phone"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                sx={{ bgcolor: '#fff', borderRadius: 2, minWidth: 300 }}
-                InputLabelProps={{ shrink: false }}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleExportExcel}
-                sx={{
-                  fontWeight: 700,
-                  fontSize: 15,
-                  borderRadius: 2,
-                  background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
-                  color: 'white',
-                  boxShadow: '0 2px 8px rgba(100,108,255,0.10)',
-                  px: 3,
-                  py: 1.2,
-                  ml: 1,
-                  textTransform: 'none',
-                  '&:hover': {
-                    background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
-                  },
-                }}
-              >
-                Export to Excel
-              </Button>
+            <List sx={{ width: '100%', pt: 0 }}>
+              {navItems.map((item, idx) => (
+                <Tooltip key={item.label} title={sidebarOpen ? '' : item.label} placement="right" arrow>
+                  <ListItem disablePadding sx={{ width: '100%' }}>
+                    <ListItemButton
+                      onClick={() => nav(item.path)}
+                      sx={{
+                        px: 2,
+                        py: 1.5,
+                        borderRadius: 2,
+                        mb: 1,
+                        color: '#fff',
+                        background: 'none',
+                        '&:hover': {
+                          background: 'rgba(100,108,255,0.08)',
+                        },
+                        transition: 'background 0.2s',
+                      }}
+                    >
+                      <ListItemIcon sx={{ color: '#646cff', minWidth: 0, mr: sidebarOpen ? 2 : 'auto', justifyContent: 'center' }}>{item.icon}</ListItemIcon>
+                      {sidebarOpen && <ListItemText primary={item.label} sx={{ color: '#fff', fontWeight: 600, fontSize: 18 }} />}
+                    </ListItemButton>
+                  </ListItem>
+                </Tooltip>
+              ))}
+            </List>
+          </Box>
+          {/* Main content area */}
+          <Box sx={{ flex: 1, p: { xs: 1, md: 4 }, minHeight: '100vh', background: '#181b2c', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', maxWidth: 1200, mt: 4, mb: 2, p: 0 }}>
+              <Routes>
+                <Route path="" element={<AdminHomePage 
+                  stats={stats}
+                  contactFormCounts={contactFormCounts}
+                  gaStats={gaStats}
+                  filteredSubmissions={filteredSubmissions}
+                  handleExportExcel={handleExportExcel}
+                  formTypeFilter={formTypeFilter}
+                  setFormTypeFilter={setFormTypeFilter}
+                  dateFrom={dateFrom}
+                  setDateFrom={setDateFrom}
+                  dateTo={dateTo}
+                  setDateTo={setDateTo}
+                  search={search}
+                  setSearch={setSearch}
+                  getEligibilitySectionByEmail={getEligibilitySectionByEmail}
+                />} />
+                <Route path="admins" element={<AdminsPage />} />
+                <Route path="leads" element={<LeadsPage 
+                  filteredSubmissions={filteredSubmissions}
+                  handleExportExcel={handleExportExcel}
+                  formTypeFilter={formTypeFilter}
+                  setFormTypeFilter={setFormTypeFilter}
+                  dateFrom={dateFrom}
+                  setDateFrom={setDateFrom}
+                  dateTo={dateTo}
+                  setDateTo={setDateTo}
+                  search={search}
+                  setSearch={setSearch}
+                  getEligibilitySectionByEmail={getEligibilitySectionByEmail}
+                />} />
+                <Route path="questions" element={<QuestionFlowManagementPage />} />
+                <Route path="integrations" element={<IntegrationWebhooksPage />} />
+                <Route path="analytics" element={<AnalyticsReportingPage />} />
+                <Route path="settings" element={<SystemSettingsPage />} />
+              </Routes>
             </Box>
-            <TableContainer component={MuiPaper} sx={{ background: 'rgba(35,41,70,0.85)', borderRadius: 2, boxShadow: 0, overflowX: 'auto', maxWidth: '100%' }}>
-              <Table size="small" sx={{ minWidth: 650 }}>
-                <TableHead>
-                  <TableRow sx={{ background: 'rgba(100,108,255,0.15)' }}>
-                    <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: { xs: 12, sm: 16 }, px: { xs: 1, sm: 2 } }}>Date</TableCell>
-                    <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: { xs: 12, sm: 16 }, px: { xs: 1, sm: 2 }, minWidth: 80 }}>Name</TableCell>
-                    <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: { xs: 12, sm: 16 }, px: { xs: 1, sm: 2 }, minWidth: 100 }}>Email</TableCell>
-                    <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: { xs: 12, sm: 16 }, px: { xs: 1, sm: 2 }, minWidth: 80 }}>Phone</TableCell>
-                    <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: { xs: 12, sm: 16 }, px: { xs: 1, sm: 2 }, minWidth: 70 }}>Form Type</TableCell>
-                    <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: { xs: 12, sm: 16 }, px: { xs: 1, sm: 2 }, minWidth: 90 }}>Eligibility Paragraph</TableCell>
-                    <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: { xs: 12, sm: 16 }, px: { xs: 1, sm: 2 }, minWidth: 120 }}>Other Info</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredSubmissions.map((row) => (
-                    <TableRow key={row.id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 }, background: 'rgba(255,255,255,0.04)' }}>
-                      <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>
-                        {row.created_at ? new Date(row.created_at).toLocaleString() : ''}
-                      </TableCell>
-                      <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.fullName || ''}</TableCell>
-                      <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.email || ''}</TableCell>
-                      <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.phone || ''}</TableCell>
-                      <TableCell sx={{ color: row.form_type === 'positive' ? '#43e97b' : '#ff5e62', fontWeight: 700, textTransform: 'capitalize', fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.form_type}</TableCell>
-                      <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{getEligibilitySectionByEmail(row.user_data?.email)}</TableCell>
-                      <TableCell sx={{ color: '#fff', fontWeight: 400, maxWidth: { xs: 120, sm: 320 }, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>
-                        {Object.entries(row.user_data || {})
-                          .filter(([k]) => !['fullName', 'email', 'phone', 'eligibleSections'].includes(k))
-                          .map(([k, v]) => (
-                            <div key={k} style={{ marginBottom: 2 }}>
-                              <b style={{ color: '#4fc3f7' }}>{k}:</b> {typeof v === 'object' ? JSON.stringify(v) : String(v)}
-                            </div>
-                          ))}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Container>
+          </Box>
+        </Box>
       </Box>
     </>
   );
