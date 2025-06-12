@@ -16,7 +16,7 @@ const AboutUs = () => {
 
   return (
     <>
-      <Header sx={{ position: 'relative', zIndex: 3 }} />
+      <Header />
       <Box
         sx={{
           minHeight: '100vh',
@@ -36,7 +36,90 @@ const AboutUs = () => {
             About Us
           </Typography>
           <Divider sx={{ mb: 6, mx: 'auto', width: 80, borderColor: 'primary.main', opacity: 0.5 }} />
-          <Typography variant="body1" fontSize={19} sx={{ color: 'white', mb: 5, textAlign: 'justify', maxWidth: 900, mx: 'auto' }}>
+
+          {/* Partners Row */}
+          <Box sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: 'center',
+            alignItems: 'stretch',
+            gap: 4,
+            mb: 10,
+          }}>
+            {/* Joshua Pex */}
+            <Box sx={{
+              flex: 1,
+              background: 'rgba(255,255,255,0.18)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              borderRadius: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              p: 3,
+              pt: 4,
+              boxShadow: 6,
+              minWidth: 260,
+              maxWidth: 340,
+            }}>
+              <img src="/JOSHUA.jpg" alt="Joshua Pex" style={{ width: '100%', height: 420, objectFit: 'cover', borderRadius: 16, marginBottom: 16 }} />
+              <Typography fontWeight={700} fontSize={22} sx={{ color: '#fff', textAlign: 'center', mb: 0.5 }}>
+                Joshua Pex, Attorney
+              </Typography>
+              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'center', mb: 1 }}>
+                Founding Partner
+              </Typography>
+            </Box>
+            {/* Michael Decker */}
+            <Box sx={{
+              flex: 1,
+              background: 'rgba(255,255,255,0.18)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              borderRadius: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              p: 3,
+              pt: 4,
+              boxShadow: 6,
+              minWidth: 260,
+              maxWidth: 340,
+            }}>
+              <img src="/MDIMAGE.jpg" alt="Michael Decker" style={{ width: '100%', height: 420, objectFit: 'cover', borderRadius: 16, marginBottom: 16 }} />
+              <Typography fontWeight={700} fontSize={22} sx={{ color: 'white', textAlign: 'center', mb: 0.5 }}>
+                Michael Decker, Attorney
+              </Typography>
+              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'center', mb: 1 }}>
+                Founding Partner
+              </Typography>
+            </Box>
+            {/* Anat Levi */}
+            <Box sx={{
+              flex: 1,
+              background: 'rgba(255,255,255,0.18)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              borderRadius: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              p: 3,
+              pt: 4,
+              boxShadow: 6,
+              minWidth: 260,
+              maxWidth: 340,
+            }}>
+              <img src="/ANAT.jpg" alt="Anat Levi" style={{ width: '100%', height: 420, objectFit: 'cover', borderRadius: 16, marginBottom: 16 }} />
+              <Typography fontWeight={700} fontSize={22} sx={{ color: 'white', textAlign: 'center', mb: 0.5 }}>
+                Anat Levi, Attorney
+              </Typography>
+              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'center', mb: 1 }}>
+                Partner
+              </Typography>
+            </Box>
+          </Box>
+          <Typography variant="body1" fontSize={22} sx={{ color: 'white', mb: 8, mt: 16, textAlign: 'justify', maxWidth: 900, mx: 'auto' }}>
 Decker, Pex, Levi Law Offices is a dynamic and respected Israeli law firm with offices in Tel Aviv and Jerusalem, serving clients both locally and internationally. We are known for our commitment to legal excellence, personalized client service, and a practical, results-driven approach. Our firm has developed a strong reputation in the fields of European citizenship, immigration law, and administrative law, helping individuals and families navigate some of the most complex legal challenges with confidence.
           </Typography>
           <Box sx={{
@@ -44,6 +127,7 @@ Decker, Pex, Levi Law Offices is a dynamic and respected Israeli law firm with o
             flexDirection: { xs: 'column', md: 'row' },
             gap: 5,
             mb: 7,
+            mt: 16,
             alignItems: 'stretch',
             justifyContent: 'center',
             maxWidth: '100%',
@@ -116,7 +200,7 @@ A core focus of our practice is assisting clients in reclaiming German and Austr
               </Box>
             </Box>
           </Box>
-          <Typography variant="h5" fontWeight={600} mb={3} sx={{ color: titleColor, textAlign: 'center' }}>
+          <Typography variant="h5" fontWeight={600} mb={3} sx={{ color: titleColor, textAlign: 'center', mt: 12 }}>
             Why Choose Us
           </Typography>
           <Box
@@ -135,25 +219,25 @@ A core focus of our practice is assisting clients in reclaiming German and Austr
               pl: { xs: 68, sm: 10 },
             }}
           >
-            <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(67, 233, 123, 0.25)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(67, 233, 123, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
+            <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(67, 233, 123, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
               <GavelIcon sx={{ color: '#fff', fontSize: 32, mb: 1 }} />
               <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                 Decades of combined legal experience
               </Typography>
             </Box>
-            <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(33, 150, 243, 0.25)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(33, 150, 243, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
+            <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(33, 150, 243, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
               <PublicIcon sx={{ color: '#fff', fontSize: 32, mb: 1 }} />
               <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                 Multilingual team fluent in English, Hebrew, German, Russian, and French
               </Typography>
             </Box>
-            <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255, 179, 0, 0.25)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(255, 179, 0, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
+            <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(255, 179, 0, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
               <PeopleIcon sx={{ color: '#fff', fontSize: 32, mb: 1 }} />
               <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                 Personalized service and direct attorney access
               </Typography>
             </Box>
-            <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(171, 71, 188, 0.25)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(171, 71, 188, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
+            <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(171, 71, 188, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
               <SearchIcon sx={{ color: '#fff', fontSize: 32, mb: 1 }} />
               <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
                 In-house archival research team for citizenship cases
