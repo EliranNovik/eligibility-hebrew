@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { NavigationProvider } from './context/NavigationContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormState } from './types';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import { Box } from '@mui/material';
@@ -16,16 +16,47 @@ import ArchivalResearch from './pages/ArchivalResearch';
 import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
-  const [formState, setFormState] = useState<FormState>({
-    answers: [],
-    currentStep: 0,
-    userData: {
-      fullName: '',
-      email: '',
-      phone: '',
-      comments: '',
+  // Load from localStorage if present
+  const [formState, setFormState] = useState<FormState>(() => {
+    const saved = localStorage.getItem('formState');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // fallback to default if corrupted
+      }
     }
+    return {
+      answers: [],
+      currentStep: 0,
+      userData: {
+        fullName: '',
+        email: '',
+        phone: '',
+        comments: '',
+      }
+    };
   });
+
+  // Save to localStorage on change
+  useEffect(() => {
+    localStorage.setItem('formState', JSON.stringify(formState));
+  }, [formState]);
+
+  // Helper to clear formState from localStorage (call after final submission)
+  const clearFormState = () => {
+    localStorage.removeItem('formState');
+    setFormState({
+      answers: [],
+      currentStep: 0,
+      userData: {
+        fullName: '',
+        email: '',
+        phone: '',
+        comments: '',
+      }
+    });
+  };
 
   return (
     <>
@@ -78,6 +109,7 @@ function App() {
                   <Results 
                     formState={formState} 
                     setFormState={setFormState} 
+                    clearFormState={clearFormState}
                   />
                 } 
               />
@@ -87,6 +119,7 @@ function App() {
                   <ContactForm 
                     formState={formState} 
                     setFormState={setFormState} 
+                    clearFormState={clearFormState}
                   />
                 } 
               />

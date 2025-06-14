@@ -63,6 +63,7 @@ const CongratsCard = styled(Box)(({ theme }) => ({
 interface ResultsProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
+  clearFormState?: () => void;
 }
 
 async function saveEligibilityResult(section: string, additionalInfo?: any) {
@@ -80,11 +81,17 @@ async function saveEligibilityResult(section: string, additionalInfo?: any) {
   return data;
 }
 
-const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
+const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormState }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [showContactForm, setShowContactForm] = useState(false);
-  const [contactFormType, setContactFormType] = useState<'positive' | 'negative' | null>(null);
+  const [showContactForm, setShowContactForm] = useState(() => {
+    const saved = localStorage.getItem('showContactForm');
+    return saved ? JSON.parse(saved) : false;
+  });
+  const [contactFormType, setContactFormType] = useState<'positive' | 'negative' | null>(() => {
+    const saved = localStorage.getItem('contactFormType');
+    return saved ? saved as 'positive' | 'negative' : null;
+  });
   const [typedText, setTypedText] = useState('');
   const timeoutRef = useRef<number | null>(null);
   const avatar = AVATARS[Math.floor(Math.random() * AVATARS.length)];
@@ -106,17 +113,17 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
   }
 
   const analyzeEligibility = () => {
-    const location = useLocation();
-    const { eligible, eligibleSections, assessmentNeeded, answers } = location.state || {};
+    // Always use formState.answers as the source of truth
+    const answers = formState.answers;
 
     // Austrian citizenship logic
-    const austrian1 = answers && answers.find((a: { questionId: string }) => a.questionId === 'austrian_58c_1');
-    const austrian2 = answers && answers.find((a: { questionId: string }) => a.questionId === 'austrian_58c_2');
-    const austrian3 = answers && answers.find((a: { questionId: string }) => a.questionId === 'austrian_58c_3');
-    const austrian4 = answers && answers.find((a: { questionId: string }) => a.questionId === 'austrian_58c_4');
+    const austrian1 = answers && answers.find((a) => a.questionId === 'austrian_58c_1');
+    const austrian2 = answers && answers.find((a) => a.questionId === 'austrian_58c_2');
+    const austrian3 = answers && answers.find((a) => a.questionId === 'austrian_58c_3');
+    const austrian4 = answers && answers.find((a) => a.questionId === 'austrian_58c_4');
     if (austrian1 && austrian2 && austrian3 && austrian4) {
       // Only allow positive if relation is Child, Grandchild, Great-grandchild, or Further descendant
-      if (["Child", "Grandchild", "Great-grandchild", "Further descendant"].includes(austrian4.value)) {
+      if (typeof austrian4.value === 'string' && ["Child", "Grandchild", "Great-grandchild", "Further descendant"].includes(austrian4.value)) {
         return {
           eligible: true,
           message: "You are eligible for Austrian citizenship under §58c. All required conditions are met.",
@@ -132,7 +139,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
     }
 
     // If the user selected 'Not directly related' for german_5_relation, always return negative result
-    if (answers && answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_5_relation' && a.value === 'Not directly related')) {
+    if (answers && answers.find((a) => a.questionId === 'german_5_relation' && a.value === 'Not directly related')) {
       return {
         eligible: false,
         message: "You are not eligible for German citizenship under §5 StAG because you are not directly related to the ancestor.",
@@ -141,21 +148,19 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
     }
 
     // Section 5 result logic (should be before §116/§15 logic)
-    const section5Ancestor = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_5_earliest_ancestor');
-    const section5Relation = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_5_relation');
+    const section5Ancestor = answers.find((a) => a.questionId === 'german_5_earliest_ancestor');
+    const section5Relation = answers.find((a) => a.questionId === 'german_5_relation');
     if (section5Ancestor && section5Relation && section5Relation.value !== 'Not directly related') {
       let category = '';
       let lawCategory = '';
       let explanation = '';
       // Category 2: Mother lost citizenship by marriage to a foreigner before April 1, 1953
       const motherLostCitizenship = answers.find(
-        (a: { questionId: string; value: string }) =>
-          a.questionId === 'german_5_mother_q5' && a.value === 'yes'
+        (a) => a.questionId === 'german_5_mother_q5' && a.value === 'yes'
       );
       // Category 3: Lost by legitimization by foreign father before April 1, 1953
       const lostByLegitimization = answers.find(
-        (a: { questionId: string; value: string }) =>
-          a.questionId === 'german_5_mother_q6' && a.value === 'yes'
+        (a) => a.questionId === 'german_5_mother_q6' && a.value === 'yes'
       );
       if (motherLostCitizenship) {
         category = '2';
@@ -188,7 +193,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
     }
 
     // If the user selected 'Not directly related' for german_15_5, always return negative result
-    if (answers && answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_15_5' && a.value === 'Not directly related')) {
+    if (answers && answers.find((a) => a.questionId === 'german_15_5' && a.value === 'Not directly related')) {
       return {
         eligible: false,
         message: "You are not eligible because you are not directly related to the ancestor.",
@@ -208,11 +213,11 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
     // If we have answers but they're incomplete, stay on the current page
     if (answers && answers.length > 0) {
       // Check for §116 eligibility: all 116 questions are 'yes', or 116_4 is 'no' and 116_4a is 'yes'
-      const a1 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_1');
-      const a2 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_2');
-      const a3 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_3');
-      const a4 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_4');
-      const a4a = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_4a');
+      const a1 = answers.find((a) => a.questionId === 'german_116_1');
+      const a2 = answers.find((a) => a.questionId === 'german_116_2');
+      const a3 = answers.find((a) => a.questionId === 'german_116_3');
+      const a4 = answers.find((a) => a.questionId === 'german_116_4');
+      const a4a = answers.find((a) => a.questionId === 'german_116_4a');
       if (
         a1 && a1.value === 'yes' &&
         a2 && a2.value === 'yes' &&
@@ -242,30 +247,15 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
           sections: ['§15']
         };
       }
-      if (assessmentNeeded) {
-        return {
-          eligible: true,
-          message: "You may be eligible for German citizenship under §15, but an assessment is needed.",
-          sections: ['§15'],
-          assessmentNeeded: true
-        };
-      }
-      if (eligible) {
-        return {
-          eligible: true,
-          message: "You are eligible for German citizenship!",
-          sections: eligibleSections || []
-        };
-      }
 
       // Negative explanation logic
       let negativeReason = "";
-      const no116_1 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_1' && a.value === 'no');
-      const no116_2 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_2' && a.value === 'no');
-      const no116_3 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_3' && a.value === 'no');
-      const no116_4 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_4' && a.value === 'no');
-      const no116_4a = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_116_4a' && a.value === 'no');
-      const no15_5 = answers.find((a: { questionId: string; value: string }) => a.questionId === 'german_15_5' && a.value === 'Not directly related');
+      const no116_1 = answers.find((a) => a.questionId === 'german_116_1' && a.value === 'no');
+      const no116_2 = answers.find((a) => a.questionId === 'german_116_2' && a.value === 'no');
+      const no116_3 = answers.find((a) => a.questionId === 'german_116_3' && a.value === 'no');
+      const no116_4 = answers.find((a) => a.questionId === 'german_116_4' && a.value === 'no');
+      const no116_4a = answers.find((a) => a.questionId === 'german_116_4a' && a.value === 'no');
+      const no15_5 = answers.find((a) => a.questionId === 'german_15_5' && a.value === 'Not directly related');
 
       if (no116_1) negativeReason = "You are not eligible because your ancestor was not persecuted by the Nazi regime.";
       else if (no116_2) negativeReason = "You are not eligible because your ancestor was not a German citizen before or during the Nazi era.";
@@ -335,7 +325,23 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
     }
   }, [result, formState.userData]);
 
+  // Persist showContactForm and contactFormType to localStorage
+  useEffect(() => {
+    localStorage.setItem('showContactForm', JSON.stringify(showContactForm));
+  }, [showContactForm]);
+  useEffect(() => {
+    if (contactFormType) {
+      localStorage.setItem('contactFormType', contactFormType);
+    } else {
+      localStorage.removeItem('contactFormType');
+    }
+  }, [contactFormType]);
+
   const handleRestart = () => {
+    setShowContactForm(false);
+    setContactFormType(null);
+    localStorage.removeItem('showContactForm');
+    localStorage.removeItem('contactFormType');
     setFormState((prev) => ({
       ...prev,
       answers: [],
@@ -346,7 +352,14 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
 
   const handleContactSuccess = () => {
     setShowContactForm(false);
-    handleRestart();
+    setContactFormType(null);
+    localStorage.removeItem('showContactForm');
+    localStorage.removeItem('contactFormType');
+    if (clearFormState) {
+      clearFormState();
+    } else {
+      handleRestart();
+    }
   };
 
   const captureAndShare = async (platform: 'whatsapp' | 'facebook') => {
@@ -500,7 +513,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
             ) : (
               <>
                 {/* Special case: not_sure */}
-                {result.assessmentNeeded && (
+                {result.eligible && (
                   <>
                     <Box sx={{
                       background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
@@ -593,7 +606,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                   </>
                 )}
                 {/* Usual results logic */}
-                {!result.assessmentNeeded && result.eligible && (
+                {!result.eligible && (
                   <>
                     <CongratsCard ref={congratsCardRef} sx={{ width: '100%', mb: 2 }}>
                       <CelebrationIcon sx={{ fontSize: 48, mb: 1 }} />
@@ -756,77 +769,6 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState }) => {
                         </Button>
                       </Box>
                     </Box>
-                    {result.assessmentNeeded && (
-                      <Alert severity="info" sx={{ mt: 2, mb: 2 }}>
-                        A detailed assessment of your case is recommended to determine your exact eligibility.
-                      </Alert>
-                    )}
-                  </>
-                )}
-                {/* Negative result: show choice before contact form */}
-                {!result.eligible && (
-                  <>
-                    <Box sx={{
-                      background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                      color: '#232946',
-                      borderRadius: 3,
-                      p: 4,
-                      textAlign: 'center',
-                      boxShadow: 2,
-                      width: '100%',
-                      mb: 0,
-                    }}>
-                      <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#232946' }}>
-                        Eligibility Assessment
-                      </Typography>
-                      <Typography variant="body1" sx={{ 
-                        mb: 4, 
-                        color: '#232946', 
-                        whiteSpace: 'pre-line',
-                        fontWeight: 600,
-                        fontSize: 18,
-                        lineHeight: 1.6
-                      }}>
-                        {result.message}
-                      </Typography>
-                    </Box>
-                    {/* Choice buttons before contact form */}
-                    {contactFormType === null && (
-                      <Box sx={{ width: '100%', mt: 4, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, alignItems: 'center', justifyContent: 'center' }}>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          size="large"
-                          sx={{
-                            fontWeight: 700,
-                            fontSize: 18,
-                            borderRadius: 3,
-                            background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
-                            color: '#fff',
-                            boxShadow: '0 4px 20px rgba(100,108,255,0.10)',
-                            px: 4,
-                            py: 2,
-                            '&:hover': {
-                              background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
-                            },
-                          }}
-                          onClick={() => {
-                            setContactFormType('negative');
-                            setShowContactForm(true);
-                            navigate('/contact', {
-                              state: {
-                                eligible: false,
-                                eligibleSections: result.sections || [],
-                                answers: formState.answers,
-                                explanation: result.message,
-                              }
-                            });
-                          }}
-                        >
-                          I wish to be contacted by a representative
-                        </Button>
-                      </Box>
-                    )}
                   </>
                 )}
               </>

@@ -144,27 +144,20 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
       const response = await fetch(url);
       if (!response.ok) throw new Error('Network response was not ok');
 
-      // Save contact form submission (user_data and form_type only)
-      const { data, error } = await supabase
-        .from('contact_submissions')
-        .insert([
-          {
-            user_data: {
-              fullName: userData.fullName,
-              email: userData.email,
-              phone: `${countryCode}${formData.phone}`,
-              persecutedName: formData.persecutedName,
-              persecutedDob: formData.persecutedDob,
-              persecutedPlace: formData.persecutedPlace,
-              answers: formState.answers,
-              answers_pretty: formattedQnA,
-            },
-            form_type: 'positive'
-          }
-        ]);
-      if (error) throw error;
+      // Prepare user data with all required fields
+      const submissionData = {
+        ...userData,
+        phone: `${countryCode}${formData.phone}`,
+        persecutedName: formData.persecutedName,
+        persecutedDob: formData.persecutedDob,
+        persecutedPlace: formData.persecutedPlace,
+        additionalInfo: formData.additionalInfo,
+        answers: formState.answers,
+        answers_pretty: formattedQnA,
+      };
 
-      await saveContactSubmission(userData, 'positive');
+      // Save contact form submission using the helper function
+      await saveContactSubmission(submissionData, 'positive');
       setShowThankYou(true);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -194,13 +187,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
   };
 
   const handleCountryCodeChange = (e: any) => {
-    const newCode = e.target.value;
-    setCountryCode(newCode);
-    // Remove old code and update phone
-    setFormData(prev => {
-      const value = prev.phone.replace(/^\+\d+\s*/, '');
-      return { ...prev, phone: `${newCode} ${value}`.trim() };
-    });
+    setCountryCode(e.target.value);
   };
 
   const handleSubmitWithoutContact = () => {
@@ -238,22 +225,15 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
       const response = await fetch(url);
       if (!response.ok) throw new Error('Network response was not ok');
 
-      // Save contact form submission (user_data and form_type only)
-      const { data, error } = await supabase
-        .from('contact_submissions')
-        .insert([
-          {
-            user_data: {
-              fullName: userData.fullName,
-              email: userData.email,
-              answers: formState.answers,
-              answers_pretty: formattedQnA,
-            },
-            form_type: 'positive'
-          }
-        ]);
-      if (error) throw error;
-      await saveContactSubmission(userData, 'positive');
+      // Prepare user data with all required fields
+      const submissionData = {
+        ...userData,
+        answers: formState.answers,
+        answers_pretty: formattedQnA,
+      };
+
+      // Save contact form submission using the helper function
+      await saveContactSubmission(submissionData, 'positive');
       setShowThankYou(true);
     } catch (error) {
       setMessage('Failed to submit form. Please try again.');
@@ -735,7 +715,7 @@ We'll need a bit more information before we can begin our expedited archival res
         </DialogTitle>
         <DialogContent>
           <Typography sx={{ color: 'rgba(255,255,255,0.87)', textAlign: 'center', mb: 2 }}>
-            You are about to submit your form with the information provided in previous sections. Please be aware that by providing information about the persecuted we are able to provide a free archival research and consultation.
+            You are about to submit your form with the information provided in previous sections. Please be aware that by providing information about the ancestor/s we are able to provide a free archival research and consultation.
           </Typography>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 3 }}>

@@ -24,6 +24,24 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
   const location = useLocation();
   const timeoutRef = useRef<number | null>(null);
 
+  // On mount, reset formState and localStorage to initial state
+  useEffect(() => {
+    const initialState = {
+      answers: [],
+      currentStep: 0,
+      userData: {
+        fullName: '',
+        email: '',
+        phone: '',
+        comments: '',
+      }
+    };
+    setFormState(initialState);
+    localStorage.setItem('formState', JSON.stringify(initialState));
+    localStorage.removeItem('showContactForm');
+    localStorage.removeItem('contactFormType');
+  }, []);
+
   // Robust typewriter effect for chat bubble
   useEffect(() => {
     setTypedText(''); // Only clear once at the start

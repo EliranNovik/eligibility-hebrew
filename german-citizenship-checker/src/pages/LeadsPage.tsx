@@ -1,11 +1,13 @@
-import React from 'react';
-import { Box, Typography, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Paper, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, MenuItem, Pagination, Stack } from '@mui/material';
 import MuiPaper from '@mui/material/Paper';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+
+const ROWS_PER_PAGE = 10;
 
 const LeadsPage = ({
   filteredSubmissions,
@@ -20,6 +22,20 @@ const LeadsPage = ({
   setSearch,
   getEligibilitySectionByEmail
 }: any) => {
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredSubmissions.length / ROWS_PER_PAGE);
+  const startIndex = (page - 1) * ROWS_PER_PAGE;
+  const endIndex = startIndex + ROWS_PER_PAGE;
+  const currentPageData = filteredSubmissions.slice(startIndex, endIndex);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    setExpandedRowId(null); // Close any expanded rows when changing pages
+  };
+
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" sx={{ color: 'white', fontWeight: 700, mb: 4 }}>
@@ -101,30 +117,88 @@ const LeadsPage = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredSubmissions.map((row: any) => (
-                <TableRow key={row.id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 }, background: 'rgba(255,255,255,0.04)' }}>
-                  <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>
-                    {row.created_at ? new Date(row.created_at).toLocaleString() : ''}
-                  </TableCell>
-                  <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.fullName || ''}</TableCell>
-                  <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.email || ''}</TableCell>
-                  <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.phone || ''}</TableCell>
-                  <TableCell sx={{ color: row.form_type === 'positive' ? '#43e97b' : '#ff5e62', fontWeight: 700, textTransform: 'capitalize', fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.form_type}</TableCell>
-                  <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{getEligibilitySectionByEmail(row.user_data?.email)}</TableCell>
-                  <TableCell sx={{ color: '#fff', fontWeight: 400, maxWidth: { xs: 120, sm: 320 }, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>
-                    {Object.entries(row.user_data || {})
-                      .filter(([k]) => !['fullName', 'email', 'phone', 'eligibleSections'].includes(k))
-                      .map(([k, v]) => (
-                        <div key={k} style={{ marginBottom: 2 }}>
-                          <b style={{ color: '#4fc3f7' }}>{k}:</b> {typeof v === 'object' ? JSON.stringify(v) : String(v)}
+              {currentPageData.map((row: any) => (
+                <React.Fragment key={row.id}>
+                  <TableRow
+                    hover
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, background: 'rgba(255,255,255,0.04)', cursor: 'pointer' }}
+                    onClick={() => setExpandedRowId(expandedRowId === row.id ? null : row.id)}
+                  >
+                    <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>
+                      {row.created_at ? new Date(row.created_at).toLocaleString() : ''}
+                    </TableCell>
+                    <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.fullName || ''}</TableCell>
+                    <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.email || ''}</TableCell>
+                    <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.user_data?.phone || ''}</TableCell>
+                    <TableCell sx={{ color: row.form_type === 'positive' ? '#43e97b' : '#ff5e62', fontWeight: 700, textTransform: 'capitalize', fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{row.form_type}</TableCell>
+                    <TableCell sx={{ color: '#fff', fontWeight: 500, fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>{getEligibilitySectionByEmail(row.user_data?.email)}</TableCell>
+                    <TableCell sx={{ color: '#fff', fontWeight: 400, maxWidth: { xs: 120, sm: 320 }, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: { xs: 11, sm: 15 }, px: { xs: 1, sm: 2 } }}>
+                      {row.user_data?.persecutedName && (
+                        <div style={{ marginBottom: 2 }}>
+                          <b style={{ color: '#4fc3f7' }}>Persecuted Name:</b> {row.user_data.persecutedName}
                         </div>
-                      ))}
-                  </TableCell>
-                </TableRow>
+                      )}
+                      {row.user_data?.persecutedDob && (
+                        <div style={{ marginBottom: 2 }}>
+                          <b style={{ color: '#4fc3f7' }}>Date of Birth:</b> {row.user_data.persecutedDob}
+                        </div>
+                      )}
+                      {row.user_data?.persecutedPlace && (
+                        <div style={{ marginBottom: 2 }}>
+                          <b style={{ color: '#4fc3f7' }}>Place of Birth:</b> {row.user_data.persecutedPlace}
+                        </div>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                  {expandedRowId === row.id && (
+                    <TableRow>
+                      <TableCell colSpan={7} sx={{ background: 'rgba(35,41,70,0.97)', color: '#fff', p: 3 }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1, color: '#fff' }}>Full Submission Details</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                          {row.user_data?.answers_pretty && (
+                            <div style={{ marginBottom: 2 }}>
+                              <b style={{ color: '#4fc3f7' }}>Q&amp;A:</b>
+                              <pre style={{ color: '#fff', background: 'none', margin: 0, padding: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: 'inherit' }}>{row.user_data.answers_pretty}</pre>
+                            </div>
+                          )}
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        
+        {/* Pagination Controls */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+          <Stack spacing={2}>
+            <Pagination 
+              count={totalPages} 
+              page={page} 
+              onChange={handlePageChange}
+              color="primary"
+              size="large"
+              sx={{
+                '& .MuiPaginationItem-root': {
+                  color: '#fff',
+                  fontSize: '1rem',
+                  '&.Mui-selected': {
+                    background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                    color: '#fff',
+                    '&:hover': {
+                      background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                    },
+                  },
+                  '&:hover': {
+                    background: 'rgba(255,255,255,0.1)',
+                  },
+                },
+              }}
+            />
+          </Stack>
+        </Box>
       </Paper>
     </Box>
   );

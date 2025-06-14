@@ -50,6 +50,7 @@ interface ContactFormProps {
   formState: FormState;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
   hideHeader?: boolean;
+  clearFormState?: () => void;
 }
 
 // Helper to format answers as readable string
@@ -94,7 +95,7 @@ async function saveContactSubmission(userData: any, formType?: string) {
   return data;
 }
 
-const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFormProps) => {
+const ContactForm = ({ formState, setFormState, hideHeader = false, clearFormState }: ContactFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
@@ -137,8 +138,18 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
       
       if (!response.ok) throw new Error('Network response was not ok');
       
+      // Prepare user data with all required fields
+      const submissionData = {
+        ...formState.userData,
+        phone: `${countryCode}${formState.userData.phone}`,
+        contactMethod,
+        answers: formState.answers,
+        answers_pretty: formattedQnA,
+      };
+
+      // Save contact form submission using the helper function
+      await saveContactSubmission(submissionData, 'negative');
       setShowThankYou(true);
-      await saveContactSubmission(formState.userData, 'negative');
     } catch (error) {
       setMessage('There was an error submitting your information. Please try again.');
       setMessageType('error');
@@ -193,6 +204,7 @@ const ContactForm = ({ formState, setFormState, hideHeader = false }: ContactFor
   const userData = formState.userData || { phone: '', comments: '', fullName: '', email: '' };
 
   if (showThankYou) {
+    if (clearFormState) clearFormState();
     return (
       <Container maxWidth="sm" sx={{ py: 4 }}>
         <Fade in={showThankYou} timeout={1000}>

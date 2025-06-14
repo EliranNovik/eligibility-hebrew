@@ -172,7 +172,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         <Button
           onClick={() => navigate('/about')}
           sx={{
-            background: 'linear-gradient(90deg, #646cff, #535bf2)',
+            background: 'transparent',
             color: 'white',
             fontWeight: 700,
             fontSize: { xs: 14, sm: 16 },
@@ -180,10 +180,13 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
             borderRadius: 3,
             px: { xs: 2, sm: 3 },
             py: 1,
-            boxShadow: '0 2px 8px 0 rgba(100,108,255,0.10)',
+            boxShadow: 'none',
             transition: 'all 0.2s',
             '&:hover': {
-              background: 'linear-gradient(90deg, #535bf2, #646cff)',
+              background: 'rgba(20, 20, 30, 0.75)',
+              boxShadow: '0 2px 8px 0 rgba(20,20,30,0.10)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               color: 'white',
             },
           }}
@@ -193,7 +196,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         <Button
           onClick={() => navigate('/archival-research')}
           sx={{
-            background: 'linear-gradient(90deg, #646cff, #535bf2)',
+            background: 'transparent',
             color: 'white',
             fontWeight: 700,
             fontSize: { xs: 14, sm: 16 },
@@ -201,10 +204,13 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
             borderRadius: 3,
             px: { xs: 2, sm: 3 },
             py: 1,
-            boxShadow: '0 2px 8px 0 rgba(100,108,255,0.10)',
+            boxShadow: 'none',
             transition: 'all 0.2s',
             '&:hover': {
-              background: 'linear-gradient(90deg, #535bf2, #646cff)',
+              background: 'rgba(20, 20, 30, 0.75)',
+              boxShadow: '0 2px 8px 0 rgba(20,20,30,0.10)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               color: 'white',
             },
           }}
@@ -214,7 +220,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
         <Button
           onClick={() => navigate('/admin')}
           sx={{
-            background: 'linear-gradient(90deg, #646cff, #535bf2)',
+            background: 'transparent',
             color: 'white',
             fontWeight: 700,
             fontSize: { xs: 14, sm: 16 },
@@ -222,10 +228,13 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
             borderRadius: 3,
             px: { xs: 2, sm: 3 },
             py: 1,
-            boxShadow: '0 2px 8px 0 rgba(100,108,255,0.10)',
+            boxShadow: 'none',
             transition: 'all 0.2s',
             '&:hover': {
-              background: 'linear-gradient(90deg, #535bf2, #646cff)',
+              background: 'rgba(20, 20, 30, 0.75)',
+              boxShadow: '0 2px 8px 0 rgba(20,20,30,0.10)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               color: 'white',
             },
           }}
