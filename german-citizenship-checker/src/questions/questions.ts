@@ -545,13 +545,4 @@ export const questions: Question[] = [
     section: 'austrian_58c',
     required: true
   },
-
-  {
-    id: 'german_5_relation',
-    text: 'What is your relation to that ancestor?',
-    type: 'dropdown',
-    options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant', 'Not directly related'],
-    section: 'german_5',
-    required: true
-  },
 ]; 

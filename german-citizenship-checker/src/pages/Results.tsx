@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Typography, Button, Paper, Container, styled, Avatar, Fade, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CelebrationIcon from '@mui/icons-material/Celebration';
+import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -116,44 +117,24 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
     // Always use formState.answers as the source of truth
     const answers = formState.answers;
 
-    // Austrian citizenship logic
-    const austrian1 = answers && answers.find((a) => a.questionId === 'austrian_58c_1');
-    const austrian2 = answers && answers.find((a) => a.questionId === 'austrian_58c_2');
-    const austrian3 = answers && answers.find((a) => a.questionId === 'austrian_58c_3');
-    const austrian4 = answers && answers.find((a) => a.questionId === 'austrian_58c_4');
-    if (austrian1 && austrian2 && austrian3 && austrian4) {
-      // Only allow positive if relation is Child, Grandchild, Great-grandchild, or Further descendant
-      if (typeof austrian4.value === 'string' && ["Child", "Grandchild", "Great-grandchild", "Further descendant"].includes(austrian4.value)) {
-        return {
-          eligible: true,
-          message: "You are eligible for Austrian citizenship under §58c. All required conditions are met.",
-          sections: ['§58c']
-        };
-      } else {
-        return {
-          eligible: false,
-          message: "You are not eligible for Austrian citizenship because you are not a direct descendant of the ancestor.",
-          sections: []
-        };
-      }
-    }
-
-    // If the user selected 'Not directly related' for german_5_relation, always return negative result
-    if (answers && answers.find((a) => a.questionId === 'german_5_relation' && a.value === 'Not directly related')) {
-      return {
-        eligible: false,
-        message: "You are not eligible for German citizenship under §5 StAG because you are not directly related to the ancestor.",
-        sections: []
-      };
-    }
-
     // Section 5 result logic (should be before §116/§15 logic)
     const section5Ancestor = answers.find((a) => a.questionId === 'german_5_earliest_ancestor');
-    const section5Relation = answers.find((a) => a.questionId === 'german_5_relation');
-    if (section5Ancestor && section5Relation && section5Relation.value !== 'Not directly related') {
+    if (section5Ancestor) {
       let category = '';
       let lawCategory = '';
       let explanation = '';
+
+      // Check if any answer is 'not_sure'
+      const hasNotSure = answers.some(a => a.value === 'not_sure');
+      if (hasNotSure) {
+        return {
+          eligible: true,
+          message: 'You may be eligible for §5 but further assessment is needed.',
+          sections: ['§5'],
+          lawCategory: 'Section 5: Correction of historical discrimination for children and descendants of German citizens who lost citizenship due to gender-based or marital status laws.'
+        };
+      }
+
       // Category 2: Mother lost citizenship by marriage to a foreigner before April 1, 1953
       const motherLostCitizenship = answers.find(
         (a) => a.questionId === 'german_5_mother_q5' && a.value === 'yes'
@@ -190,6 +171,71 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
         category,
         lawCategory
       };
+    }
+
+    // If any answer is 'not_sure', return assessment needed for the correct section
+    const hasNotSure = answers.some(a => a.value === 'not_sure');
+    if (hasNotSure) {
+      // Check for §116
+      const a1 = answers.find((a) => a.questionId === 'german_116_1');
+      const a2 = answers.find((a) => a.questionId === 'german_116_2');
+      if (a1 && a2) {
+        return {
+          eligible: true,
+          message: 'You may be eligible for §116 but further assessment is needed.',
+          sections: ['§116'],
+          lawCategory: '§116 StAG: Restoration for Nazi persecution victims and their descendants.'
+        };
+      }
+      // Check for §15
+      const a15 = answers.find((a) => a.questionId === 'german_15_5');
+      if (a15) {
+        return {
+          eligible: true,
+          message: 'You may be eligible for §15 but further assessment is needed.',
+          sections: ['§15'],
+          lawCategory: '§15 StAG: Naturalization for descendants of persecuted persons who were not German citizens.'
+        };
+      }
+      // Check for Austrian §58c
+      const austrian1 = answers.find((a) => a.questionId === 'austrian_58c_1');
+      if (austrian1) {
+        return {
+          eligible: true,
+          message: 'You may be eligible for §58c but further assessment is needed.',
+          sections: ['§58c'],
+          lawCategory: '§58c Austrian Citizenship Act: For descendants of Nazi persecution victims from Austria.'
+        };
+      }
+      // Fallback
+      return {
+        eligible: true,
+        message: 'You may be eligible, but further assessment is needed.',
+        sections: [],
+        lawCategory: ''
+      };
+    }
+
+    // Austrian citizenship logic
+    const austrian1 = answers && answers.find((a) => a.questionId === 'austrian_58c_1');
+    const austrian2 = answers && answers.find((a) => a.questionId === 'austrian_58c_2');
+    const austrian3 = answers && answers.find((a) => a.questionId === 'austrian_58c_3');
+    const austrian4 = answers && answers.find((a) => a.questionId === 'austrian_58c_4');
+    if (austrian1 && austrian2 && austrian3 && austrian4) {
+      // Only allow positive if relation is Child, Grandchild, Great-grandchild, or Further descendant
+      if (typeof austrian4.value === 'string' && ["Child", "Grandchild", "Great-grandchild", "Further descendant"].includes(austrian4.value)) {
+        return {
+          eligible: true,
+          message: "You are eligible for Austrian citizenship under §58c. All required conditions are met.",
+          sections: ['§58c']
+        };
+      } else {
+        return {
+          eligible: false,
+          message: "You are not eligible for Austrian citizenship because you are not a direct descendant of the ancestor.",
+          sections: []
+        };
+      }
     }
 
     // If the user selected 'Not directly related' for german_15_5, always return negative result
@@ -287,6 +333,11 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
 
   const result = analyzeEligibility();
 
+  // Determine if assessment is needed - only if there's a not_sure answer
+  const assessmentNeeded = formState.answers.some(a => a.value === 'not_sure');
+  // Get user's name for greeting
+  const userName = formState.userData?.fullName || '';
+
   useEffect(() => {
     if (result.eligible && !showContactForm) {
       setTypedText('');
@@ -379,20 +430,41 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       setShowShareDialog(true);
 
       // Share the intro page link
-      const shareUrl = 'https://eligibility-checker-o4xu.onrender.com/';
-      const shareText = 'Check your German citizenship eligibility here:';
+      const shareUrl = 'https://eligibility-checker.lawoffice.org.il/';
+      const shareText = 'Check your German or Austrian citizenship eligibility here:';
 
       if (platform === 'whatsapp') {
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`, '_blank');
+        // Create a form data object to send the image
+        const formData = new FormData();
+        formData.append('image', blob, 'eligibility-result.png');
+        
+        // First try to share with image
+        try {
+          // Use Web Share API if available and the device supports sharing files
+          if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'eligibility-result.png', { type: 'image/png' })] })) {
+            await navigator.share({
+              files: [new File([blob], 'eligibility-result.png', { type: 'image/png' })],
+              title: 'My Citizenship Eligibility Result',
+              text: `${shareText} ${shareUrl}`,
+            });
+          } else {
+            // Fallback to regular WhatsApp share with just text
+            window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`, '_blank');
+          }
+        } catch (error) {
+          // If sharing with image fails, fallback to regular text share
+          window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`, '_blank');
+        }
       } else if (platform === 'facebook') {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
       }
     } catch (error) {
       console.error('Error sharing:', error);
       // Fallback to simple URL sharing if image sharing fails
-      const shareUrl = 'https://eligibility-checker-o4xu.onrender.com/';
+      const shareUrl = 'https://eligibility-checker.lawoffice.org.il/';
+      const shareText = 'Check your German or Austrian citizenship eligibility here:';
       if (platform === 'whatsapp') {
-        window.open(`https://wa.me/?text=${encodeURIComponent('Check your German citizenship eligibility here: ' + shareUrl)}`, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`, '_blank');
       } else {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
       }
@@ -512,111 +584,35 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
               ) : null
             ) : (
               <>
-                {/* Special case: not_sure */}
-                {result.eligible && (
-                  <>
-                    <Box sx={{
-                      background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                      color: '#232946',
-                      borderRadius: 3,
-                      p: 4,
-                      textAlign: 'center',
-                      boxShadow: 2,
-                      width: '100%',
-                      mb: 0,
-                    }}>
-                      <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#232946' }}>
-                        {result.message}
-                      </Typography>
-                      <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 2, whiteSpace: 'pre-line' }}>
-                        {result.message.replace(/^You may be eligible under .*?!\n\n|^You may be eligible!\n\n/, '')}
-                      </Typography>
-                      <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: 2,
-                        width: '100%',
-                        mb: 2,
-                        justifyContent: 'center',
-                      }}>
-                        <Button
-                          fullWidth
-                          sx={{
-                            fontSize: 18,
-                            fontWeight: 600,
-                            py: 2,
-                            mt: 0,
-                            mb: 1,
-                            background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                            color: '#232946',
-                            boxShadow: 2,
-                            borderRadius: 3,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            '&:hover': {
-                              background: 'linear-gradient(90deg, #38f9d7 0%, #43e97b 100%)',
-                            },
-                          }}
-                          onClick={() => {
-                            setShowContactForm(true);
-                            setContactFormType('positive');
-                          }}
-                        >
-                          <Box sx={{ fontWeight: 700, fontSize: 18 }}>
-                            Proceed with Archival Research
-                          </Box>
-                          <Box sx={{ fontSize: 12, color: '#232946', opacity: 0.6, fontWeight: 400, mt: 0.5 }}>
-                            further information submission needed
-                          </Box>
-                        </Button>
-                        <Button
-                          fullWidth
-                          sx={{
-                            fontSize: 18,
-                            fontWeight: 600,
-                            py: 2,
-                            mt: 0,
-                            background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
-                            color: '#fff',
-                            boxShadow: 2,
-                            borderRadius: 3,
-                            '&:hover': {
-                              background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
-                            },
-                          }}
-                          onClick={() => {
-                            setShowContactForm(true);
-                            setContactFormType('negative');
-                            navigate('/contact', {
-                              state: {
-                                eligible: false,
-                                eligibleSections: result.sections || [],
-                                answers: formState.answers,
-                                explanation: result.message,
-                              }
-                            });
-                          }}
-                        >
-                          I wish to be contacted by a representative
-                        </Button>
-                      </Box>
-                    </Box>
-                  </>
-                )}
-                {/* Usual results logic */}
-                {!result.eligible && (
-                  <>
-                    <CongratsCard ref={congratsCardRef} sx={{ width: '100%', mb: 2 }}>
-                      <CelebrationIcon sx={{ fontSize: 48, mb: 1 }} />
-                      <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, color: '#232946' }}>
-                        {`Congratulations${formState.userData.fullName ? ` ${formState.userData.fullName}` : ''}!`}
-                      </Typography>
-                      <Typography variant="body1" sx={{ fontWeight: 600, color: '#232946', mb: 1, whiteSpace: 'pre-line', textAlign: 'center' }}>
-                        {result.message}
-                      </Typography>
-                      {result.lawCategory && (
+                {/* Unified Congratulations Card for both positive and negative results */}
+                <CongratsCard ref={congratsCardRef} sx={{ width: '100%', mb: 2 }}>
+                  {result.eligible ? (
+                    <CelebrationIcon sx={{ fontSize: 48, mb: 1 }} />
+                  ) : (
+                    <CancelIcon sx={{ fontSize: 48, mb: 1, color: '#232946' }} />
+                  )}
+                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, color: '#232946' }}>
+                    {result.eligible ? `Congratulations${userName ? ` ${userName}` : ''}!` : ''}
+                  </Typography>
+                  <Typography variant="body1" sx={{ 
+                    fontWeight: 600, 
+                    color: '#232946', 
+                    mb: 1, 
+                    whiteSpace: 'pre-line', 
+                    textAlign: 'center',
+                    fontSize: '1.25rem',
+                    lineHeight: 1.5
+                  }}>
+                    {assessmentNeeded
+                      ? `You may be eligible for${result.sections && result.sections.length > 0 ? ` ${result.sections.join(', ')}` : ''} but further assessment is needed.`
+                      : result.message}
+                  </Typography>
+                  {/* Show law category box for both assessment needed and positive results, except for Austrian positive results */}
+                  {(assessmentNeeded || (result.eligible && !result.sections?.includes('§58c'))) && (
+                    (() => {
+                      const notSureAnswer = formState.answers.find(a => a.value === 'not_sure');
+                      const notSureQuestion = notSureAnswer ? questions.find(q => q.id === notSureAnswer.questionId) : null;
+                      return (
                         <Box sx={{
                           mt: 2,
                           background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
@@ -628,149 +624,159 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                           fontSize: 15,
                           display: 'inline-block',
                           boxShadow: 1,
-                          border: '1px solid #232946',
                         }}>
-                          {result.lawCategory}
+                          {notSureQuestion ? (
+                            <>
+                              <span>You appeared unsure about how to answer: "{notSureQuestion.text}"</span>
+                              <br />
+                              <span style={{ display: 'block', marginTop: 8, fontWeight: 500, fontSize: 14 }}>
+                                We will be able to assist you with a final assessment of your personal case.
+                              </span>
+                            </>
+                          ) : (result.lawCategory || result.message)}
                         </Box>
-                      )}
-                    </CongratsCard>
-                    <Box sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: 2,
-                      width: '100%',
-                      mb: 2,
-                      justifyContent: 'center',
-                    }}>
-                      <Button
-                        fullWidth
-                        sx={{
-                          fontSize: 18,
-                          fontWeight: 600,
-                          py: 2,
-                          mt: 0,
-                          mb: 1,
-                          background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                          color: '#232946',
-                          boxShadow: 2,
-                          borderRadius: 3,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          '&:hover': {
-                            background: 'linear-gradient(90deg, #38f9d7 0%, #43e97b 100%)',
-                          },
-                        }}
-                        onClick={() => {
-                          setShowContactForm(true);
-                          setContactFormType('positive');
-                        }}
-                      >
-                        <Box sx={{ fontWeight: 700, fontSize: 18 }}>
-                          Proceed with Archival Research
-                        </Box>
-                        <Box sx={{ fontSize: 12, color: '#232946', opacity: 0.6, fontWeight: 400, mt: 0.5 }}>
-                          further information submission needed
-                        </Box>
-                      </Button>
-                      <Button
-                        fullWidth
-                        sx={{
-                          fontSize: 18,
-                          fontWeight: 600,
-                          py: 2,
-                          mt: 0,
-                          background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
-                          color: '#fff',
-                          boxShadow: 2,
-                          borderRadius: 3,
-                          '&:hover': {
-                            background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
-                          },
-                        }}
-                        onClick={() => {
-                          setShowContactForm(true);
-                          setContactFormType('negative');
-                          navigate('/contact', {
-                            state: {
-                              eligible: false,
-                              eligibleSections: result.sections || [],
-                              answers: formState.answers,
-                              explanation: result.message,
-                            }
-                          });
-                        }}
-                      >
-                        I wish to be contacted by a representative
-                      </Button>
-                    </Box>
-                    {/* Share section */}
-                    <Box sx={{ 
-                      display: 'flex', 
-                      flexDirection: 'column', 
-                      alignItems: 'center', 
-                      gap: 2, 
-                      width: '100%',
-                      mb: 2
-                    }}>
-                      <Typography variant="subtitle1" sx={{ 
-                        color: 'white', 
-                        fontWeight: 500 
-                      }}>
-                        Share this eligibility checker with friends:
-                      </Typography>
-                      <Box sx={{ 
-                        display: 'flex', 
-                        gap: 2, 
-                        justifyContent: 'center' 
-                      }}>
-                        <Button
-                          variant="contained"
-                          onClick={() => captureAndShare('whatsapp')}
-                          sx={{
-                            background: '#25D366',
-                            minWidth: 56,
-                            minHeight: 56,
-                            width: 56,
-                            height: 56,
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            p: 0,
-                            '&:hover': {
-                              background: '#128C7E',
-                            },
-                          }}
-                        >
-                          <WhatsAppIcon sx={{ fontSize: 32, color: '#fff' }} />
-                        </Button>
-                        <Button
-                          variant="contained"
-                          onClick={() => captureAndShare('facebook')}
-                          sx={{
-                            background: '#1877F2',
-                            minWidth: 56,
-                            minHeight: 56,
-                            width: 56,
-                            height: 56,
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            p: 0,
-                            '&:hover': {
-                              background: '#0C5DC7',
-                            },
-                          }}
-                        >
-                          <FacebookIcon sx={{ fontSize: 32, color: '#fff' }} />
-                        </Button>
+                      );
+                    })()
+                  )}
+                </CongratsCard>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 2,
+                  width: '100%',
+                  mb: 2,
+                  justifyContent: 'center',
+                }}>
+                  {/* Only show Archival Research button for positive results */}
+                  {result.eligible && (
+                    <Button
+                      fullWidth
+                      sx={{
+                        fontSize: 18,
+                        fontWeight: 600,
+                        py: 2,
+                        mt: 0,
+                        mb: 1,
+                        background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
+                        color: '#232946',
+                        boxShadow: 2,
+                        borderRadius: 3,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        '&:hover': {
+                          background: 'linear-gradient(90deg, #38f9d7 0%, #43e97b 100%)',
+                        },
+                      }}
+                      onClick={() => {
+                        setShowContactForm(true);
+                        setContactFormType('positive');
+                      }}
+                    >
+                      <Box sx={{ fontWeight: 700, fontSize: 18 }}>
+                        Proceed with Archival Research
                       </Box>
-                    </Box>
-                  </>
-                )}
+                      <Box sx={{ fontSize: 12, color: '#232946', opacity: 0.6, fontWeight: 400, mt: 0.5 }}>
+                        further information submission needed
+                      </Box>
+                    </Button>
+                  )}
+                  <Button
+                    fullWidth
+                    sx={{
+                      fontSize: 18,
+                      fontWeight: 600,
+                      py: 2,
+                      mt: 0,
+                      background: 'linear-gradient(90deg, #646cff 0%, #535bf2 100%)',
+                      color: '#fff',
+                      boxShadow: 2,
+                      borderRadius: 3,
+                      '&:hover': {
+                        background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
+                      },
+                    }}
+                    onClick={() => {
+                      setShowContactForm(true);
+                      setContactFormType('negative');
+                      navigate('/contact', {
+                        state: {
+                          eligible: false,
+                          eligibleSections: result.sections || [],
+                          answers: formState.answers,
+                          explanation: result.message,
+                        }
+                      });
+                    }}
+                  >
+                    I wish to be contacted by a representative
+                  </Button>
+                </Box>
+                {/* Share section */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center', 
+                  gap: 2, 
+                  width: '100%',
+                  mb: 2
+                }}>
+                  <Typography variant="subtitle1" sx={{ 
+                    color: 'white', 
+                    fontWeight: 500 
+                  }}>
+                    Share this eligibility checker with friends:
+                  </Typography>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    gap: 2, 
+                    justifyContent: 'center' 
+                  }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => captureAndShare('whatsapp')}
+                      sx={{
+                        background: '#25D366',
+                        minWidth: 56,
+                        minHeight: 56,
+                        width: 56,
+                        height: 56,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        p: 0,
+                        '&:hover': {
+                          background: '#128C7E',
+                        },
+                      }}
+                    >
+                      <WhatsAppIcon sx={{ fontSize: 32, color: '#fff' }} />
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => captureAndShare('facebook')}
+                      sx={{
+                        background: '#1877F2',
+                        minWidth: 56,
+                        minHeight: 56,
+                        width: 56,
+                        height: 56,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        p: 0,
+                        '&:hover': {
+                          background: '#0C5DC7',
+                        },
+                      }}
+                    >
+                      <FacebookIcon sx={{ fontSize: 32, color: '#fff' }} />
+                    </Button>
+                  </Box>
+                </Box>
               </>
             )}
           </Paper>

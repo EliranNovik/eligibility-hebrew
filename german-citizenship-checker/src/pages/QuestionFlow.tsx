@@ -75,8 +75,6 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
         } else if (ancestorType === 'Great-grandparent') {
           sequence.push(...questions.filter(q => q.id.startsWith('german_5_greatgrandparent_q')));
         }
-        // Always add relation question at the end of Section 5
-        sequence.push(questions.find(q => q.id === 'german_5_relation'));
         return sequence.filter(Boolean);
       }
 
@@ -195,7 +193,7 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
       }
     }
 
-    if (currentQuestion.id === 'german_15_5' || currentQuestion.id === 'german_5_relation') {
+    if (currentQuestion.id === 'german_15_5') {
       setFormState((prev) => ({ ...prev, answers: newAnswers }));
       if (value === 'Not directly related') {
         navigate('/results', { 
@@ -235,8 +233,6 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
         explanation = 'Your parents were married before your birth.';
       } else if (currentQuestion.id === 'german_5_mother_q5') {
         explanation = 'Your mother did not marry a non-German man before April 1, 1953.';
-      } else if (currentQuestion.id === 'german_5_mother_q6') {
-        explanation = 'You were born before your mother\'s marriage to a non-German man.';
       }
 
       // Father path explanations
@@ -330,6 +326,22 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
       return;
     }
 
+    // Handle last question in Section 5
+    if (currentQuestion.section === 'german_5' && value === 'yes') {
+      // Check if this is the last question in the sequence
+      if (formState.currentStep === questionSequence.length - 1) {
+        setFormState((prev) => ({ ...prev, answers: newAnswers }));
+        navigate('/results', {
+          state: {
+            eligible: true,
+            eligibleSections: ['§5'],
+            answers: newAnswers
+          }
+        });
+        return;
+      }
+    }
+
     // Austrian citizenship results logic
     if (currentQuestion.id === 'austrian_58c_4') {
       setFormState((prev) => ({ ...prev, answers: newAnswers }));
@@ -358,7 +370,7 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
 
     // For all other questions, just go to the next question
     setFormState((prev) => ({
-          ...prev,
+      ...prev,
       answers: newAnswers,
       currentStep: newAnswers.length,
     }));
