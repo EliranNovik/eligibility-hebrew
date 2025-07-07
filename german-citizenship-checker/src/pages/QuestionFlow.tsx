@@ -39,7 +39,7 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
     if (!countryAnswer) return [countrySelection].filter(Boolean);
 
     const selectedCountry = countryAnswer.value as string;
-    if (selectedCountry === 'Germany') {
+    if (selectedCountry === 'גרמניה') {
       const sequence = [countrySelection];
       sequence.push(questions.find(q => q.id === 'german_116_1'));
       const a1 = formState.answers.find(a => a.questionId === 'german_116_1');
@@ -52,17 +52,17 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
         if (!ancestorAnswer) return sequence.filter(Boolean);
         // Section 5: Path logic (Mother, Father, Grandparent, Great-grandparent)
         const ancestorType = ancestorAnswer.value;
-        if (ancestorType === 'Mother') {
+        if (ancestorType === 'אמא') {
           sequence.push(...questions.filter(q => q.id.startsWith('german_5_mother_q')));
-        } else if (ancestorType === 'Father') {
+        } else if (ancestorType === 'אבא') {
           sequence.push(...questions.filter(q => q.id.startsWith('german_5_father_q')));
-        } else if (ancestorType === 'Grandparent') {
+        } else if (ancestorType === 'סבא/סבתא') {
           sequence.push(questions.find(q => q.id === 'german_5_grandparent_q1'));
           sequence.push(questions.find(q => q.id === 'german_5_grandparent_q2'));
           const gp1 = formState.answers.find(a => a.questionId === 'german_5_grandparent_q1');
           const gp2 = formState.answers.find(a => a.questionId === 'german_5_grandparent_q2');
           if (gp1 && gp2) {
-          if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
+            if (gp1.value === 'Grandfather' && gp2.value === "My mom's parent") {
               sequence.push(...questions.filter(q => q.id.startsWith('german_5_grandfather_mother_father_q')));
             } else if (gp1.value === 'Grandfather' && gp2.value === "My dad's parent") {
               sequence.push(...questions.filter(q => q.id.startsWith('german_5_grandfather_father_father_q')));
@@ -93,7 +93,7 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
       return sequence.filter(Boolean);
     }
 
-    if (selectedCountry === 'Austria') {
+    if (selectedCountry === 'אוסטריה') {
       return [countrySelection, ...questions.filter(q => q.section === 'austrian_58c')];
     }
     return [countrySelection].filter(Boolean);
@@ -210,8 +210,8 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
       navigate('/results', { 
         state: { 
           eligible: true,
-          eligibleSections: [currentQuestion.id === 'german_5_relation' ? '§5' : '§15'],
-          assessmentNeeded: hasNotSure && currentQuestion.id !== 'german_5_relation',
+          eligibleSections: ['§15'],
+          assessmentNeeded: hasNotSure,
           answers: newAnswers
         }
       });
@@ -478,16 +478,18 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
               boxShadow: 3,
               backgroundColor: '#1a1a1a',
               color: '#fff',
+              direction: 'rtl',
+              textAlign: 'right',
               '& .MuiAlert-icon': {
                 color: '#646cff'
               }
             }}
           >
-            Unfortunately, you are not eligible for sections §116 and §15. We will continue to check your eligibility for section §5 and its categories.
+            לצערנו, אינך זכאי/ת לסעיפים §116 ו-§15. נמשיך לבדוק את זכאותך לסעיף §5 וקטגוריותיו.
           </Alert>
         )}
         <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2, direction: 'rtl' }}>
             <Button
               variant="contained"
               color="primary"
@@ -504,12 +506,14 @@ const QuestionFlow = ({ formState, setFormState }: QuestionFlowProps) => {
                 boxShadow: '0 4px 20px rgba(100, 108, 255, 0.2)',
                 minWidth: 0,
                 transition: 'all 0.2s',
+                direction: 'rtl',
+                textAlign: 'right',
                 '&:hover': {
                   background: 'linear-gradient(90deg, #535bf2 0%, #646cff 100%)',
                 },
               }}
             >
-              Back
+              חזרה
             </Button>
           </Box>
           <QuestionCard

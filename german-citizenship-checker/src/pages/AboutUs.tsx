@@ -32,8 +32,8 @@ const AboutUs = () => {
         }}
       >
         <Container maxWidth="lg" sx={{ py: 8, flex: 1, position: 'relative', zIndex: 2 }}>
-          <Typography variant="h3" fontWeight={700} mb={6} sx={{ color: 'white', textAlign: 'center' }}>
-            About Us
+          <Typography variant="h3" fontWeight={700} mb={6} sx={{ color: 'white', textAlign: 'center', direction: 'rtl' }}>
+            אודות המשרד
           </Typography>
           <Divider sx={{ mb: 6, mx: 'auto', width: 80, borderColor: 'primary.main', opacity: 0.5 }} />
 
@@ -63,11 +63,11 @@ const AboutUs = () => {
               maxWidth: 340,
             }}>
               <img src="/JOSHUA.jpg" alt="Joshua Pex" style={{ width: '100%', height: 420, objectFit: 'cover', borderRadius: 16, marginBottom: 16 }} />
-              <Typography fontWeight={700} fontSize={22} sx={{ color: '#fff', textAlign: 'center', mb: 0.5 }}>
-                Joshua Pex, Attorney
+              <Typography fontWeight={700} fontSize={22} sx={{ color: '#fff', textAlign: 'right', mb: 0.5 }}>
+                יהושע פקס, עו"ד
               </Typography>
-              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'center', mb: 1 }}>
-                Founding Partner
+              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'right', mb: 1 }}>
+                שותף מייסד
               </Typography>
             </Box>
             {/* Michael Decker */}
@@ -87,11 +87,11 @@ const AboutUs = () => {
               maxWidth: 340,
             }}>
               <img src="/MDIMAGE.jpg" alt="Michael Decker" style={{ width: '100%', height: 420, objectFit: 'cover', borderRadius: 16, marginBottom: 16 }} />
-              <Typography fontWeight={700} fontSize={22} sx={{ color: 'white', textAlign: 'center', mb: 0.5 }}>
-                Michael Decker, Attorney
+              <Typography fontWeight={700} fontSize={22} sx={{ color: 'white', textAlign: 'right', mb: 0.5 }}>
+                מיכאל דקר, עו"ד
               </Typography>
-              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'center', mb: 1 }}>
-                Founding Partner
+              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'right', mb: 1 }}>
+                שותף מייסד
               </Typography>
             </Box>
             {/* Anat Levi */}
@@ -111,16 +111,16 @@ const AboutUs = () => {
               maxWidth: 340,
             }}>
               <img src="/ANAT.jpg" alt="Anat Levi" style={{ width: '100%', height: 420, objectFit: 'cover', borderRadius: 16, marginBottom: 16 }} />
-              <Typography fontWeight={700} fontSize={22} sx={{ color: 'white', textAlign: 'center', mb: 0.5 }}>
-                Anat Levi, Attorney
+              <Typography fontWeight={700} fontSize={22} sx={{ color: 'white', textAlign: 'right', mb: 0.5 }}>
+                ענת לוי, עו"ד
               </Typography>
-              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'center', mb: 1 }}>
-                Partner
+              <Typography fontWeight={600} fontSize={18} sx={{ color: '#b0b8c9', textAlign: 'right', mb: 1 }}>
+                שותפה
               </Typography>
             </Box>
           </Box>
-          <Typography variant="body1" fontSize={22} sx={{ color: 'white', mb: 8, mt: 16, textAlign: 'justify', maxWidth: 900, mx: 'auto' }}>
-Decker, Pex, Levi Law Offices is a dynamic and respected Israeli law firm with offices in Tel Aviv and Jerusalem, serving clients both locally and internationally. We are known for our commitment to legal excellence, personalized client service, and a practical, results-driven approach. Our firm has developed a strong reputation in the fields of European citizenship, immigration law, and administrative law, helping individuals and families navigate some of the most complex legal challenges with confidence.
+          <Typography variant="body1" fontSize={22} sx={{ color: 'white', mb: 8, mt: 16, textAlign: 'right', maxWidth: 900, mx: 'auto', direction: 'rtl' }}>
+משרד עורכי הדין דקר, פקס, לוי הוא משרד דינמי ומוערך, הפועל בתל אביב ובירושלים ומשרת לקוחות בישראל וברחבי העולם. המשרד ידוע במחויבותו למצוינות משפטית, לשירות אישי ללקוח, ולגישה מעשית וממוקדת תוצאות. אנו נהנים ממוניטין חזק בתחומי האזרחות האירופית, דיני ההגירה והמשפט המנהלי, ומסייעים ליחידים ולמשפחות בהתמודדות עם אתגרים משפטיים מורכבים בביטחון ובמקצועיות.
           </Typography>
           <Box sx={{
             display: 'flex',
@@ -153,14 +153,14 @@ Decker, Pex, Levi Law Offices is a dynamic and respected Israeli law firm with o
               justifyContent: 'flex-start',
               mb: { xs: 4, md: 0 },
             }}>
-              <Typography variant="h5" fontWeight={700} mb={2} sx={{ color: titleColor, textAlign: 'left' }}>
-                Who We Are
+              <Typography variant="h5" fontWeight={700} mb={2} sx={{ color: titleColor, textAlign: 'right', direction: 'rtl' }}>
+                מי אנחנו
               </Typography>
-              <Typography variant="body1" fontSize={18} mb={2} sx={{ color: 'white', textAlign: 'justify' }}>
-Founded by a team of attorneys with diverse international backgrounds, Decker, Pex, Levi brings together deep local expertise and a broad global perspective. Our lawyers speak multiple languages, including German, English, Russian, and Hebrew, enabling us to serve clients from various cultural and national backgrounds with sensitivity and precision.
+              <Typography variant="body1" fontSize={18} mb={2} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }}>
+המשרד נוסד על ידי צוות עורכי דין בעלי רקע בינלאומי מגוון, המשלבים מומחיות מקומית מעמיקה עם ראייה גלובלית רחבה. עורכי הדין שלנו דוברים מספר שפות, בהן גרמנית, אנגלית, רוסית ועברית, מה שמאפשר לנו להעניק שירות מותאם ורגיש ללקוחות מרקעים תרבותיים ולאומיים שונים.
               </Typography>
-              <Typography variant="body1" fontSize={18} mb={2} sx={{ color: 'white', textAlign: 'justify' }}>
-A core focus of our practice is assisting clients in reclaiming German and Austrian citizenship, particularly descendants of Holocaust survivors and others whose families lost citizenship due to persecution, displacement, or historical injustices. Our team includes seasoned legal professionals and researchers with extensive experience in archival work and legal advocacy.
+              <Typography variant="body1" fontSize={18} mb={2} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }}>
+תחום התמחות מרכזי של המשרד הוא סיוע ללקוחות בהשבת אזרחות גרמנית ואוסטרית – בפרט לצאצאי ניצולי שואה ולבני משפחות שאיבדו את אזרחותם בשל רדיפה, עקירה או עוולות היסטוריות. צוות המשרד כולל משפטנים וחוקרים מנוסים בעלי ידע רב בעבודה ארכיונית ובליווי משפטי מקצועי.
               </Typography>
              
             </Box>
@@ -181,27 +181,27 @@ A core focus of our practice is assisting clients in reclaiming German and Austr
               flexDirection: 'column',
               justifyContent: 'flex-start',
             }}>
-              <Typography variant="h5" fontWeight={700} mb={2} sx={{ color: titleColor, textAlign: 'left' }}>
-                What We Do
+              <Typography variant="h5" fontWeight={700} mb={2} sx={{ color: titleColor, textAlign: 'right', direction: 'rtl' }}>
+                מה אנחנו עושים
               </Typography>
-              <Typography variant="body1" fontSize={18} mb={2} sx={{ color: 'white', textAlign: 'justify' }}>
-                We believe in offering not just legal representation, but comprehensive support throughout the entire citizenship process. From archival research and eligibility assessments to document preparation and application submission, we ensure every step is handled with care and professionalism.
+              <Typography variant="body1" fontSize={18} mb={2} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }}>
+המשרד מעניק ללקוחותיו לא רק ייצוג משפטי, אלא ליווי מקיף לאורך כל תהליך קבלת האזרחות. החל מביצוע מחקר ארכיוני והערכת זכאות, דרך איסוף והכנת המסמכים הדרושים, ועד להגשת הבקשה לרשויות – אנו דואגים שכל שלב יתבצע ברמה הגבוהה ביותר ובשירות אישי ומוקפד.
               </Typography>
-              <Typography variant="body1" fontSize={18} mb={2} sx={{ color: 'white', textAlign: 'justify' }}>
-                In addition to European citizenship services, we provide legal counsel in:
+              <Typography variant="body1" fontSize={18} mb={2} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }}>
+                בנוסף לשירותי אזרחות אירופית, אנו מציעים ייעוץ משפטי גם בתחומים הבאים:
               </Typography>
-              <Box sx={{ textAlign: 'left', display: 'inline-block', mx: 'auto', mb: 2 }}>
-                <ul style={{ fontSize: 21, color: '#7ecbff', fontWeight: 500, margin: 0, paddingLeft: 24 }}>
-                  <li>Immigration law (Aliyah, visas, naturalization)</li>
-                  <li>Israeli administrative law</li>
-                  <li>Family law and inheritance matters</li>
-                  <li>Real estate and business law</li>
+              <Box sx={{ textAlign: 'right', display: 'inline-block', mx: 'auto', mb: 2, direction: 'rtl' }}>
+                <ul style={{ fontSize: 21, color: '#7ecbff', fontWeight: 500, margin: 0, paddingRight: 24, direction: 'rtl', textAlign: 'right' }}>
+                  <li>דיני הגירה (עלייה, אשרות, התאזרחות)</li>
+                  <li>משפט מנהלי בישראל</li>
+                  <li>דיני משפחה וירושה</li>
+                  <li>נדל"ן ודיני חברות</li>
                 </ul>
               </Box>
             </Box>
           </Box>
-          <Typography variant="h5" fontWeight={600} mb={3} sx={{ color: titleColor, textAlign: 'center', mt: 12 }}>
-            Why Choose Us
+          <Typography variant="h5" fontWeight={600} mb={3} sx={{ color: titleColor, textAlign: 'center', mt: 12, direction: 'rtl' }}>
+            מדוע לבחור בנו
           </Typography>
           <Box
             sx={{
@@ -221,26 +221,26 @@ A core focus of our practice is assisting clients in reclaiming German and Austr
           >
             <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(67, 233, 123, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
               <GavelIcon sx={{ color: '#fff', fontSize: 32, mb: 1 }} />
-              <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
-                Decades of combined legal experience
+              <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center', direction: 'rtl' }}>
+                שנות ניסיון משפטי מצטבר רבות
               </Typography>
             </Box>
             <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(33, 150, 243, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
               <PublicIcon sx={{ color: '#fff', fontSize: 32, mb: 1 }} />
-              <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
-                Multilingual team fluent in English, Hebrew, German, Russian, and French
+              <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center', direction: 'rtl' }}>
+                צוות רב-לשוני הדובר אנגלית, עברית, גרמנית, רוסית וצרפתית
               </Typography>
             </Box>
             <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(255, 179, 0, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
               <PeopleIcon sx={{ color: '#fff', fontSize: 32, mb: 1 }} />
-              <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
-                Personalized service and direct attorney access
+              <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center', direction: 'rtl' }}>
+                שירות אישי עם גישה ישירה לעורך דין מלווה
               </Typography>
             </Box>
             <Box sx={{ flex: 1, minWidth: { xs: 220, sm: 180 }, maxWidth: { xs: 340, sm: 260 }, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 6px 32px 0 rgba(171, 71, 188, 0.10)', borderRadius: 4, color: 'white', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 4, sm: 3 }, px: { xs: 3, sm: 2 }, textAlign: 'center', gap: 1.5, mr: { xs: 2, sm: 0 }, '&:last-of-type': { mr: 0 } }}>
               <SearchIcon sx={{ color: '#fff', fontSize: 32, mb: 1 }} />
-              <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center' }}>
-                In-house archival research team for citizenship cases
+              <Typography fontWeight={600} fontSize={{ xs: 14, sm: 17 }} color="white" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', maxWidth: '100%', overflow: 'hidden', textAlign: 'center', direction: 'rtl' }}>
+                צוות מחקר ארכיוני פנימי לטיפול בתיקי אזרחות
               </Typography>
             </Box>
           </Box>

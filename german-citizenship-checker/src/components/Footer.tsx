@@ -157,11 +157,11 @@ const Footer: React.FC<FooterProps> = ({ showContactButtons }) => {
         >
           {/* Tel Aviv Section */}
           <Box sx={{ mb: { xs: 2, sm: 0 }, textAlign: { xs: 'center', sm: 'left' }, color: '#fff' }}>
-            <h3 style={{ marginBottom: 8, color: '#fff' }}>Tel Aviv Office</h3>
+            <h3 style={{ marginBottom: 8, color: '#fff' }}>משרד תל אביב</h3>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: { xs: 'center', sm: 'flex-start' }, color: '#fff' }}>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5, justifyContent: { xs: 'center', sm: 'flex-start' }, color: '#fff' }}>
-              <LocationOnIcon sx={{ color: '#fff', fontSize: 20 }} /> Derech Menachem Begin 150
+              <LocationOnIcon sx={{ color: '#fff', fontSize: 20 }} /> דרך מנחם בגין 150
             </Box>
           </Box>
 
@@ -177,11 +177,11 @@ const Footer: React.FC<FooterProps> = ({ showContactButtons }) => {
 
           {/* Jerusalem Section */}
           <Box sx={{ mb: { xs: 2, sm: 0 }, textAlign: { xs: 'center', sm: 'right' }, color: '#fff' }}>
-            <h3 style={{ marginBottom: 8, color: '#fff' }}>Jerusalem Office</h3>
+            <h3 style={{ marginBottom: 8, color: '#fff' }}>משרד ירושלים</h3>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: { xs: 'center', sm: 'flex-end' }, color: '#fff' }}>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5, justifyContent: { xs: 'center', sm: 'flex-end' }, color: '#fff' }}>
-              <LocationOnIcon sx={{ color: '#fff', fontSize: 20 }} /> Yad Harutsim St 10
+              <LocationOnIcon sx={{ color: '#fff', fontSize: 20 }} /> יד חרוצים 10
             </Box>
           </Box>
         </Box>

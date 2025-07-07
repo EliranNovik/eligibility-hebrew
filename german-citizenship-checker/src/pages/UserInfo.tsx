@@ -6,7 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import type { FormState } from '../types';
 
 const AVATAR_SRC = '/MDPIC.jpg';
-const CHAT_TEXT = "Hi, I am a founding partner of Decker Pex Levi. I welcome you to our Eligibility Checker. Please share your name and email so I can guide you through the process.";
+const CHAT_TEXT = "שלום, אני שותף מייסד במשרד דקר פקס לוי. ברוך הבא למערכת בדיקת הזכאות שלנו. אנא הזן את שמך וכתובת האימייל שלך כדי שאוכל להדריך אותך בתהליך.";
 
 interface UserInfoProps {
   formState: FormState;
@@ -68,12 +68,12 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Only allow letters and spaces
-    if (value === '' || /^[a-zA-Z\s]*$/.test(value)) {
+    // Only allow Hebrew, English letters, and spaces
+    if (value === '' || /^[a-zA-Zא-ת\s]*$/.test(value)) {
       setName(value);
       setNameError('');
     } else {
-      setNameError('Please enter only letters');
+      setNameError('אנא הזן אותיות בעברית או באנגלית בלבד');
     }
   };
 
@@ -123,7 +123,7 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
         <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
             <Avatar src={AVATAR_SRC} sx={{ width: 160, height: 160, mb: 2, bgcolor: '#646cff', boxShadow: 3 }} />
-            <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 340, minHeight: 56, textAlign: 'left', mb: 0 }}>
+            <Box sx={{ bgcolor: '#fff', color: '#232946', borderRadius: 3, px: 3, py: 2, fontSize: 18, fontWeight: 500, boxShadow: 2, maxWidth: 340, minHeight: 56, textAlign: 'right', mb: 0, direction: 'rtl' }}>
               {typedText}
             </Box>
             <Fade in={showInputs} timeout={700}>
@@ -136,7 +136,7 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
               }}>
                 <Box component="form" onSubmit={handleContinue} sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <TextField
-                    placeholder="Full Name"
+                    placeholder="שם מלא"
                     value={name}
                     onChange={handleNameChange}
                     required
@@ -151,13 +151,15 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
                         fontSize: 18,
                         fontWeight: 500,
                         color: '#232946',
-                        boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                        boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
+                        direction: 'rtl',
+                        textAlign: 'right',
                       }
                     }}
-                    InputLabelProps={{ shrink: false }}
+                    InputLabelProps={{ shrink: false, style: { direction: 'rtl', textAlign: 'right' } }}
                   />
                   <TextField
-                    placeholder="Email"
+                    placeholder="אימייל"
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
@@ -170,10 +172,12 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
                         fontSize: 18,
                         fontWeight: 500,
                         color: '#232946',
-                        boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                        boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
+                        direction: 'rtl',
+                        textAlign: 'right',
                       }
                     }}
-                    InputLabelProps={{ shrink: false }}
+                    InputLabelProps={{ shrink: false, style: { direction: 'rtl', textAlign: 'right' } }}
                   />
                   <Button
                     type="submit"
@@ -193,7 +197,7 @@ const UserInfo = ({ formState, setFormState }: UserInfoProps) => {
                       },
                     }}
                   >
-                    Continue
+                    המשך
                   </Button>
                 </Box>
               </Paper>

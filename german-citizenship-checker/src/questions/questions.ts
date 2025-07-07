@@ -4,9 +4,9 @@ export const questions: Question[] = [
   // Initial country selection
   {
     id: 'country_selection',
-    text: 'Which country\'s citizenship eligibility would you like to check?',
+    text: 'איזרות של איזו מדינה תרצה לבדוק?',
     type: 'dropdown',
-    options: ['Germany', 'Austria'],
+    options: ['גרמניה', 'אוסטריה'],
     section: 'general',
     required: true
   },
@@ -14,35 +14,35 @@ export const questions: Question[] = [
   // German Citizenship - §116 StAG
   {
     id: 'german_116_1',
-    text: 'Was your ancestor of Jewish descent or otherwise persecuted by the Nazi regime (1933–1945)?',
+    text: 'האם אבותיך היו ממוצא יהודי או נרדפו על ידי המשטר הנאצי (1933–1945)?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
     id: 'german_116_2',
-    text: 'Was your ancestor a German citizen — either before or during the Nazi era?',
+    text: 'האם אבותיך היו אזרחים גרמנים — לפני או במהלך תקופת הנאצים?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
     id: 'german_116_3',
-    text: 'Was your ancestor a resident of Germany (within current borders) or of a territory under Nazi control at the time — even if they held foreign citizenship?',
+    text: 'האם אבותיך התגוררו בגרמניה (בתוך גבולותיה כיום) או בשטח שהיה בשליטת הנאצים — גם אם היו בעלי אזרחות זרה?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
     id: 'german_116_4',
-    text: 'Did your ancestor flee due to persecution between 1933 and 1945?',
+    text: 'האם אבותיך ברחו בשל רדיפה בין השנים 1933 ל-1945?',
     type: 'yesNo',
     section: 'german_116',
     required: true
   },
   {
     id: 'german_116_4a',
-    text: 'Did your ancestor leave Germany (or Nazi-controlled territory) between 1926 and 1933?',
+    text: 'האם אבותיך עזבו את גרמניה (או שטח בשליטת הנאצים) בין 1926 ל-1933?',
     type: 'yesNo',
     section: 'german_116',
     required: true
@@ -81,9 +81,9 @@ export const questions: Question[] = [
   //},
   {
     id: 'german_15_5',
-    text: 'What is your relation to that person?',
+    text: 'מהי הקרבה שלך לאותו אדם?',
     type: 'dropdown',
-    options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant', 'Not directly related'],
+    options: ['ילד/ה', 'נכד/ה', 'נין/ה', 'צאצא רחוק יותר', 'לא קרוב משפחה ישיר'],
     section: 'german_15',
     required: true
   },
@@ -173,9 +173,9 @@ export const questions: Question[] = [
   // Section 5 - Earliest Known Ancestor Selection
   {
     id: 'german_5_earliest_ancestor',
-    text: 'Who is your earliest known German ancestor?',
+    text: 'מיהו האב הקדום ביותר שלך שנולד בגרמניה?',
     type: 'dropdown',
-    options: ['Mother', 'Father', 'Grandparent',],
+    options: ['אמא', 'אבא', 'סבא/סבתא'],
     section: 'german_5',
     required: true
   },
@@ -183,49 +183,49 @@ export const questions: Question[] = [
   // Section 5 - Mother Path
   {
     id: 'german_5_mother_q1',
-    text: 'Has your mother ever been a German citizen?\nExample: Did she ever have a German passport, ID, or grow up in Germany?',
+    text: 'האם אמך הייתה אי פעם אזרחית גרמניה?\nלדוגמה: האם היה לה דרכון גרמני, תעודת זהות גרמנית, או שגדלה בגרמניה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_mother_q2',
-    text: 'Were you born after 23 May 1949?',
+    text: 'האם נולדת אחרי 23 במאי 1949?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_mother_q3',
-    text: 'Was your father a citizen of a country other than Germany when you were born?',
+    text: 'האם אביך היה אזרח מדינה אחרת בזמן לידתך?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_mother_q4',
-    text: 'Were your parents married before you were born?',
+    text: 'האם הוריך היו נשואים לפני שנולדת?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_mother_q5',
-    text: 'Did your mother marry a non-German man before 1 April 1953?',
+    text: 'האם אמך נישאה לגבר שאינו גרמני לפני 1 באפריל 1953?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_mother_q6',
-    text: 'Were you born after that marriage?',
+    text: 'האם נולדת לאחר נישואין אלו?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_mother_q7',
-    text: 'Do you know if your parents were already married when you were born?',
+    text: 'האם ידוע לך אם הוריך היו נשואים כבר כשנולדת?',
     type: 'yesNo',
     section: 'german_5',
     required: true
@@ -234,35 +234,35 @@ export const questions: Question[] = [
   // Section 5 - Father Path
   {
     id: 'german_5_father_q1',
-    text: 'Was your father ever a German citizen?\nExample: Had a German passport, German ID, lived in Germany?',
+    text: 'האם אביך היה אי פעם אזרח גרמני?\nלדוגמה: האם היה לו דרכון גרמני, תעודת זהות גרמנית, או שגר בגרמניה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_father_q2',
-    text: 'Were you born after 23 May 1949 and before 1 July 1993?',
+    text: 'האם נולדת אחרי 23 במאי 1949 ולפני 1 ביולי 1993?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_father_q3',
-    text: 'Was your mother not a German citizen when you were born?',
+    text: 'האם אמך לא הייתה אזרחית גרמניה בזמן לידתך?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_father_q4',
-    text: 'Were your parents unmarried at the time of your birth?',
+    text: 'האם הוריך לא היו נשואים בזמן לידתך?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_father_q5',
-    text: 'Was your father officially recognized as your father before you turned 23? (For example: listed on your birth certificate, supported you, or signed any official papers?)',
+    text: 'האם אביך הוכר רשמית כאביך לפני שמלאו לך 23? (למשל: הופיע בתעודת הלידה שלך, תמך בך, או חתם על מסמכים רשמיים)',
     type: 'yesNo',
     section: 'german_5',
     required: true
@@ -271,17 +271,17 @@ export const questions: Question[] = [
   // Section 5 - Grandparent Path
   {
     id: 'german_5_grandparent_q1',
-    text: 'Was your German grandparent your grandmother or your grandfather?',
+    text: 'האם הסבא/סבתא הגרמני/ה שלך הוא סבא או סבתא?',
     type: 'dropdown',
-    options: ['Grandmother', 'Grandfather'],
+    options: ['סבתא', 'סבא'],
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandparent_q2',
-    text: 'Was this grandparent your mom\'s parent or your dad\'s parent?',
+    text: 'האם סבא/סבתא זה הוא הורה של אמא שלך או של אבא שלך?',
     type: 'dropdown',
-    options: ["My mom's parent", "My dad's parent"],
+    options: ['הורה של אמא שלי', 'הורה של אבא שלי'],
     section: 'german_5',
     required: true
   },
@@ -289,42 +289,42 @@ export const questions: Question[] = [
   // Grandfather = Mother's Father (Mother under father path)
   {
     id: 'german_5_grandfather_mother_father_q1',
-    text: 'Was your grandfather ever a German citizen?',
+    text: 'האם סבך (אבא של אמא) היה אי פעם אזרח גרמני?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_mother_father_q2',
-    text: 'Was your mother born after 23 May 1949 and before 1 July 1993?',
+    text: 'האם אמך נולדה אחרי 23 במאי 1949 ולפני 1 ביולי 1993?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_mother_father_q3',
-    text: 'Were you born after 23 May 1949?',
+    text: 'האם נולדת אחרי 23 במאי 1949?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_mother_father_q4',
-    text: "Was your grandmother (your mother's mother) not a German citizen?",
+    text: 'האם סבתך (אמא של אמא) לא הייתה אזרחית גרמניה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_mother_father_q5',
-    text: 'Were your grandparents unmarried when your mother was born?',
+    text: 'האם סבך וסבתך היו לא נשואים כשאמך נולדה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_mother_father_q6',
-    text: "Was your grandfather officially recognized as your mother's father before she turned 23? (Example: listed on birth certificate, signed papers, acknowledged legally)",
+    text: 'האם סבך הוכר רשמית כאביה של אמך לפני שמלאו לה 23? (למשל: הופיע בתעודת הלידה, חתם על מסמכים, הוכר חוקית)',
     type: 'yesNo',
     section: 'german_5',
     required: true
@@ -333,42 +333,42 @@ export const questions: Question[] = [
   // Grandfather = Father's Father (Father under father path)
   {
     id: 'german_5_grandfather_father_father_q1',
-    text: "Was your grandfather (your father's father) ever a German citizen?",
+    text: 'האם סבך (אבא של אבא) היה אי פעם אזרח גרמני?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_father_father_q2',
-    text: 'Was your father born after 23 May 1949 and before 1 July 1993?',
+    text: 'האם אביך נולד אחרי 23 במאי 1949 ולפני 1 ביולי 1993?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_father_father_q3',
-    text: 'Were you born after 23 May 1949?',
+    text: 'האם נולדת אחרי 23 במאי 1949?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_father_father_q4',
-    text: "Was your grandmother (your father's mother) not a German citizen?",
+    text: 'האם סבתך (אמא של אבא) לא הייתה אזרחית גרמניה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_father_father_q5',
-    text: 'Were your grandparents unmarried when your father was born?',
+    text: 'האם סבך וסבתך היו לא נשואים כשאביך נולד?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandfather_father_father_q6',
-    text: "Was your grandfather officially recognized as your father's father before he turned 23?",
+    text: 'האם סבך הוכר רשמית כאביו של אביך לפני שמלאו לו 23?',
     type: 'yesNo',
     section: 'german_5',
     required: true
@@ -377,56 +377,56 @@ export const questions: Question[] = [
   // Grandmother = Mother's Mother (Mother under mother path)
   {
     id: 'german_5_grandmother_mother_mother_q1',
-    text: 'Was your grandmother ever a German citizen?',
+    text: 'האם סבתך (אמא של אמא) הייתה אי פעם אזרחית גרמניה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_mother_mother_q2',
-    text: 'Was your mother born after 23 May 1949?',
+    text: 'האם אמך נולדה אחרי 23 במאי 1949?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_mother_mother_q3',
-    text: 'Were you born after 23 May 1949?',
+    text: 'האם נולדת אחרי 23 במאי 1949?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_mother_mother_q4',
-    text: 'Was your grandfather not a German citizen?',
+    text: 'האם סבך היה אזרח גרמני?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_mother_mother_q5',
-    text: 'Were your grandparents married before your mother was born?',
+    text: 'האם סבך וסבתך לא היו נשואים לפני לידת אמך?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_mother_mother_q6',
-    text: 'Did your grandmother marry a non-German man before 1 April 1953?',
+    text: 'האם סבתך נישאה לגבר שאינו גרמני לפני 1 באפריל 1953?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_mother_mother_q7',
-    text: 'Was your mother born after that marriage?',
+    text: 'האם אמך נולדה לאחר נישואין אלו?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_mother_mother_q8',
-    text: 'Do you know if your grandmother was already married when your mother was born?',
+    text: 'האם ידוע לך אם סבתך הייתה נשואה כבר כשאמך נולדה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
@@ -435,56 +435,56 @@ export const questions: Question[] = [
   // Grandmother = Father's Mother (Father under mother path)
   {
     id: 'german_5_grandmother_father_mother_q1',
-    text: 'Was your grandmother ever a German citizen?',
+    text: 'האם סבתך (אמא של אבא) הייתה אי פעם אזרחית גרמניה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_father_mother_q2',
-    text: 'Was your father born after 23 May 1949?',
+    text: 'האם אביך נולד אחרי 23 במאי 1949?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_father_mother_q3',
-    text: 'Were you born after 23 May 1949?',
+    text: 'האם נולדת אחרי 23 במאי 1949?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_father_mother_q4',
-    text: 'Was your grandfather not a German citizen?',
+    text: 'האם סבך היה אזרח גרמני?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_father_mother_q5',
-    text: 'Were your grandparents married before your father was born?',
+    text: 'האם סבך וסבתך לא היו נשואים לפני לידת אביך?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_father_mother_q6',
-    text: 'Did your grandmother marry a non-German man before 1 April 1953?',
+    text: 'האם סבתך נישאה לגבר שאינו גרמני לפני 1 באפריל 1953?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_father_mother_q7',
-    text: 'Was your father born after that marriage?',
+    text: 'האם אביך נולד לאחר נישואין אלו?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_grandmother_father_mother_q8',
-    text: 'Do you know if your grandmother was already married when your father was born?',
+    text: 'האם ידוע לך אם סבתך הייתה נשואה כבר כשאביך נולד?',
     type: 'yesNo',
     section: 'german_5',
     required: true
@@ -493,14 +493,14 @@ export const questions: Question[] = [
   // Section 5 - Great-grandparent Path (Basic Template)
   {
     id: 'german_5_greatgrandparent_q1',
-    text: 'Was your great-grandparent ever a German citizen?',
+    text: 'האם הסבא/סבתא רבא שלך היה/הייתה אי פעם אזרח/ית גרמניה?',
     type: 'yesNo',
     section: 'german_5',
     required: true
   },
   {
     id: 'german_5_greatgrandparent_q2',
-    text: 'Do you know if your grandparent or parent was eligible for German citizenship through this great-grandparent?',
+    text: 'האם ידוע לך אם הסבא/סבתא רבא העביר זכאות לאזרחות לגרמניה לסבא/סבתא או להורה שלך?',
     type: 'yesNo',
     section: 'german_5',
     required: true
@@ -510,21 +510,21 @@ export const questions: Question[] = [
   // Austrian Citizenship - §58c
   {
     id: 'austrian_58c_1',
-    text: 'Did any of your ancestors live in Austria (as it is today) before 1955?',
+    text: 'האם אחד מאבותיך התגורר באוסטריה (כפי שהיא כיום) לפני 1955?',
     type: 'yesNo',
     section: 'austrian_58c',
     required: true
   },
   {
     id: 'austrian_58c_2',
-    text: 'Was that ancestor one of the following?',
+    text: 'האם אותו אב היה אחד מהבאים?',
     type: 'yesNo',
     section: 'austrian_58c',
     required: true
   },
   {
     id: 'austrian_58c_3',
-    text: 'Was your ancestor ever in danger from the Nazis?',
+    text: 'האם אבותיך היו בסכנה מהנאצים?',
     type: 'yesNo',
     section: 'austrian_58c',
     required: true
@@ -539,9 +539,9 @@ export const questions: Question[] = [
   
   {
     id: 'austrian_58c_4',
-    text: 'What is your relation to that ancestor?',
+    text: 'מהי הקרבה שלך לאותו אב?',
     type: 'dropdown',
-    options: ['Child', 'Grandchild', 'Great-grandchild', 'Further descendant'],
+    options: ['ילד/ה', 'נכד/ה', 'נין/ה', 'צאצא רחוק יותר'],
     section: 'austrian_58c',
     required: true
   },

@@ -42,43 +42,43 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const lawRequirements = {
   '116': {
-    title: 'Restoration for Nazi Persecution Victims',
+    title: 'שחזור זכויות לנפגעי הנאצים',
     requirements: [
-      { text: 'Ancestor held German citizenship before 1933' },
-      { text: 'Ancestor was deprived of citizenship during Nazi regime (1933-1945)', subtext: 'Including through collective denaturalization decrees' },
-      { text: 'Direct descendant of qualifying ancestor', subtext: 'Child, grandchild, or great-grandchild' },
-      { text: 'Documented evidence of persecution', subtext: 'Religious, political, racial or other Nazi persecution' },
-      { text: 'No time limit for application', subtext: 'This right to restoration has no expiration date' }
+      { text: 'האב הקדמון היה אזרח גרמני לפני 1933' },
+      { text: 'האב הקדמון נשלל מאזרחותו בתקופת המשטר הנאצי (1933-1945)', subtext: 'כולל שלילה קולקטיבית' },
+      { text: 'צאצא ישיר של האב הקדמון', subtext: 'ילד, נכד או נין' },
+      { text: 'הוכחה מתועדת לרדיפה', subtext: 'רדיפה דתית, פוליטית, גזעית או אחרת' },
+      { text: 'אין הגבלת זמן להגשת הבקשה', subtext: 'הזכות לשחזור אינה פוקעת' }
     ]
   },
   '15': {
-    title: 'Naturalization for Descendants',
+    title: 'התאזרחות לצאצאים',
     requirements: [
-      { text: 'Ancestor lived in Germany before 1933' },
-      { text: 'Ancestor was persecuted during Nazi regime', subtext: 'But was not a German citizen' },
-      { text: 'Ancestor had their center of life in Germany', subtext: 'Work, education, or permanent residence' },
-      { text: 'Direct descendant relationship', subtext: 'Child, grandchild, or great-grandchild' },
+      { text: 'האב הקדמון התגורר בגרמניה לפני 1933' },
+      { text: 'האב הקדמון נרדף בתקופת המשטר הנאצי', subtext: 'אך לא היה אזרח גרמני' },
+      { text: 'המרכז חיים של האב הקדמון היה בגרמניה', subtext: 'עבודה, לימודים או מגורים קבועים' },
+      { text: 'קשר צאצאות ישיר', subtext: 'ילד, נכד או נין' },
     ]
   },
   '5': {
-    title: 'Correction of Historical Discrimination',
+    title: 'תיקון אפליה היסטורית',
     requirements: [
-      { text: 'Born before January 1, 1975 to a German mother', subtext: 'And non-German father' },
-      { text: 'Born between 1949 and 1993 to a German father', subtext: 'Outside of marriage' },
-      { text: 'Mother lost German citizenship through marriage before 1953' },
-      { text: 'Child of someone qualifying under these categories' },
-      { text: 'Must apply before August 19, 2031', subtext: 'Deadline set by law' }
+      { text: 'נולדת לפני 1 בינואר 1975 לאם גרמנייה', subtext: 'ואב שאינו גרמני' },
+      { text: 'נולדת בין 1949 ל-1993 לאב גרמני', subtext: 'מחוץ לנישואין' },
+      { text: 'האם איבדה את אזרחותה הגרמנית עקב נישואין לפני 1953' },
+      { text: 'ילד של מי שעומד בקריטריונים אלו' },
+      { text: 'יש להגיש בקשה עד 19 באוגוסט 2031', subtext: 'מועד אחרון בחוק' }
     ]
   },
   '58c': {
-    title: 'Austrian Law for Nazi Victims\' Descendants',
+    title: 'חוק אוסטרי לצאצאי נפגעי הנאצים',
     requirements: [
-      { text: 'Ancestor lived in Austria before May 15, 1955' },
-      { text: 'Ancestor was persecuted by the Nazi regime', subtext: 'Including Jewish persecution' },
-      { text: 'Ancestor fled Austria between 1933-1955' },
-      { text: 'Direct descendant of qualifying ancestor', subtext: 'No generational limit' },
-      { text: 'No German language requirement' },
-      { text: 'Can maintain current citizenship', subtext: 'Dual citizenship allowed' }
+      { text: 'האב הקדמון התגורר באוסטריה לפני 15 במאי 1955' },
+      { text: 'האב הקדמון נרדף על ידי המשטר הנאצי', subtext: 'כולל רדיפה יהודית' },
+      { text: 'האב הקדמון ברח מאוסטריה בין 1933-1955' },
+      { text: 'צאצא ישיר של האב הקדמון', subtext: 'ללא הגבלת דורות' },
+      { text: 'אין דרישת שפה גרמנית' },
+      { text: 'ניתן לשמור על אזרחות קיימת', subtext: 'אזרחות כפולה מותרת' }
     ]
   }
 };
@@ -138,15 +138,15 @@ const Intro = () => {
               }}
               onClick={() => navigate('/userinfo')}
             >
-              START ELIGIBILITY CHECK
+              התחל בדיקת זכאות
             </StyledButton>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <Typography variant="h3" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mb: 8, fontSize: 40 }}>
-                Are you eligible for German or Austrian citizenship?
+              <Typography variant="h3" align="center" fontWeight={700} gutterBottom sx={{ color: 'white', mb: 8, fontSize: 40, direction: 'rtl', textAlign: 'center' }}>
+                האם אתה זכאי לאזרחות גרמנית או אוסטרית?
               </Typography>
             </motion.div>
             <Box sx={{
@@ -221,28 +221,13 @@ const Intro = () => {
                   flexDirection: 'column',
                   alignItems: 'center'
                 }}>
-                  <Typography variant="h6" sx={{ 
-                    color: 'white', 
-                    fontWeight: 700, 
-                    mb: 3, 
-                    letterSpacing: 1,
-                    fontSize: 20,
-                    textAlign: 'center',
-                    width: '100%'
-                  }}>
-                    About Decker Pex Levi
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 700, mb: 3, letterSpacing: 1, fontSize: 20, textAlign: 'center', direction: 'rtl', width: '100%' }}>
+                    אודות דקר פקס לוי
                   </Typography>
-                  <Typography variant="body1" sx={{ 
-                    color: 'rgba(255,255,255,0.92)', 
-                    fontWeight: 500, 
-                    fontSize: 16,
-                    lineHeight: 1.8,
-                    maxWidth: '90%',
-                    textAlign: 'justify',
-                    hyphens: 'auto'
-                  }}>
-At Decker, Pex, Levi Law Offices, we provide expert legal guidance in the field of German and Austrian citizenship law. Our team specializes in assisting clients with claims based on ancestry, heritage, and historical injustices—including cases where family members were persecuted, displaced, or stripped of their rights under former regimes. Even if your ancestors were not officially recognized as citizens, current nationality laws may still offer a pathway to reclaim citizenship, and we are here to navigate that process with you. <br /><br />
-With decades of combined experience and a multilingual, client-centered approach, our firm has become a trusted name in immigration and nationality law. While our leading focus is on German and Austrian citizenship, we also provide legal support in related areas such as Israeli immigration, foreign visas, and dual nationality matters. Whether you're restoring a lost connection to your family's past or planning for a new future abroad, Decker, Pex, Levi is here to help—with professionalism, dedication, and personal care.
+                  <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontWeight: 500, fontSize: 16, lineHeight: 1.8, maxWidth: '90%', textAlign: 'right', direction: 'rtl', hyphens: 'auto' }}>
+                    במשרד עורכי הדין דקר, פקס, לוי אנו מספקים ייעוץ משפטי מקצועי בתחום אזרחות גרמנית ואוסטרית. הצוות שלנו מתמחה בסיוע ללקוחות בתביעות המבוססות על מוצא, מורשת ועוולות היסטוריות – כולל מקרים בהם בני משפחה נרדפו, הוגלו או נשללו מזכויותיהם תחת משטרים קודמים. גם אם אבותיך לא הוכרו רשמית כאזרחים, ייתכן שחוקי האזרחות הנוכחיים יאפשרו לך להשיב את האזרחות, ואנו כאן כדי להוביל אותך בתהליך.
+                    <br /><br />
+                    עם עשרות שנות ניסיון מצטבר וגישה רב-לשונית וממוקדת לקוח, משרדנו הפך לשם אמין בתחום ההגירה והאזרחות. לצד ההתמקדות המרכזית באזרחות גרמנית ואוסטרית, אנו מעניקים תמיכה משפטית גם בתחומים משיקים כגון הגירה לישראל, ויזות לחו"ל ואזרחות כפולה. בין אם אתה משחזר קשר אבוד לעבר המשפחתי או מתכנן עתיד חדש בחו"ל, דקר, פקס, לוי כאן בשבילך – במקצועיות, מסירות ויחס אישי.
                   </Typography>
                 </Box>
 
@@ -268,29 +253,12 @@ With decades of combined experience and a multilingual, client-centered approach
                   flexDirection: 'column',
                   alignItems: 'center'
                 }}>
-                  <Typography variant="h6" sx={{ 
-                    color: 'white', 
-                    fontWeight: 700, 
-                    mb: 3, 
-                    letterSpacing: 1,
-                    fontSize: 20,
-                    textAlign: 'center',
-                    width: '100%'
-                  }}>
-                    How it works
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 700, mb: 3, letterSpacing: 1, fontSize: 20, textAlign: 'center', direction: 'rtl', width: '100%' }}>
+                    איך זה עובד
                   </Typography>
-                  <Typography variant="body1" sx={{ 
-                    color: 'rgba(255,255,255,0.92)', 
-                    fontWeight: 500, 
-                    fontSize: 16,
-                    lineHeight: 1.8,
-                    mb: 2,
-                    maxWidth: '90%',
-                    textAlign: 'justify',
-                    hyphens: 'auto'
-                  }}>
-Our eligibility checker is a quick and user-friendly tool designed to help you find out if you may qualify for German or Austrian citizenship. Simply answer a short series of straightforward questions based on your family history and personal background. Within minutes, you'll receive a personalized eligibility assessment—no paperwork or legal knowledge required.
-</Typography>
+                  <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontWeight: 500, fontSize: 16, lineHeight: 1.8, mb: 2, maxWidth: '90%', textAlign: 'right', direction: 'rtl', hyphens: 'auto' }}>
+                    בודק הזכאות שלנו הוא כלי מהיר וידידותי למשתמש שנועד לעזור לך לבדוק האם אתה עשוי להיות זכאי לאזרחות גרמנית או אוסטרית? פשוט ענה על סדרה קצרה של שאלות פשוטות המבוססות על ההיסטוריה המשפחתית והרקע האישי שלך. תוך דקות תקבל הערכת זכאות מותאמת אישית – ללא ניירת או ידע משפטי נדרש.
+                  </Typography>
                   <Box sx={{ mb: 4 }} />
                   <Box sx={{ 
                     display: 'flex', 
@@ -308,7 +276,7 @@ Our eligibility checker is a quick and user-friendly tool designed to help you f
                         fontSize: 16,
                         lineHeight: 1.8
                       }}>
-                        Free Consultation
+                        ייעוץ חינם
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -319,32 +287,17 @@ Our eligibility checker is a quick and user-friendly tool designed to help you f
                         fontSize: 16,
                         lineHeight: 1.8
                       }}>
-                        Express Archival Research
+                        מחקר ארכיוני מהיר
                       </Typography>
                     </Box>
                   </Box>
                   <Box sx={{ mb: 4 }} />
-                  <Typography variant="h6" sx={{ 
-                    color: 'white', 
-                    fontWeight: 700, 
-                    mb: 2, 
-                    letterSpacing: 1,
-                    fontSize: 20,
-                    textAlign: 'center',
-                    width: '100%'
-                  }}>
-                    What Happens Next?
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 700, mb: 2, letterSpacing: 1, fontSize: 20, textAlign: 'center', direction: 'rtl', width: '100%' }}>
+                    מה קורה בהמשך?
                   </Typography>
-                  <Typography variant="body1" sx={{ 
-                    color: 'rgba(255,255,255,0.92)', 
-                    fontWeight: 500, 
-                    fontSize: 16,
-                    lineHeight: 1.8,
-                    maxWidth: '90%',
-                    textAlign: 'justify',
-                    hyphens: 'auto'
-                  }}>
-Once you complete the checker, you'll have the opportunity to schedule a free consultation with one of our citizenship experts. If your case shows potential, we'll conduct express archival research to gather supporting evidence and give you the clearest path forward. Our goal is to help you unlock your eligibility as efficiently and accurately as possible—with minimal hassle and maximum support.                  </Typography>
+                  <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontWeight: 500, fontSize: 16, lineHeight: 1.8, maxWidth: '90%', textAlign: 'right', direction: 'rtl', hyphens: 'auto' }}>
+                    לאחר שתשלים את הבדיקה, תוכל לקבוע פגישת ייעוץ חינם עם אחד ממומחי האזרחות שלנו. אם יש פוטנציאל למקרה שלך, נערוך מחקר ארכיוני מהיר כדי לאסוף ראיות תומכות ולספק לך את הדרך הברורה ביותר קדימה. המטרה שלנו היא לעזור לך לממש את זכאותך ביעילות ובדיוק מרביים – עם מינימום טרחה ומקסימום תמיכה.
+                  </Typography>
                 </Box>
               </Box>
             </Box>
@@ -437,7 +390,7 @@ Once you complete the checker, you'll have the opportunity to schedule a free co
                     >
                       <Typography variant="h5" fontWeight={700} sx={{ mb: 1 }}>§{section}</Typography>
                       <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 1 }}>{data.title}</Typography>
-                      <Typography variant="body2" sx={{ mb: 2 }}>Click to see detailed requirements</Typography>
+                      <Typography variant="body2" sx={{ mb: 2, textAlign: 'right', direction: 'rtl' }}>לחץ לצפייה בדרישות המפורטות</Typography>
                       <Button
                         variant="contained"
                         size="small"

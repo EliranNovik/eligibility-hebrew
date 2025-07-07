@@ -25,7 +25,7 @@ declare global {
 }
 
 const AVATARS = ['/Avatar1.png'];
-const CHAT_TEXT = "Submit your application and we'll get back to you!";
+const CHAT_TEXT = "שלח/י את הבקשה ואנו נחזור אליך!";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -129,9 +129,9 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       if (hasNotSure) {
         return {
           eligible: true,
-          message: 'You may be eligible for §5 but further assessment is needed.',
+          message: 'ייתכן ואת/ה זכאי/ת לסעיף §5 אך נדרשת בדיקה נוספת.',
           sections: ['§5'],
-          lawCategory: 'Section 5: Correction of historical discrimination for children and descendants of German citizens who lost citizenship due to gender-based or marital status laws.'
+          lawCategory: 'סעיף 5: תיקון אפליה היסטורית לילדים וצאצאים של אזרחים גרמנים שאיבדו אזרחות בשל מגדר או נישואין.'
         };
       }
 
@@ -145,24 +145,24 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       );
       if (motherLostCitizenship) {
         category = '2';
-        lawCategory = 'Category 2: Children whose German mother had lost German citizenship through marriage to a foreigner prior to April 1st 1953 pursuant to Section 17 (6) of the Reich and Nationality Act (old version)';
-        explanation = 'You are eligible for German citizenship under §5 StAG.';
+        lawCategory = 'קטגוריה 2: ילדים שאמם הגרמנייה איבדה את אזרחותה הגרמנית בשל נישואין לזר לפני 1.4.1953.';
+        explanation = 'את/ה זכאי/ת לאזרחות גרמנית לפי סעיף §5 לחוק.';
       } else if (lostByLegitimization) {
         category = '3';
-        lawCategory = 'Category 3: Children who lost their German nationality acquired by birth through legitimization by their foreign father prior to April 1st 1953 and valid under German law pursuant to Section 17 (5) of the Reich and Nationality Act (old Version)';
-        explanation = 'You are eligible for German citizenship under §5 StAG.';
+        lawCategory = 'קטגוריה 3: ילדים שאיבדו את אזרחותם הגרמנית שנרכשה בלידה בשל הכרה באב זר לפני 1.4.1953.';
+        explanation = 'את/ה זכאי/ת לאזרחות גרמנית לפי סעיף §5 לחוק.';
       } else if (section5Ancestor.value === 'Mother' || section5Ancestor.value === 'Father') {
         category = '1';
-        lawCategory = 'Category 1: Children born to a German parent who did not acquire German nationality by birth (children born in wedlock prior to January 1st 1975 to a German mother and a foreign father or children born out of wedlock prior to July 1st 1993 to a German father and a foreign mother)';
-        explanation = 'You are eligible for German citizenship under §5 StAG.';
+        lawCategory = 'קטגוריה 1: ילדים שנולדו להורה גרמני אך לא קיבלו אזרחות גרמנית בלידה.';
+        explanation = 'את/ה זכאי/ת לאזרחות גרמנית לפי סעיף §5 לחוק.';
       } else if (section5Ancestor.value === 'Grandparent' || section5Ancestor.value === 'Great-grandparent') {
         category = '4';
-        lawCategory = 'Category 4: Descendants of the above-mentioned children';
-        explanation = 'You are eligible for German citizenship under §5 StAG.';
+        lawCategory = 'קטגוריה 4: צאצאים של ילדים מהקטגוריות הנ"ל.';
+        explanation = 'את/ה זכאי/ת לאזרחות גרמנית לפי סעיף §5 לחוק.';
       } else {
         category = '';
         lawCategory = '';
-        explanation = 'You are eligible for German citizenship under §5 StAG based on your family history.';
+        explanation = 'את/ה זכאי/ת לאזרחות גרמנית לפי סעיף §5 לחוק על סמך ההיסטוריה המשפחתית.';
       }
       return {
         eligible: true,
@@ -182,9 +182,9 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       if (a1 && a2) {
         return {
           eligible: true,
-          message: 'You may be eligible for §116 but further assessment is needed.',
+          message: 'ייתכן ואת/ה זכאי/ת לסעיף §116 אך נדרשת בדיקה נוספת.',
           sections: ['§116'],
-          lawCategory: '§116 StAG: Restoration for Nazi persecution victims and their descendants.'
+          lawCategory: 'סעיף §116 לחוק: השבת אזרחות לנרדפי הנאצים וצאצאיהם.'
         };
       }
       // Check for §15
@@ -192,9 +192,9 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       if (a15) {
         return {
           eligible: true,
-          message: 'You may be eligible for §15 but further assessment is needed.',
+          message: 'ייתכן ואת/ה זכאי/ת לסעיף §15 אך נדרשת בדיקה נוספת.',
           sections: ['§15'],
-          lawCategory: '§15 StAG: Naturalization for descendants of persecuted persons who were not German citizens.'
+          lawCategory: 'סעיף §15 לחוק: התאזרחות לצאצאי נרדפים שלא היו אזרחים גרמנים.'
         };
       }
       // Check for Austrian §58c
@@ -202,15 +202,15 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       if (austrian1) {
         return {
           eligible: true,
-          message: 'You may be eligible for §58c but further assessment is needed.',
+          message: 'ייתכן ואת/ה זכאי/ת לסעיף §58c אך נדרשת בדיקה נוספת.',
           sections: ['§58c'],
-          lawCategory: '§58c Austrian Citizenship Act: For descendants of Nazi persecution victims from Austria.'
+          lawCategory: 'סעיף §58c לחוק האזרחות האוסטרי: לצאצאי נרדפי הנאצים מאוסטריה.'
         };
       }
       // Fallback
       return {
         eligible: true,
-        message: 'You may be eligible, but further assessment is needed.',
+        message: 'ייתכן ואת/ה זכאי/ת, אך נדרשת בדיקה נוספת.',
         sections: [],
         lawCategory: ''
       };
@@ -223,26 +223,26 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
     const austrian4 = answers && answers.find((a) => a.questionId === 'austrian_58c_4');
     if (austrian1 && austrian2 && austrian3 && austrian4) {
       // Only allow positive if relation is Child, Grandchild, Great-grandchild, or Further descendant
-      if (typeof austrian4.value === 'string' && ["Child", "Grandchild", "Great-grandchild", "Further descendant"].includes(austrian4.value)) {
+      if (typeof austrian4.value === 'string' && ["ילד/ה", "נכד/ה", "נין/ה", "צאצא רחוק יותר"].includes(austrian4.value)) {
         return {
           eligible: true,
-          message: "You are eligible for Austrian citizenship under §58c. All required conditions are met.",
+          message: "את/ה זכאי/ת לאזרחות אוסטרית לפי סעיף §58c. כל התנאים הנדרשים התקיימו.",
           sections: ['§58c']
         };
       } else {
         return {
           eligible: false,
-          message: "You are not eligible for Austrian citizenship because you are not a direct descendant of the ancestor.",
+          message: "אינך זכאי/ת לאזרחות אוסטרית כיוון שאינך צאצא ישיר של האב.",
           sections: []
         };
       }
     }
 
     // If the user selected 'Not directly related' for german_15_5, always return negative result
-    if (answers && answers.find((a) => a.questionId === 'german_15_5' && a.value === 'Not directly related')) {
+    if (answers && answers.find((a) => a.questionId === 'german_15_5' && a.value === 'לא קרוב משפחה ישיר')) {
       return {
         eligible: false,
-        message: "You are not eligible because you are not directly related to the ancestor.",
+        message: "אינך זכאי/ת כיוון שאינך קרוב/ת משפחה ישיר/ה של האב.",
         sections: []
       };
     }
@@ -251,7 +251,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
     if (!location.state) {
       return {
         eligible: false,
-        message: "Please complete the questionnaire to check your eligibility.",
+        message: "נא השלם/י את השאלון כדי לבדוק זכאות.",
         sections: []
       };
     }
@@ -275,7 +275,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       ) {
         return {
           eligible: true,
-          message: "You are eligible for German citizenship under §116 StAG. All required conditions are met.",
+          message: "את/ה זכאי/ת לאזרחות גרמנית לפי סעיף §116 לחוק. כל התנאים הנדרשים התקיימו.",
           sections: ['§116']
         };
       }
@@ -289,7 +289,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       ) {
         return {
           eligible: true,
-          message: "You are eligible for German citizenship under §15 StAG. Your ancestor was not a German citizen, but all other conditions are met.",
+          message: "את/ה זכאי/ת לאזרחות גרמנית לפי סעיף §15 לחוק. אבותיך לא היו אזרחים גרמנים, אך שאר התנאים התקיימו.",
           sections: ['§15']
         };
       }
@@ -301,23 +301,28 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
       const no116_3 = answers.find((a) => a.questionId === 'german_116_3' && a.value === 'no');
       const no116_4 = answers.find((a) => a.questionId === 'german_116_4' && a.value === 'no');
       const no116_4a = answers.find((a) => a.questionId === 'german_116_4a' && a.value === 'no');
-      const no15_5 = answers.find((a) => a.questionId === 'german_15_5' && a.value === 'Not directly related');
+      const no15_5 = answers.find((a) => a.questionId === 'german_15_5' && a.value === 'לא קרוב משפחה ישיר');
 
-      if (no116_1) negativeReason = "You are not eligible because your ancestor was not persecuted by the Nazi regime.";
-      else if (no116_2) negativeReason = "You are not eligible because your ancestor was not a German citizen before or during the Nazi era.";
-      else if (no116_3) negativeReason = "You are not eligible because your ancestor was not a resident of Germany or Nazi-controlled territory at the relevant time.";
-      else if (no116_4) negativeReason = "You are not eligible because your ancestor did not flee due to persecution between 1933 and 1945.";
-      else if (no116_4a) negativeReason = "You are not eligible because your ancestor did not leave Germany (or Nazi-controlled territory) between 1926 and 1933.";
-      else if (no15_5) negativeReason = "You are not eligible because you are not directly related to the ancestor.";
+      if (no116_1) negativeReason = "אינך זכאי/ת כיוון שאבותיך לא נרדפו על ידי המשטר הנאצי.";
+      else if (no116_2) negativeReason = "אינך זכאי/ת כיוון שאבותיך לא היו אזרחים או תושבים גרמנים לפני או במהלך תקופת הנאצים.";
+      else if (no116_3) negativeReason = "אינך זכאי/ת כיוון שאבותיך לא התגוררו בגרמניה או בשטח בשליטת הנאצים בזמן הרלוונטי.";
+      else if (no116_4) negativeReason = "אינך זכאי/ת כיוון שאבותיך לא ברחו בשל רדיפה בין 1933 ל-1945.";
+      else if (no116_4a) negativeReason = "אינך זכאי/ת כיוון שאבותיך לא עזבו את גרמניה (או שטח בשליטת הנאצים) בין 1926 ל-1933.";
+      else if (no15_5) negativeReason = "אינך זכאי/ת כיוון שאינך קרוב/ת משפחה ישיר/ה של האב.";
 
       // Use explanation from navigation state if present
       if (location.state && location.state.explanation) {
-        negativeReason = location.state.explanation;
+        // If the explanation is in English, override with Hebrew fallback
+        const explanation = location.state.explanation;
+        const isEnglish = /[a-zA-Z]/.test(explanation);
+        if (!isEnglish) {
+          negativeReason = explanation;
+        }
       }
 
       return {
         eligible: false,
-        message: negativeReason || "Based on your answers, you are not eligible for German citizenship.",
+        message: negativeReason || "לצערנו, לא נמצאה זכאות על פי התשובות שמילאת. אם ברצונך לבדוק את זכאותך באופן אישי, ניתן להשאיר פרטים ונציג יחזור אליך.",
         sections: []
       };
     }
@@ -326,7 +331,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
     navigate('/questions');
     return {
       eligible: false,
-      message: "Please complete the questionnaire to check your eligibility.",
+      message: "נא השלם/י את השאלון כדי לבדוק זכאות.",
       sections: []
     };
   };
@@ -544,7 +549,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                 },
               }}
             >
-              Back to Citizenship Selection
+              חזרה לבחירת מדינה
             </Button>
           </Box>
           {/* Group assessment and contact form in a single card */}
@@ -585,26 +590,27 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
             ) : (
               <>
                 {/* Unified Congratulations Card for both positive and negative results */}
-                <CongratsCard ref={congratsCardRef} sx={{ width: '100%', mb: 2 }}>
+                <CongratsCard ref={congratsCardRef} sx={{ width: '100%', mb: 2, direction: 'rtl', textAlign: 'right' }}>
                   {result.eligible ? (
                     <CelebrationIcon sx={{ fontSize: 48, mb: 1 }} />
                   ) : (
                     <CancelIcon sx={{ fontSize: 48, mb: 1, color: '#232946' }} />
                   )}
-                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, color: '#232946' }}>
-                    {result.eligible ? `Congratulations${userName ? ` ${userName}` : ''}!` : ''}
+                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, color: '#232946', direction: 'rtl', textAlign: 'right' }}>
+                    {result.eligible ? `מזל טוב${userName ? ` ${userName}` : ''}!` : 'לצערנו, לא נמצאה זכאות'}
                   </Typography>
                   <Typography variant="body1" sx={{ 
                     fontWeight: 600, 
                     color: '#232946', 
                     mb: 1, 
                     whiteSpace: 'pre-line', 
-                    textAlign: 'center',
+                    textAlign: 'right',
                     fontSize: '1.25rem',
-                    lineHeight: 1.5
+                    lineHeight: 1.5,
+                    direction: 'rtl',
                   }}>
                     {assessmentNeeded
-                      ? `You may be eligible for${result.sections && result.sections.length > 0 ? ` ${result.sections.join(', ')}` : ''} but further assessment is needed.`
+                      ? `ייתכן ואת/ה זכאי/ת ל${result.sections && result.sections.length > 0 ? ` ${result.sections.join(', ')}` : ''} אך נדרשת בדיקה נוספת.`
                       : result.message}
                   </Typography>
                   {/* Show law category box for both assessment needed and positive results, except for Austrian positive results */}
@@ -624,13 +630,15 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                           fontSize: 15,
                           display: 'inline-block',
                           boxShadow: 1,
+                          direction: 'rtl',
+                          textAlign: 'right',
                         }}>
                           {notSureQuestion ? (
                             <>
-                              <span>You appeared unsure about how to answer: "{notSureQuestion.text}"</span>
+                              <span>סימנת שאינך בטוח/ה לגבי השאלה: "{notSureQuestion.text}"</span>
                               <br />
                               <span style={{ display: 'block', marginTop: 8, fontWeight: 500, fontSize: 14 }}>
-                                We will be able to assist you with a final assessment of your personal case.
+                                נשמח לעזור בבדיקת זכאותך באופן אישי.
                               </span>
                             </>
                           ) : (result.lawCategory || result.message)}
@@ -675,10 +683,10 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                       }}
                     >
                       <Box sx={{ fontWeight: 700, fontSize: 18 }}>
-                        Proceed with Archival Research
+                        המשך למחקר ארכיוני
                       </Box>
                       <Box sx={{ fontSize: 12, color: '#232946', opacity: 0.6, fontWeight: 400, mt: 0.5 }}>
-                        further information submission needed
+                        יש למלא פרטים נוספים
                       </Box>
                     </Button>
                   )}
@@ -710,7 +718,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                       });
                     }}
                   >
-                    I wish to be contacted by a representative
+                    אני מעוניין/ת שיחזרו אליי מנציג
                   </Button>
                 </Box>
                 {/* Share section */}
@@ -724,9 +732,11 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                 }}>
                   <Typography variant="subtitle1" sx={{ 
                     color: 'white', 
-                    fontWeight: 500 
+                    fontWeight: 500,
+                    direction: 'rtl',
+                    textAlign: 'right',
                   }}>
-                    Share this eligibility checker with friends:
+                    שתף את בודק הזכאות עם חברים:
                   </Typography>
                   <Box sx={{ 
                     display: 'flex', 
@@ -794,6 +804,8 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
         borderTop: '1px solid rgba(255, 255, 255, 0.2)',
         py: 2,
         zIndex: 1000,
+        direction: 'rtl',
+        textAlign: 'right',
       }}>
         <Container maxWidth="lg">
           <Box
@@ -812,7 +824,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                 href="https://lawoffice.org.il/en/"
                 target="_blank"
                 rel="noopener noreferrer"
-                startIcon={<PublicIcon />}
+                startIcon={<PublicIcon sx={{ ml: 1, fontSize: 22 }} />}
                 sx={{
                   color: 'white',
                   '&:hover': {
@@ -822,13 +834,13 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                   transition: 'all 0.2s ease-in-out',
                 }}
               >
-                Visit Our Website
+                בקרו באתר שלנו
               </Button>
               <Button
                 href="https://www.facebook.com/deckerpexlevi"
                 target="_blank"
                 rel="noopener noreferrer"
-                startIcon={<FacebookIcon />}
+                startIcon={<FacebookIcon sx={{ ml: 1, fontSize: 22 }} />}
                 sx={{
                   color: 'white',
                   '&:hover': {
@@ -838,7 +850,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                   transition: 'all 0.2s ease-in-out',
                 }}
               >
-                Follow Us on Facebook
+                עקבו אחרינו בפייסבוק
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 4 } }}>
@@ -846,7 +858,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                 href="https://wa.me/1234567890"
                 target="_blank"
                 rel="noopener noreferrer"
-                startIcon={<WhatsAppIcon />}
+                startIcon={<WhatsAppIcon sx={{ ml: 1, fontSize: 22 }} />}
                 sx={{
                   color: 'white',
                   '&:hover': {
@@ -856,13 +868,13 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                   transition: 'all 0.2s ease-in-out',
                 }}
               >
-                Contact on WhatsApp
+                צרו קשר בוואטסאפ
               </Button>
               <Button
                 href="https://www.youtube.com/@DeckerPexLawoffice"
                 target="_blank"
                 rel="noopener noreferrer"
-                startIcon={<YouTubeIcon />}
+                startIcon={<YouTubeIcon sx={{ ml: 1, fontSize: 22 }} />}
                 sx={{
                   color: 'white',
                   '&:hover': {
@@ -872,7 +884,7 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
                   transition: 'all 0.2s ease-in-out',
                 }}
               >
-                YouTube Channel
+                ערוץ היוטיוב
               </Button>
             </Box>
           </Box>
@@ -891,12 +903,12 @@ const Results: React.FC<ResultsProps> = ({ formState, setFormState, clearFormSta
           }
         }}
       >
-        <DialogTitle sx={{ textAlign: 'center', fontWeight: 700 }}>
-          Share Your Result
+        <DialogTitle sx={{ textAlign: 'center', fontWeight: 700, direction: 'rtl' }}>
+          שתף את התוצאה שלך
         </DialogTitle>
         <DialogContent>
-          <Typography sx={{ color: 'rgba(255,255,255,0.87)', textAlign: 'center', mb: 2 }}>
-            The link has been shared. You can now download your result image to share it manually:
+          <Typography sx={{ color: 'rgba(255,255,255,0.87)', textAlign: 'center', mb: 2, direction: 'rtl' }}>
+            הקישור שותף. ניתן להוריד את תמונת התוצאה ולשתף ידנית:
           </Typography>
           {shareImageUrl && (
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>

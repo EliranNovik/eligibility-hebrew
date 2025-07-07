@@ -8,7 +8,7 @@ import { supabase, saveEligibilityResult } from '../lib/supabase';
 import { questions } from '../questions/questions';
 
 const AVATAR_SRC = '/MDPIC.jpg';
-const CHAT_TEXT = "Submit your information and we'll get back to you! We at Decker Pex Levi will review your case, conduct an archival research and provide you with a free consultation.";
+const CHAT_TEXT = "שלח/י את פרטיך ואנו נחזור אליך! אנו במשרד דקר פקס לוי נבדוק את המקרה שלך, נבצע מחקר ארכיוני ונספק לך ייעוץ ראשוני חינם.";
 
 interface ContactFormProps {
   eligibleSections: string[];
@@ -18,9 +18,10 @@ interface ContactFormProps {
 }
 
 const COUNTRY_CODES = [
+  { code: '+972', label: '🇮🇱 +972' },
   { code: '+49', label: '🇩🇪 +49' },
   { code: '+43', label: '🇦🇹 +43' },
-  { code: '+972', label: '🇮🇱 +972' },
+  
   { code: '+1', label: '🇺🇸 +1' },
   { code: '+44', label: '🇬🇧 +44' },
   { code: '+33', label: '🇫🇷 +33' },
@@ -79,6 +80,19 @@ async function saveContactSubmission(userData: any, formType?: string) {
   return data;
 }
 
+// Map eligibility section to Hebrew label for topic
+const sectionToHebrew: Record<string, string> = {
+  '§5': 'סעיף 5',
+  '§15': 'סעיף 15',
+  '§116': 'סעיף 116',
+  '§58c': 'סעיף 58c',
+};
+
+function getSectionLabel(section?: string) {
+  if (!section) return '';
+  return sectionToHebrew[section] || section;
+}
+
 const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: ContactFormProps) => {
   const [formData, setFormData] = useState({
     phone: '',
@@ -127,12 +141,13 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
     const sid = Math.floor(100000 + Math.random() * 900000).toString();
     // Prepare params
     const formattedQnA = formatAnswersForDescription(formState.answers);
+    const sectionLabel = getSectionLabel(eligibleSections[0]);
     const params = new URLSearchParams({
       uid: 'fxSOVhSeeRs9',
       lead_source: '31234',
       sid,
       name: userData.fullName,
-      topic: `${selectedCountry} Citizenship - ${eligibleSections[0]}`,
+      topic: `${selectedCountry} אזרחות - ${sectionLabel}`,
       desc: `Persecuted Person: ${formData.persecutedName}\nDate of Birth: ${formData.persecutedDob}\nPlace of Birth: ${formData.persecutedPlace}\nAdditional Information: ${formData.additionalInfo}\nFacts of Case:\n${formattedQnA}`,
       email: userData.email,
       phone: `${countryCode}${formData.phone}`,
@@ -210,15 +225,16 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
       // Prepare Q&A
       const formattedQnA = formatAnswersForDescription(formState.answers);
       // Prepare params for endpoint
+      const sectionLabel = getSectionLabel(eligibleSections[0]);
       const params = new URLSearchParams({
         uid: 'fxSOVhSeeRs9',
         lead_source: '31234',
         sid: Math.floor(100000 + Math.random() * 900000).toString(),
         name: userData.fullName,
-        topic: `${selectedCountry} Citizenship - ${eligibleSections[0]}`,
+        topic: `${selectedCountry} אזרחות - ${sectionLabel}`,
         desc: `Facts of Case:\n${formattedQnA}`,
         email: userData.email,
-        phone: '', // No phone/contact info
+        phone: `${countryCode}${formData.phone}`,
         ref_url: window.location.href,
       });
       const url = `https://backend-eligibility-checker.onrender.com/api/proxy?${params.toString()}`;
@@ -228,6 +244,7 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
       // Prepare user data with all required fields
       const submissionData = {
         ...userData,
+        phone: `${countryCode}${formData.phone}`,
         answers: formState.answers,
         answers_pretty: formattedQnA,
       };
@@ -246,8 +263,14 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
   const handleNotSure = (field: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: 'I am not sure right now.',
+      [field]: 'אני לא בטוח/ה בשלב הזה.',
     }));
+  };
+
+  // Always use +972 as default if countryCode is not set
+  const getFullPhone = () => {
+    const code = countryCode || '+972';
+    return formData.phone ? `${code}${formData.phone}` : '';
   };
 
   if (showThankYou) {
@@ -281,17 +304,21 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
                 fontWeight: 700,
                 background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
                 WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
+                WebkitTextFillColor: 'transparent',
+                direction: 'rtl',
+                textAlign: 'right',
               }}>
-                Thank You!
+                {'!'}תודה
               </Typography>
               <Typography variant="h6" sx={{ 
                 color: 'rgba(255,255,255,0.87)', 
                 fontWeight: 500,
                 maxWidth: '80%',
-                lineHeight: 1.6
+                lineHeight: 1.6,
+                direction: 'rtl',
+                textAlign: 'right',
               }}>
-                We at Decker Pex Levi Law Offices have received your submition and will get back to you as soon as possible.
+                משרד דקר פקס לוי קיבל את פנייתך ונחזור אליך בהקדם האפשרי.
               </Typography>
               <Box sx={{ 
                 display: 'flex', 
@@ -303,14 +330,16 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
               }}>
                 <Typography variant="subtitle1" sx={{ 
                   color: 'rgba(255,255,255,0.87)', 
-                  fontWeight: 500 
+                  fontWeight: 500,
+                  textAlign: 'right',
+                  direction: 'rtl',
                 }}>
-                  Share this eligibility checker with friends:
+                  שתף את בודק הזכאות עם חברים:
                 </Typography>
                 <Box sx={{ 
                   display: 'flex', 
                   gap: 2, 
-                  justifyContent: 'center' 
+                  justifyContent: 'flex-start',
                 }}>
                   <Button
                     variant="contained"
@@ -375,13 +404,13 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
         <CardContent sx={{ width: '100%', maxWidth: 800, display: 'flex', flexDirection: 'column', alignItems: 'center', p: 0, mx: 'auto' }}>
           <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
             <Avatar src="/MDPIC.jpg" alt="Michael Decker" sx={{ width: 120, height: 120, mb: 2, boxShadow: 4 }} />
-            <Box sx={{ background: 'white', color: '#232946', borderRadius: 4, p: { xs: 2, md: 3 }, fontSize: { xs: 18, md: 20 }, fontWeight: 500, boxShadow: 2, textAlign: 'center', maxWidth: 700, width: '100%', mb: 2 }}>
+            <Box sx={{ background: 'white', color: '#232946', borderRadius: 4, p: { xs: 2, md: 3 }, fontSize: { xs: 18, md: 20 }, fontWeight: 500, boxShadow: 2, textAlign: 'right', direction: 'rtl', maxWidth: 700, width: '100%', mb: 2 }}>
               {userData.fullName && (
                 <>
-                  Hi, {userData.fullName},<br />
+                  שלום {userData.fullName},<br />
                 </>
               )}
-              We are at the final stage of the eligibility checker. Please submit your information and we'll get back to you!<br />
+              אנו בשלב הסופי של בדיקת הזכאות. אנא מלא/י את פרטיך ונחזור אליך בהקדם!<br />
             </Box>
           </Box>
 
@@ -404,9 +433,11 @@ const ContactForm = ({ eligibleSections, onSuccess, userData, formState }: Conta
               boxShadow: 1, 
               borderLeft: '4px solid #43e97b', 
               mx: 'auto', 
-              maxWidth: '100%' 
+              maxWidth: '100%',
+              direction: 'rtl',
+              textAlign: 'right',
             }}>
-We'll need a bit more information before we can begin our expedited archival research. Once received, we can locate records about your ancestry within one business day and include our findings in your complimentary consultation.            </Box>
+נזדקק לעוד קצת מידע לפני שנוכל להתחיל במחקר הארכיוני המהיר שלנו. לאחר קבלת הפרטים, נוכל לאתר מסמכים על אבותיך תוך יום עסקים אחד ולשלב את הממצאים בייעוץ הראשוני ללא עלות.            </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, width: '100%' }}>
               <Select
                 value={countryCode}
@@ -441,7 +472,7 @@ We'll need a bit more information before we can begin our expedited archival res
                 ))}
               </Select>
               <TextField
-                placeholder="Phone Number"
+                placeholder="מספר טלפון"
                 name="phone"
                 type="tel"
                 value={formData.phone}
@@ -458,6 +489,8 @@ We'll need a bit more information before we can begin our expedited archival res
                     color: '#232946',
                     boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
                     height: '56px',
+                    direction: 'rtl',
+                    textAlign: 'right',
                   },
                 }}
                 InputLabelProps={{ shrink: false }}
@@ -465,7 +498,7 @@ We'll need a bit more information before we can begin our expedited archival res
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', width: '100%' }}>
               <TextField
-                placeholder="Name of Persecuted"
+                placeholder="שם הנרדף/ת"
                 name="persecutedName"
                 value={formData.persecutedName}
                 onChange={handleChange}
@@ -479,7 +512,9 @@ We'll need a bit more information before we can begin our expedited archival res
                     fontSize: 18,
                     fontWeight: 500,
                     color: '#232946',
-                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
+                    direction: 'rtl',
+                    textAlign: 'right',
                   }
                 }}
                 InputLabelProps={{ shrink: false }}
@@ -512,13 +547,13 @@ We'll need a bit more information before we can begin our expedited archival res
                 }}
                 onClick={() => handleNotSure('persecutedName')}
               >
-                <span style={{ display: 'block' }}>NOT</span>
-                <span style={{ display: 'block' }}>SURE</span>
+                <span style={{ display: 'block' }}>לא</span>
+                <span style={{ display: 'block' }}>בטוח/ה</span>
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', width: '100%' }}>
               <TextField
-                placeholder="Date of Birth of Persecuted"
+                placeholder="תאריך לידה של הנרדף/ת"
                 name="persecutedDob"
                 type="text"
                 value={formData.persecutedDob}
@@ -533,7 +568,9 @@ We'll need a bit more information before we can begin our expedited archival res
                     fontSize: 18,
                     fontWeight: 500,
                     color: '#232946',
-                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
+                    direction: 'rtl',
+                    textAlign: 'right',
                   }
                 }}
                 InputLabelProps={{ shrink: false }}
@@ -566,13 +603,13 @@ We'll need a bit more information before we can begin our expedited archival res
                 }}
                 onClick={() => handleNotSure('persecutedDob')}
               >
-                <span style={{ display: 'block' }}>NOT</span>
-                <span style={{ display: 'block' }}>SURE</span>
+                <span style={{ display: 'block' }}>לא</span>
+                <span style={{ display: 'block' }}>בטוח/ה</span>
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', width: '100%' }}>
               <TextField
-                placeholder="Place of Birth of Persecuted"
+                placeholder="מקום לידה של הנרדף/ת"
                 name="persecutedPlace"
                 value={formData.persecutedPlace}
                 onChange={handleChange}
@@ -586,7 +623,9 @@ We'll need a bit more information before we can begin our expedited archival res
                     fontSize: 18,
                     fontWeight: 500,
                     color: '#232946',
-                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)'
+                    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)',
+                    direction: 'rtl',
+                    textAlign: 'right',
                   }
                 }}
                 InputLabelProps={{ shrink: false }}
@@ -619,13 +658,13 @@ We'll need a bit more information before we can begin our expedited archival res
                 }}
                 onClick={() => handleNotSure('persecutedPlace')}
               >
-                <span style={{ display: 'block' }}>NOT</span>
-                <span style={{ display: 'block' }}>SURE</span>
+                <span style={{ display: 'block' }}>לא</span>
+                <span style={{ display: 'block' }}>בטוח/ה</span>
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', width: '100%' }}>
               <TextField
-                placeholder="Additional Information (optional)"
+                placeholder="מידע נוסף (לא חובה)"
                 multiline
                 rows={4}
                 value={formData.additionalInfo}
@@ -646,6 +685,8 @@ We'll need a bit more information before we can begin our expedited archival res
                     '&.Mui-focused fieldset': {
                       borderColor: '#43e97b',
                     },
+                    direction: 'rtl',
+                    textAlign: 'right',
                   },
                   '& .MuiInputLabel-root': {
                     color: '#232946',
@@ -672,7 +713,7 @@ We'll need a bit more information before we can begin our expedited archival res
               }}
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit'}
+              {isSubmitting ? 'שולח...' : 'שלח'}
             </Button>
             <Button
               variant="contained"
@@ -692,7 +733,7 @@ We'll need a bit more information before we can begin our expedited archival res
                 },
               }}
             >
-              Submit without Contact Information
+              שלח ללא פרטי יצירת קשר
             </Button>
           </Box>
         </CardContent>
@@ -711,11 +752,11 @@ We'll need a bit more information before we can begin our expedited archival res
         }}
       >
         <DialogTitle sx={{ textAlign: 'center', fontWeight: 700 }}>
-          Confirmation
+          אישור
         </DialogTitle>
         <DialogContent>
           <Typography sx={{ color: 'rgba(255,255,255,0.87)', textAlign: 'center', mb: 2 }}>
-            You are about to submit your form with the information provided in previous sections. Please be aware that by providing information about the ancestor/s we are able to provide a free archival research and consultation.
+            אתה עומד לשלוח את הטופס עם המידע שמילאת בשלבים הקודמים. לידיעתך, מסירת מידע על אבותיך תאפשר לנו לבצע עבורך מחקר ארכיוני וייעוץ ראשוני ללא עלות.
           </Typography>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 3 }}>
@@ -731,7 +772,7 @@ We'll need a bit more information before we can begin our expedited archival res
               },
             }}
           >
-            Cancel
+            ביטול
           </Button>
           <Button
             onClick={handleDialogContinue}
@@ -744,7 +785,7 @@ We'll need a bit more information before we can begin our expedited archival res
               },
             }}
           >
-            Continue
+            המשך
           </Button>
         </DialogActions>
       </Dialog>

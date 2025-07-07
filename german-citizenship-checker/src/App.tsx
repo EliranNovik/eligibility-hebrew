@@ -14,6 +14,7 @@ import UserInfo from './pages/UserInfo';
 import AboutUs from './pages/AboutUs';
 import ArchivalResearch from './pages/ArchivalResearch';
 import AdminDashboard from './pages/AdminDashboard';
+console.log('App loaded');
 
 function App() {
   // Load from localStorage if present

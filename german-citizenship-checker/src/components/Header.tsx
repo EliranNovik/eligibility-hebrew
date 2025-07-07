@@ -152,9 +152,9 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
             },
           }}
         >
-          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/about'); }}>About Us</MenuItem>
-          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/archival-research'); }}>Archival Research</MenuItem>
-          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/admin'); }}>Admin</MenuItem>
+          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/about'); }}>אודות</MenuItem>
+          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/archival-research'); }}>מחקר ארכיוני</MenuItem>
+          <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/admin'); }}>מנהל</MenuItem>
         </Menu>
       </Box>
       {/* Social icons and nav on right (hidden on mobile except homepage) */}
@@ -191,7 +191,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
             },
           }}
         >
-          About Us
+          אודות
         </Button>
         <Button
           onClick={() => navigate('/archival-research')}
@@ -215,7 +215,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
             },
           }}
         >
-          Archival Research
+          מחקר ארכיוני
         </Button>
         <Button
           onClick={() => navigate('/admin')}
@@ -239,7 +239,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
             },
           }}
         >
-          Admin
+          מנהל
         </Button>
       </Box>
     </Box>

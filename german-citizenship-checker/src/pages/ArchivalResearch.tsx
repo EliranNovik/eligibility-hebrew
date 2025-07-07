@@ -11,22 +11,22 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 const offers = [
   {
     icon: CheckCircleIcon,
-    label: 'Free express eligibility assessment',
+    label: 'בדיקת זכאות מהירה וללא עלות',
     color: 'rgba(67, 233, 123, 0.25)',
   },
   {
     icon: SearchIcon,
-    label: 'Thorough online archival research at no cost',
+    label: 'מחקר ארכיוני מקוון יסודי – ללא תשלום',
     color: 'rgba(33, 150, 243, 0.25)',
   },
   {
     icon: ForumIcon,
-    label: 'A detailed consultation to present our findings',
+    label: 'פגישת ייעוץ להצגת הממצאים',
     color: 'rgba(255, 179, 0, 0.25)',
   },
   {
     icon: PersonPinIcon,
-    label: 'Personalized guidance through the citizenship application process',
+    label: 'ליווי אישי לאורך כל תהליך בקשת האזרחות',
     color: 'rgba(171, 71, 188, 0.25)',
   },
 ];
@@ -66,23 +66,23 @@ const ArchivalResearch = () => {
         }}
       >
         <Container maxWidth="lg" sx={{ py: 8, flex: 1, position: 'relative', zIndex: 2 }}>
-          <Typography variant="h3" fontWeight={700} mb={6} sx={{ color: 'white', textAlign: 'center' }}>
-            Archival Research
+          <Typography variant="h3" fontWeight={700} mb={6} sx={{ color: 'white', textAlign: 'center', direction: 'rtl' }}>
+            מחקר ארכיוני
           </Typography>
-          <Typography variant="h5" fontWeight={600} mb={5} sx={{ color: 'white', textAlign: 'center' }}>
-            Are you exploring the possibility of reclaiming German or Austrian citizenship?
+          <Typography variant="h5" fontWeight={600} mb={5} sx={{ color: 'white', textAlign: 'center', direction: 'rtl' }}>
+            מתעניינים בהשבת אזרחות גרמנית או אוסטרית?
           </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
-            Our internal archival research team is designated to help you uncover the historical evidence needed to support your citizenship process.
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }} mb={5}>
+            צוות המחקר הארכיוני הפנימי שלנו הוקם במיוחד כדי לעזור לכם לחשוף את הראיות ההיסטוריות הנחוצות לתהליך קבלת האזרחות.
           </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
-            Whether you're just beginning your journey or have already gathered partial information, our team of German-speaking archival researchers is here to assist. With over three years of focused experience in German and Austrian citizenship law, we understand the challenges and intricacies of tracing family records through decades of history, war, migration, and persecution.
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }} mb={5}>
+            בין אם אתם רק בתחילת הדרך או שכבר הצלחתם לאסוף מידע חלקי – צוות החוקרים דוברי הגרמנית שלנו עומד לרשותכם. עם ניסיון של למעלה משלוש שנים בתחום דיני האזרחות הגרמנית והאוסטרית, אנו מכירים מקרוב את האתגרים שבאיתור מסמכים משפחתיים מתקופות של מלחמות, הגירה, ורדיפה.
           </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
-            Using advanced research tools, exclusive access to digital archives, and multilingual expertise, we are often able to determine a client's eligibility within just one business day—even with minimal starting information, such as only the name and birthdate of a persecuted ancestor.
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }} mb={5}>
+            באמצעות כלים מתקדמים, גישה בלעדית לארכיונים דיגיטליים, וידע רב-לשוני, אנו מצליחים ברוב המקרים לקבוע זכאות לאזרחות בתוך יום עבודה אחד בלבד – גם כאשר המידע ההתחלתי מצומצם, כמו שם ותאריך לידה בלבד של קרוב משפחה שנרדף.
           </Typography>
-          <Typography variant="h5" fontWeight={600} mb={4} sx={{ color: 'white', textAlign: 'center' }}>
-            What We Offer:
+          <Typography variant="h5" fontWeight={600} mb={4} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }}>
+            מה אנחנו מציעים:
           </Typography>
           <Box
             sx={{
@@ -145,14 +145,14 @@ const ArchivalResearch = () => {
               </Box>
             ))}
           </Box>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
-            We take pride in our <b>80% success rate</b> in identifying eligibility quickly and accurately. Our team has helped hundreds of families reconnect with their roots and reclaim citizenship that was unjustly stripped during the Nazi era or post-war period.
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }} mb={5}>
+            אנו גאים באחוז הצלחה של 80% בזיהוי זכאות בצורה מהירה ומדויקת. צוות המחקר שלנו סייע למאות משפחות להתחבר מחדש לשורשיהן ולהחזיר אזרחות שנשללה בעוול בתקופת הנאצים או לאחריה.
           </Typography>
-          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'left' }} mb={5}>
-            By choosing us, you're not only gaining access to expertise—you're working with a team that cares about history, justice, and restoring what was once taken away.
+          <Typography variant="body1" fontSize={18} sx={{ color: 'white', textAlign: 'right', direction: 'rtl' }} mb={5}>
+            כאשר אתם בוחרים בנו, אתם לא רק מקבלים גישה למומחיות – אתם פועלים עם צוות שמאמין בצדק היסטורי ובהשבת זכויות שנשללו.
           </Typography>
-          <Typography variant="h6" fontWeight={700} sx={{ color: '#7ecbff', textAlign: 'center' }} mb={6}>
-            Get started today and take the first step toward reclaiming your family's European legacy.
+          <Typography variant="h6" fontWeight={700} sx={{ color: '#7ecbff', textAlign: 'center', direction: 'rtl' }} mb={6}>
+            התחילו כבר היום – וצעדו לעבר השבת המורשת האירופית של משפחתכם.
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Button
@@ -174,7 +174,7 @@ const ArchivalResearch = () => {
               }}
               onClick={() => navigate('/userinfo')}
             >
-              Start Eligibility Check
+              התחילו בדיקת זכאות
             </Button>
           </Box>
         </Container>

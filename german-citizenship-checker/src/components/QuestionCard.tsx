@@ -25,8 +25,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       {/* Progress bar and question number */}
       <Box sx={{ width: '100%', maxWidth: 420, mb: 4, mx: 'auto' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, justifyContent: 'center' }}>
-          <Typography variant="subtitle1" sx={{ color: '#fff', fontWeight: 600 }}>
-            Question {currentQuestion}/{totalQuestions}
+          <Typography variant="subtitle1" sx={{ color: '#fff', fontWeight: 600, direction: 'rtl' }}>
+            שאלה {currentQuestion} מתוך {totalQuestions}
           </Typography>
         </Box>
         <Box sx={{ position: 'relative', height: 24, borderRadius: 12, overflow: 'hidden', bgcolor: '#181b2c' }}>
@@ -57,6 +57,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               color: '#fff',
               fontWeight: 600,
               fontSize: { xs: 16, md: 22 },
+              direction: 'rtl',
             }}
           >
             {currentQuestion}
@@ -74,10 +75,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         boxShadow: 6, 
         mb: 4, 
         p: { xs: 0, md: 2 },
-        mx: 'auto'
+        mx: 'auto',
+        direction: 'rtl',
+        textAlign: 'right',
       }}>
-        <CardContent sx={{ px: { xs: 2, md: 3 }, py: { xs: 2, md: 3 } }}>
-          <Typography variant="h5" sx={{ color: '#232946', fontWeight: 700, mb: 2, fontSize: { xs: 24, md: 32 }, textAlign: 'center' }}>
+        <CardContent sx={{ px: { xs: 2, md: 3 }, py: { xs: 2, md: 3 }, direction: 'rtl', textAlign: 'right' }}>
+          <Typography variant="h5" sx={{ color: '#232946', fontWeight: 700, mb: 2, fontSize: { xs: 24, md: 32 }, textAlign: 'right', direction: 'rtl' }}>
             {question.text}
           </Typography>
 
@@ -94,16 +97,18 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               boxShadow: 1,
               borderLeft: '4px solid #43e97b',
               mx: 'auto',
-              maxWidth: '100%'
+              maxWidth: '100%',
+              direction: 'rtl',
+              textAlign: 'right',
             }}>
-              Examples include:<br />
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Jewish, Romani, or Slavic background</li>
-                <li>Political opponents (e.g., Communists, Social Democrats)</li>
-                <li>LGBTQ+ individuals</li>
-                <li>Jehovah's Witnesses</li>
-                <li>Persons with disabilities</li>
-                <li>Freemasons, pacifists, "non-Aryans" by Nazi definition</li>
+              דוגמאות כוללות:<br />
+              <ul style={{ margin: 0, paddingRight: 18, direction: 'rtl', textAlign: 'right' }}>
+                <li>רקע יהודי, צועני או סלאבי</li>
+                <li>מתנגדים פוליטיים (למשל, קומוניסטים, סוציאל-דמוקרטים)</li>
+                <li>להט"ב</li>
+                <li>עדי יהוה</li>
+                <li>אנשים עם מוגבלויות</li>
+                <li>בונים חופשיים, פציפיסטים, "לא-ארים" לפי הגדרת הנאצים</li>
               </ul>
             </Box>
           )}
@@ -121,9 +126,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               boxShadow: 1,
               borderLeft: '4px solid #43e97b',
               mx: 'auto',
-              maxWidth: '100%'
+              maxWidth: '100%',
+              direction: 'rtl',
+              textAlign: 'right',
             }}>
-              For example: Did they flee Austria (between 1933-1955), avoid returning, get deported, or die due to being Jewish, Roma, politically active, religious, disabled, etc.?
+              לדוגמה: האם ברחו מאוסטריה (בין 1933-1955), נמנעו מלחזור, גורשו או נהרגו בשל היותם יהודים, צוענים, פעילים פוליטית, דתיים, בעלי מוגבלות וכו'?
             </Box>
           )}
 
@@ -136,7 +143,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 gap: 3,
                 mb: 3,
                 width: '100%',
-                mx: 'auto'
+                mx: 'auto',
+                direction: 'rtl',
+                textAlign: 'right',
               }}
             >
               {/* Austrian Citizen Section */}
@@ -173,7 +182,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   textAlign: 'center',
                   mt: 1,
                 }}>
-                  Austrian Citizen
+                  אזרח אוסטרי
                 </Typography>
                 <Box sx={{ 
                   background: '#232946',
@@ -184,7 +193,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   fontWeight: 600,
                   fontSize: 16,
                 }}>
-                  Austrian Citizenship
+                  אזרחות אוסטרית
                 </Box>
               </Box>
 
@@ -222,7 +231,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   textAlign: 'center',
                   mt: 1,
                 }}>
-                  Stateless
+                  חסר אזרחות
                 </Typography>
                 <Box sx={{ 
                   background: '#232946',
@@ -233,7 +242,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   fontWeight: 600,
                   fontSize: 16,
                 }}>
-                  No Citizenship
+                  ללא אזרחות
                 </Box>
               </Box>
 
@@ -271,7 +280,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   textAlign: 'center',
                   mt: 1,
                 }}>
-                  Part of Austria-Hungary
+                  חלק מהאימפריה האוסטרו-הונגרית
                 </Typography>
                 <Box sx={{ 
                   display: 'grid',
@@ -279,19 +288,19 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   gap: 1,
                 }}>
                   {[
-                    'Hungary',
-                    'Czech Republic',
-                    'Slovakia',
-                    'Poland',
-                    'Ukraine',
-                    'Romania',
-                    'Italy',
-                    'Slovenia',
-                    'Croatia',
-                    'Bosnia and Herzegovina',
-                    'Serbia',
-                    'Montenegro',
-                    'North Macedonia'
+                    'הונגריה',
+                    'צ׳כיה',
+                    'סלובקיה',
+                    'פולין',
+                    'אוקראינה',
+                    'רומניה',
+                    'איטליה',
+                    'סלובניה',
+                    'קרואטיה',
+                    'בוסניה והרצגובינה',
+                    'סרביה',
+                    'מונטנגרו',
+                    'מקדוניה הצפונית'
                   ].map((country) => (
                     <Box
                       key={country}
@@ -327,65 +336,75 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               boxShadow: 1,
               borderLeft: '4px solid #43e97b',
               mx: 'auto',
-              maxWidth: '100%'
+              maxWidth: '100%',
+              direction: 'rtl',
+              textAlign: 'right',
             }}>
-              Examples of Nazi-controlled territories:<br />
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Danzig (Gdańsk)</li>
-                <li>Memel (Klaipėda)</li>
-                <li>Sudetenland</li>
-                <li>Königsberg / Kaliningrad</li>
-                <li>Schlesien (Silesia)</li>
-                <li>Austria (after 1938)</li>
-                <li>German-occupied areas (Poland, France, etc.)</li>
+              דוגמאות לשטחים בשליטת הנאצים:<br />
+              <ul style={{ margin: 0, paddingRight: 18, direction: 'rtl', textAlign: 'right' }}>
+                <li>דנציג (גדנסק)</li>
+                <li>ממל (קלייפדה)</li>
+                <li>חבל הסודטים</li>
+                <li>קניגסברג / קלינינגרד</li>
+                <li>שלזיה</li>
+                <li>אוסטריה (לאחר 1938)</li>
+                <li>אזורים כבושים בגרמניה (פולין, צרפת וכו')</li>
               </ul>
             </Box>
           )}
 
           {/* Answer Options */}
           {question.type === 'yesNo' && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto' }}>
-              {['yes', 'no', 'not_sure'].map((option) => (
-                <Button
-                  key={option}
-                  variant="outlined"
-                  onClick={() => onAnswer(option)}
-                  sx={{
-                    justifyContent: 'space-between',
-                    borderRadius: 999,
-                    borderColor: '#3a3f5a',
-                    color: option === 'not_sure' ? '#ffc371' : '#43e97b',
-                    background: '#232946',
-                    fontWeight: 500,
-                    fontSize: { xs: 18, md: 24 },
-                    px: 3,
-                    py: 1.5,
-                    borderWidth: 2,
-                    borderStyle: 'solid',
-                    transition: '0.2s',
-                    width: '100%',
-                    '&:hover': {
-                      background: '#232946',
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto', direction: 'rtl', textAlign: 'right' }}>
+              {['yes', 'no', 'not_sure'].map((option) => {
+                let label = '';
+                if (option === 'yes') label = 'כן';
+                else if (option === 'no') label = 'לא';
+                else label = 'אני לא בטוח/ה';
+                return (
+                  <Button
+                    key={option}
+                    variant="outlined"
+                    onClick={() => onAnswer(option)}
+                    sx={{
+                      justifyContent: 'space-between',
+                      borderRadius: 999,
+                      borderColor: '#3a3f5a',
                       color: option === 'not_sure' ? '#ffc371' : '#43e97b',
-                      borderColor: '#fff',
+                      background: '#232946',
+                      fontWeight: 500,
+                      fontSize: { xs: 18, md: 24 },
+                      px: 3,
+                      py: 1.5,
                       borderWidth: 2,
-                    },
-                    ...(currentAnswer === option && {
-                      background: option === 'not_sure' ? '#ffc371' : '#43e97b',
-                      color: '#232946',
-                      borderColor: option === 'not_sure' ? '#ffc371' : '#43e97b',
-                    }),
-                  }}
-                  endIcon={currentAnswer === option ? <CheckCircleIcon sx={{ color: '#232946' }} /> : null}
-                >
-                  {option === 'yes' ? 'Yes' : option === 'no' ? 'No' : "I'm not sure"}
-                </Button>
-              ))}
+                      borderStyle: 'solid',
+                      transition: '0.2s',
+                      width: '100%',
+                      direction: 'rtl',
+                      textAlign: 'right',
+                      '&:hover': {
+                        background: '#232946',
+                        color: option === 'not_sure' ? '#ffc371' : '#43e97b',
+                        borderColor: '#fff',
+                        borderWidth: 2,
+                      },
+                      ...(currentAnswer === option && {
+                        background: option === 'not_sure' ? '#ffc371' : '#43e97b',
+                        color: '#232946',
+                        borderColor: option === 'not_sure' ? '#ffc371' : '#43e97b',
+                      }),
+                    }}
+                    endIcon={currentAnswer === option ? <CheckCircleIcon sx={{ color: '#232946' }} /> : null}
+                  >
+                    {label}
+                  </Button>
+                );
+              })}
             </Box>
           )}
 
           {question.type === 'date' && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto', direction: 'rtl', textAlign: 'right' }}>
               <TextField
                 type="date"
                 value={currentAnswer || ''}
@@ -418,7 +437,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           )}
 
           {question.type === 'dropdown' && question.options && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2, width: '100%', maxWidth: 400, mx: 'auto', direction: 'rtl', textAlign: 'right' }}>
               {question.options.map((option) => (
                 <Button
                   key={option}
@@ -438,6 +457,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     borderStyle: 'solid',
                     transition: '0.2s',
                     width: '100%',
+                    direction: 'rtl',
+                    textAlign: 'right',
                     '&:hover': {
                       background: '#232946',
                       color: '#43e97b',
