@@ -34,7 +34,7 @@ const LawRequirements: React.FC<LawRequirementsProps> = ({ section, title, requi
           }}
         >
           <Typography variant="h5" fontWeight={700} sx={{ color: '#fff', mb: 2 }}>
-            {section} Requirements
+            דרישות מסכמות
           </Typography>
           <Typography variant="subtitle1" sx={{ color: 'rgba(255,255,255,0.87)', mb: 3 }}>
             {title}
@@ -88,7 +88,7 @@ const LawRequirements: React.FC<LawRequirementsProps> = ({ section, title, requi
               },
             }}
           >
-            Close
+            סגור
           </Button>
         </Box>
       </motion.div>
